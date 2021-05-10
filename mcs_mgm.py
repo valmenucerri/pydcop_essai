@@ -364,9 +364,12 @@ class MgmComputation(VariableComputation):
                     concerned_vars.update(c.dimensions)
 
                 for v in concerned_vars:
+                    print("v: ",v)
                     if v.name == self.name:
+                        print("cost1 :",v.cost_for_val(self.current_value))
                         cost += v.cost_for_val(self.current_value)
                     else:
+                        print("cost2 :", v.cost_for_val(self.current_value))
                         cost += v.cost_for_val(self._neighbors_values[v.name])
 
                 self.value_selection(self.current_value, cost)
