@@ -225,7 +225,7 @@ class MgmComputation(VariableComputation):
 
     def __init__(self, computation_definition: ComputationDef):
 
-        assert computation_definition.algo.algo == "mcs_mgm"
+        assert computation_definition.algo.algo == "mgm"
         assert (computation_definition.algo.mode == "min") or (
             computation_definition.algo.mode == "max"
         )
@@ -364,9 +364,7 @@ class MgmComputation(VariableComputation):
                     concerned_vars.update(c.dimensions)
 
                 for v in concerned_vars:
-
                     if v.name == self.name:
-
                         cost += v.cost_for_val(self.current_value)
                     else:
                         cost += v.cost_for_val(self._neighbors_values[v.name])

@@ -225,7 +225,7 @@ class MgmComputation(VariableComputation):
 
     def __init__(self, computation_definition: ComputationDef):
 
-        assert computation_definition.algo.algo == "mcs_mgm"
+        assert computation_definition.algo.algo == "mcs_mgm2"
         assert (computation_definition.algo.mode == "min") or (
             computation_definition.algo.mode == "max"
         )
@@ -341,6 +341,8 @@ class MgmComputation(VariableComputation):
 
         """
         self._neighbors_values[variable_name] = recv_msg.value
+        print("voici les voisins : ", self._neighbors)
+        
         # if we have a value for all neighbors, compute the best value for
         # conflict reduction
         if len(self._neighbors_values) == len(self._neighbors):
@@ -355,6 +357,7 @@ class MgmComputation(VariableComputation):
                 concerned_vars = set()
                 cost = 0
                 for c in self.utilities:
+        
                     asgt = filter_assignment_dict(self._neighbors_values, c.dimensions)
                     reduced_cs.append(c.slice(asgt))
                     cost = functools.reduce(
@@ -362,11 +365,10 @@ class MgmComputation(VariableComputation):
                     )
                     # Cost for variable, if any:
                     concerned_vars.update(c.dimensions)
+                    
 
                 for v in concerned_vars:
-
                     if v.name == self.name:
-
                         cost += v.cost_for_val(self.current_value)
                     else:
                         cost += v.cost_for_val(self._neighbors_values[v.name])
