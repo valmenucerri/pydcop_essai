@@ -48,8 +48,9 @@ def get_domain(file):
                     break
 
 
-        domain = {name: values}
-        return domain
+        domain = {name.split()[0]: values}
+        variables = get_variables(line_corrected,i)
+        return domain, variables
 
 def handle_domain_values(line):
     '''
@@ -65,10 +66,47 @@ def handle_domain_values(line):
 def get_variables(file_list,first_index):
     '''
     get variables names and domains
-    :param file_list:
-    :param first_index:
-    :return:
+    :param file_list: list with all the file's lines. type : list
+    :param first_index: index of the first variable. type : int
+    :return: variables : all of the variables, with their domains. type : dict
     '''
+    index = first_index +3
+    print(file_list)
+    variables = {}
+    continu = True
+    for i in range(index,len(file_list),2):
+        if file_list[i]=='':
+            break
+        variable_name = file_list[i].strip(':')
+        variable_domain = file_list[i+1].split()[1]
+        variables[variable_name.split()[0]] = variable_domain
+    print(i)
+    return variables
+
+def get_constraints(file_list,first_index,variables):
+    '''
+    Get constraints for each variable.
+    :param file_list: list with all the file's lines. type : list
+    :param first_index: index of the last variable. type : int
+    :return: var_constraints: all the contraints for each variable. type : dict
+    :return: constraints
+    '''
+    var_constraints = {}
+    constraints = {}
+    words = ["types:","variables:","values:"]
+    for j in variables:
+        var_constraints[j] = []
+
+    for i in range(index,len(file_list)):
+        cons_name = file_list[i].strip(':')
+        associated_var = file_list[i+2].split()[1]
+        var_constraints[associated_var].append(cons_name.strip(''))
+
+
+
+
+
+
 print(get_domain("graph_coloring.yaml"))
 
 
