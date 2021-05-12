@@ -103,29 +103,40 @@ def get_constraints(file_list,first_index,variables):
 
     for i in range(index,len(file_list)):
         line = file_list[i].split()
+
+        if len(line) == 1 and line[0] == "agents:":
+            break
         if line not in words and len(line)==1:   #check if the line is only about one variable
+            forbidden = ["variables:","function:","agents:"]
             cons_name = line[0].strip(':')
             step_s = 1
             line_s = file_list[i+step_s].split()
-            while line_s[0] != "variables:":
+            while line_s[0] not in forbidden:
                 step_s += 1
                 line_s = file_list[i + step_s].split()
 
-            if file_list[i+2].split()[0] == "variables:":
-                line_var = file_list[i+2].split()
+
+            if file_list[i+step_s].split()[0] == "variables:":
+                line_var = file_list[i+step_s].split()
                 if len(line_var)==2:
-                    associated_var = [file_list[i+2].split()[1]]
+                    associated_var = [file_list[i+step_s].split()[1]]
                 else:
                     step = 1
                     keys = [k for k in variables.keys()]
-                    next_line = keys[0]
-                    while next_line in keys:
-                        next_line = file_list[i + 2 + step].split().strip('-')
-                        associated_var.append(next_line)
+                    next_line = file_list[i + step_s + step]
+                    next_line = next_line.split()
+                    associated_var = []
+                    associated_var.append(next_line[1])
+                    while len(next_line)==2:
                         step += 1
+                        associated_var.append(next_line[1])
+                        next_line = file_list[i + step_s + step]
+                        next_line = next_line.split()
+
+
             else:
                 associated_var = []
-                for var in file_list[i+2].split():
+                for var in file_list[i+step_s].split():
                     if var in var_constraints.keys():
                         associated_var.append(var)
 
@@ -138,7 +149,7 @@ def get_constraints(file_list,first_index,variables):
 
 
 
-print(get_domain("graph_coloring_50.yaml"))
+print(get_domain("graph_coloring.yaml"))
 
 
 
