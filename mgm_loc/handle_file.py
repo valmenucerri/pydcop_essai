@@ -72,7 +72,7 @@ def get_variables(file_list,first_index):
     :return: variables : all of the variables, with their domains. type : dict
     '''
     index = first_index +3
-    print(file_list)
+
     variables = {}
     continu = True
     for i in range(index,len(file_list),2):
@@ -97,23 +97,38 @@ def get_constraints(file_list,first_index,variables):
     var_constraints = {}
     constraints = {}
     words = [["values:"],["variables:"],["type:"]]
-    index = first_index + 2
-    for j in variables:
+    index = first_index + 2 #index of the first constraint
+    for j in variables:   #create a dictionnary with all the variables
         var_constraints[j] = []
 
     for i in range(index,len(file_list)):
         line = file_list[i].split()
-        print(line)
-        if line not in words and len(line)==1:
+        if line not in words and len(line)==1:   #check if the line is only about one variable
             cons_name = line[0].strip(':')
+            step_s = 1
+            line_s = file_list[i+step_s].split()
+            while line_s[0] != "variables:":
+                step_s += 1
+                line_s = file_list[i + step_s].split()
+
             if file_list[i+2].split()[0] == "variables:":
-                associated_var = [file_list[i+2].split()[1]]
+                line_var = file_list[i+2].split()
+                if len(line_var)==2:
+                    associated_var = [file_list[i+2].split()[1]]
+                else:
+                    step = 1
+                    keys = [k for k in variables.keys()]
+                    next_line = keys[0]
+                    while next_line in keys:
+                        next_line = file_list[i + 2 + step].split().strip('-')
+                        associated_var.append(next_line)
+                        step += 1
             else:
                 associated_var = []
                 for var in file_list[i+2].split():
                     if var in var_constraints.keys():
                         associated_var.append(var)
-            print(associated_var)
+
             for var in associated_var:
                 var_constraints[var].append(cons_name.strip(''))
 
@@ -123,7 +138,7 @@ def get_constraints(file_list,first_index,variables):
 
 
 
-print(get_domain("graph_coloring.yaml"))
+print(get_domain("graph_coloring_50.yaml"))
 
 
 
