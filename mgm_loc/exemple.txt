@@ -1,0 +1,13 @@
+objective: min
+
+contraintes:
+a
+b
+v
+
+domaines:
+f
+f
+f
+
+fini
