@@ -49,8 +49,9 @@ def get_domain(file):
 
 
         domain = {name.split()[0]: values}
-        variables = get_variables(line_corrected,i)
-        return domain, variables
+        variables,constraints = get_variables(line_corrected,i)
+
+        return domain, variables , constraints
 
 def handle_domain_values(line):
     '''
@@ -80,12 +81,14 @@ def get_variables(file_list,first_index):
         variable_name = file_list[i].strip(':')
         variable_domain = file_list[i+1].split()[1]
         variables[variable_name.split()[0]] = variable_domain
-    print(i)
-    return variables
+
+    constraints = get_constraints(file_list, i,variables)
+    return variables,constraints
 
 def get_constraints(file_list,first_index,variables):
     '''
     Get constraints for each variable.
+    :param variables: all the variables. type : dict
     :param file_list: list with all the file's lines. type : list
     :param first_index: index of the last variable. type : int
     :return: var_constraints: all the contraints for each variable. type : dict
@@ -93,15 +96,28 @@ def get_constraints(file_list,first_index,variables):
     '''
     var_constraints = {}
     constraints = {}
-    words = ["types:","variables:","values:"]
+    words = [["values:"],["variables:"],["type:"]]
+    index = first_index + 2
     for j in variables:
         var_constraints[j] = []
 
     for i in range(index,len(file_list)):
-        cons_name = file_list[i].strip(':')
-        associated_var = file_list[i+2].split()[1]
-        var_constraints[associated_var].append(cons_name.strip(''))
+        line = file_list[i].split()
+        print(line)
+        if line not in words and len(line)==1:
+            cons_name = line[0].strip(':')
+            if file_list[i+2].split()[0] == "variables:":
+                associated_var = [file_list[i+2].split()[1]]
+            else:
+                associated_var = []
+                for var in file_list[i+2].split():
+                    if var in var_constraints.keys():
+                        associated_var.append(var)
+            print(associated_var)
+            for var in associated_var:
+                var_constraints[var].append(cons_name.strip(''))
 
+    return var_constraints
 
 
 
