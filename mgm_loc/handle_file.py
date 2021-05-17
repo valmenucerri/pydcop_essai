@@ -42,18 +42,18 @@ def get_domain(file):
                 if line_stud[0]=="values:":
                     values = []
                     for j in range(1,len(line_stud)):
-                        line_ad = handle_domain_values(line_stud[j])
+                        line_ad = correct_domain_values(line_stud[j])
                         values.append(line_ad)
 
                     break
 
 
         domain = {name.split()[0]: values}
-        variables,constraints = get_variables(line_corrected,i)
+        variables,constraints,cons_dict = get_variables(line_corrected,i)
 
-        return domain, variables , constraints
+        return domain, variables , constraints , cons_dict
 
-def handle_domain_values(line):
+def correct_domain_values(line):
     '''
     Delete undesirable characters from the domain values
     :param line: the line we want to correct. type : str
@@ -82,8 +82,8 @@ def get_variables(file_list,first_index):
         variable_domain = file_list[i+1].split()[1]
         variables[variable_name.split()[0]] = variable_domain
 
-    constraints = get_constraints(file_list, i,variables)
-    return variables,constraints
+    constraints,cons_dict = get_constraints(file_list, i,variables)
+    return variables,constraints,cons_dict
 
 def get_constraints(file_list,first_index,variables):
     '''
@@ -102,8 +102,24 @@ def get_constraints(file_list,first_index,variables):
         var_constraints[j] = []
 
     for i in range(index,len(file_list)):
-        line = file_list[i].split()
-
+        line = file_list[i].split() #each line of the file
+        step_cv = 1
+        try:
+            line_cv = file_list[i + step_cv].split()
+            if line_cv[0] == "values:":
+                while line_cv[0] not in forbidden:
+                    try:
+                        val = eval(line_cv[0].strip(':'))
+                        line_copy = line_cv.copy()
+                        del line_copy[0]
+                        text = " ".join(line_copy)
+                        constraints[cons_name] = (val, text)
+                    except NameError:
+                        pass
+                    step_cv += 1
+                    line_cv = file_list[i + step_cv].split()
+        except IndexError:
+            pass
         if len(line) == 1 and line[0] == "agents:":
             break
         if line not in words and len(line)==1:   #check if the line is only about one variable
@@ -111,23 +127,23 @@ def get_constraints(file_list,first_index,variables):
             cons_name = line[0].strip(':')
             step_s = 1
             line_s = file_list[i+step_s].split()
+
+
             while line_s[0] not in forbidden:
                 step_s += 1
                 line_s = file_list[i + step_s].split()
 
-
-            if file_list[i+step_s].split()[0] == "variables:":
-                line_var = file_list[i+step_s].split()
-                if len(line_var)==2:
+            if line_s[0] == "variables:": #check that we are looking to variables
+                if len(line_s)==2: #word and variable's name are on the same line
                     associated_var = [file_list[i+step_s].split()[1]]
-                else:
+                else:   #variable's name under the constraints values
                     step = 1
                     keys = [k for k in variables.keys()]
                     next_line = file_list[i + step_s + step]
                     next_line = next_line.split()
                     associated_var = []
                     associated_var.append(next_line[1])
-                    while len(next_line)==2:
+                    while len(next_line)==2:  #each variable is added, in case of multiple variables for one constraint
                         step += 1
                         associated_var.append(next_line[1])
                         next_line = file_list[i + step_s + step]
@@ -143,13 +159,13 @@ def get_constraints(file_list,first_index,variables):
             for var in associated_var:
                 var_constraints[var].append(cons_name.strip(''))
 
-    return var_constraints
+    return var_constraints,constraints
 
 
 
 
 
-print(get_domain("graph_coloring.yaml"))
+print(get_domain("graph_coloring_50.yaml"))
 
 
 
