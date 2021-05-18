@@ -21,7 +21,7 @@ def get_objective(file):
                 objective = line[1]
                 break
     return objective
-def get_domain(file):
+def get_data(file):
     '''
     Get all the data from the file
     :param file: the name of the file. type : str
@@ -213,7 +213,7 @@ def get_agent(file_list,first_index,variables):
 
 
 
-print(get_domain("graph_coloring.yaml"))
+print(get_data("graph_coloring.yaml"))
 
 
 
