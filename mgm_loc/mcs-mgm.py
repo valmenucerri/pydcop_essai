@@ -20,11 +20,11 @@ def config_agents(variables,agents):
         actual_agent = {}
         actual_agent["variable"] = all_var[ag]
         actual_agent["value"] = None
-        actual_agent["neighbors"] = []
+        actual_agent["neighbors"] = {}
         agents_param[agents[ag]] = actual_agent
         for var2 in all_var:
             if var2 != actual_agent["variable"]:
-                actual_agent["neighbors"].append(var2)
+                actual_agent["neighbors"][var2] = None
 
     return agents_param
 
@@ -39,6 +39,40 @@ def init_agents(agents_param,domain):
     for agent in agents_param.values():
         for values in domain.values():
             random_val = r.choice(values)
-        agent["value"]= random_val
+            agent["value"]= random_val
     return agents_param
 
+def send_values(agents_param):
+    '''
+    Create an iterable and put the new values of the variable inside.
+    :param agents_param: all the agents with their parameters. type : dict
+    :return: value_mess: all the new values of the variables. type : dict
+    '''
+    value_mess = {}
+    for agent in agents_param.values():
+        value_mess[agent["variable"]] = agent["value"]
+
+    return value_mess
+
+def collect_values(agents_param, value_mess):
+    '''
+    Indicate to each agent his variable's neighbor's value.
+    :param agents_param: all the agents with their parameters. type : dict
+    :param value_mess: all the values that the agents have sent. type : dict
+    :return: agents_param: all the agents with their parameters and their neighbors new values. type : dict
+    '''
+    for agent in agents_param.values():
+        for neighbor in agent["neighbors"]:
+            for var in value_mess:
+                if neighbor == var:
+                    agent["neighbors"][neighbor] = value_mess[var]
+    return agents_param
+
+agents_param = config_agents(variables, agents)
+
+agents_param = init_agents(agents_param,domain)
+print(agents_param)
+nouvelle = send_values(agents_param)
+print(nouvelle)
+nouv = collect_values(agents_param,nouvelle)
+print(nouv)
