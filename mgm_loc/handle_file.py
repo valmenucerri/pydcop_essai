@@ -92,7 +92,7 @@ def get_constraints(file_list,first_index,variables):
     :param file_list: list with all the file's lines. type : list
     :param first_index: index of the last variable. type : int
     :return: var_constraints: all the contraints for each variable. type : dict
-    :return: constraints
+    :return: constraints: all the constraints with their values and values conditions. type : dict
     '''
     var_constraints = {}
     constraints = {}
@@ -102,32 +102,18 @@ def get_constraints(file_list,first_index,variables):
         var_constraints[j] = []
 
     for i in range(index,len(file_list)):
+        forbidden = ["variables:", "function:", "agents:"]
         line = file_list[i].split() #each line of the file
         step_cv = 1
-        try:
-            line_cv = file_list[i + step_cv].split()
-            if line_cv[0] == "values:":
-                while line_cv[0] not in forbidden:
-                    try:
-                        val = eval(line_cv[0].strip(':'))
-                        line_copy = line_cv.copy()
-                        del line_copy[0]
-                        text = " ".join(line_copy)
-                        constraints[cons_name] = (val, text)
-                    except NameError:
-                        pass
-                    step_cv += 1
-                    line_cv = file_list[i + step_cv].split()
-        except IndexError:
-            pass
+
+
         if len(line) == 1 and line[0] == "agents:":
             break
         if line not in words and len(line)==1:   #check if the line is only about one variable
-            forbidden = ["variables:","function:","agents:"]
+
             cons_name = line[0].strip(':')
             step_s = 1
             line_s = file_list[i+step_s].split()
-
 
             while line_s[0] not in forbidden:
                 step_s += 1
@@ -149,23 +135,46 @@ def get_constraints(file_list,first_index,variables):
                         next_line = file_list[i + step_s + step]
                         next_line = next_line.split()
 
-
-            else:
+            else: #add variables even if they are not explicitly mentionned in the file (in case of function for example)
                 associated_var = []
                 for var in file_list[i+step_s].split():
                     if var in var_constraints.keys():
                         associated_var.append(var)
 
-            for var in associated_var:
+            for var in associated_var: #add each constraint name for each variable
                 var_constraints[var].append(cons_name.strip(''))
+        try:
+            line_cv = file_list[i + step_cv].split()
+            if line_cv[0] == "values:": #get the constraints values
+                constraints[cons_name]=[]
+                while line_cv[0] not in forbidden:
+                    try:
 
+                        val = eval(line_cv[0].strip(':'))
+                        line_copy = line_cv.copy()
+                        del line_copy[0]
+                        text = " ".join(line_copy)
+                        constraints[cons_name].append((val, text))
+                    except NameError:
+                        pass
+                    step_cv += 1
+                    line_cv = file_list[i + step_cv].split()
+            elif line_cv[0] == "function:":
+                constraints[cons_name] = []
+                nex_line = line_cv.copy()
+                del nex_line[0]
+                fun = " ".join(nex_line)
+                constraints[cons_name].append(fun)
+        except IndexError:
+            pass
     return var_constraints,constraints
 
 
 
 
 
-print(get_domain("graph_coloring_50.yaml"))
+
+print(get_domain("graph_exemple.yaml"))
 
 
 

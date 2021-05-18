@@ -1,0 +1,30 @@
+name: graph coloring ex
+objective: max
+
+domains:
+  cost:
+    values: [0,1,2]
+
+variables:
+  vA:
+    domain: cost
+  vB:
+    domain: cost
+  vC:
+    domain: cost
+
+constraints:
+    CA:
+      type: extensional
+      function: vA - vB - vC
+    CB:
+      type: extensional
+      function: vB - 2 * vC
+
+    CC:
+      type: extensional
+      function: vA + vC 
+
+
+
+agents: [a1, a2, a3]
