@@ -25,7 +25,7 @@ def get_domain(file):
     '''
     Get the domain of the values from the file
     :param file: the name of the file. type : str
-    :return: domain: the domain caracteristics. type : dict
+    :return: domain: the domain characteristics. type : dict
     '''
     with open(file,'r') as f:
         line = f.readlines()
@@ -40,28 +40,31 @@ def get_domain(file):
             if line_corrected[i] != '':
                 line_stud = line_corrected[i].split()
                 if line_stud[0]=="values:":
-                    values = []
-                    for j in range(1,len(line_stud)):
-                        line_ad = correct_domain_values(line_stud[j])
-                        values.append(line_ad)
+
+
+                    values = correct_values(line_corrected[i])
+
 
                     break
 
 
         domain = {name.split()[0]: values}
-        variables,constraints,cons_dict = get_variables(line_corrected,i)
+        variables,constraints,cons_dict,agents = get_variables(line_corrected,i)
 
-        return domain, variables , constraints , cons_dict
+        return domain, variables , constraints , cons_dict , agents
 
-def correct_domain_values(line):
+def correct_values(line):
     '''
     Delete undesirable characters from the domain values
     :param line: the line we want to correct. type : str
     :return: line_ad: the line corrected/ type : str
     '''
-    line_ad = line.strip("[")
-    line_ad = line_ad.strip("]")
-    line_ad = line_ad.strip(",")
+    line2 = line.split()
+    del line2[0]
+    line = " ".join(line2)
+    line_ad = line.strip('[')
+    line_ad = line_ad.strip(']')
+    line_ad = line_ad.split(',')
     return line_ad
 
 def get_variables(file_list,first_index):
@@ -82,8 +85,9 @@ def get_variables(file_list,first_index):
         variable_domain = file_list[i+1].split()[1]
         variables[variable_name.split()[0]] = variable_domain
 
-    constraints,cons_dict = get_constraints(file_list, i,variables)
-    return variables,constraints,cons_dict
+    constraints,cons_dict,first_agent_index = get_constraints(file_list, i,variables)
+    agents = get_agent(file_list,first_agent_index,variables)
+    return variables,constraints,cons_dict,agents
 
 def get_constraints(file_list,first_index,variables):
     '''
@@ -167,14 +171,40 @@ def get_constraints(file_list,first_index,variables):
                 constraints[cons_name].append(fun)
         except IndexError:
             pass
-    return var_constraints,constraints
+
+    return var_constraints,constraints,i
+
+
+
+def get_agent(file_list,first_index,variables):
+    '''
+    Get agents name from the file
+    :param variables: all the variables. type : dict
+    :param file_list: list with all the file's lines. type : list
+    :param first_index: index of the last variable. type : int
+    :return: agents:  all the agents of the considered problem. type : list
+    '''
+    line = file_list[first_index].split()
+    nbr_agents = len(variables)
+    agents = []
+    if len(line) != 1:
+        agents = correct_values(file_list[first_index])
+    else:
+        step_a = 1
+        line_a = file_list[first_index + step_a].split()
+        while len(agents) != nbr_agents:
+            if len(line_a) == 1:
+                agents.append(line_a[0].strip(':'))
+            step_a += 1
+            line_a = file_list[first_index + step_a].split()
+
+    return agents
 
 
 
 
 
-
-print(get_domain("graph_exemple.yaml"))
+print(get_domain("graph_coloring_50.yaml"))
 
 
 
