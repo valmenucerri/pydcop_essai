@@ -23,9 +23,14 @@ def get_objective(file):
     return objective
 def get_domain(file):
     '''
-    Get the domain of the values from the file
+    Get all the data from the file
     :param file: the name of the file. type : str
     :return: domain: the domain characteristics. type : dict
+    :return: variables: all the variables from the file with their domain. type : dict
+    :return: constraints: the constraints fr each variable. type : dict
+    :return: cons_dict: all the constraints with their values, and conditions to take those values. type : dict
+    :return: cons_for_var: each constraint with the variables they imply on. type : dict
+    :return: agents: all the agents used for the considered problem. type : list
     '''
     with open(file,'r') as f:
         line = f.readlines()
@@ -49,9 +54,9 @@ def get_domain(file):
 
 
         domain = {name.split()[0]: values}
-        variables,constraints,cons_dict,agents = get_variables(line_corrected,i)
+        variables,constraints,cons_dict,agents,cons_for_var = get_variables(line_corrected,i)
 
-        return domain, variables , constraints , cons_dict , agents
+        return domain, variables , constraints , cons_dict , cons_for_var , agents
 
 def correct_values(line):
     '''
@@ -85,9 +90,9 @@ def get_variables(file_list,first_index):
         variable_domain = file_list[i+1].split()[1]
         variables[variable_name.split()[0]] = variable_domain
 
-    constraints,cons_dict,first_agent_index = get_constraints(file_list, i,variables)
+    constraints,cons_dict,first_agent_index,cons_for_var = get_constraints(file_list, i,variables)
     agents = get_agent(file_list,first_agent_index,variables)
-    return variables,constraints,cons_dict,agents
+    return variables,constraints,cons_dict,agents,cons_for_var
 
 def get_constraints(file_list,first_index,variables):
     '''
@@ -100,6 +105,7 @@ def get_constraints(file_list,first_index,variables):
     '''
     var_constraints = {}
     constraints = {}
+    constraints_for_var = {}
     words = [["values:"],["variables:"],["type:"]]
     index = first_index + 2 #index of the first constraint
     for j in variables:   #create a dictionnary with all the variables
@@ -171,8 +177,12 @@ def get_constraints(file_list,first_index,variables):
                 constraints[cons_name].append(fun)
         except IndexError:
             pass
-
-    return var_constraints,constraints,i
+    for k in constraints.keys():
+        constraints_for_var[k] = []
+    for v,c in var_constraints.items():
+        for c2 in c:
+            constraints_for_var[c2].append(v)
+    return var_constraints,constraints,i,constraints_for_var
 
 
 
@@ -203,8 +213,7 @@ def get_agent(file_list,first_index,variables):
 
 
 
-
-print(get_domain("graph_coloring_50.yaml"))
+print(get_domain("graph_coloring.yaml"))
 
 
 
