@@ -78,7 +78,7 @@ def collect_values(agents_param, value_mess):
     return agents_param
 
 
-def calculate_constraint(agents_param,cons_dict,variables):
+def calculate_constraint(agents_param,cons_dict):
     '''
     Compute the value of the constraint for each variable
     :param agents_param:
@@ -91,6 +91,12 @@ def calculate_constraint(agents_param,cons_dict,variables):
     for agent in agents_param.values():
         var_value[agent["variable"]] = int(agent["value"])
 
+    for agent in agents_param.values():
+        constraint = agent["constraint"][0]
+        constraint_formula = cons_dict[constraint][0]
+        formula = prepare_formula(constraint_formula, var_value)
+        agent["cons_value"] = str(RVN(formula))
+    return agents_param
 
 def prepare_formula(constraint_formula, var_value):
     '''
@@ -147,9 +153,8 @@ def RVN(formula_ready):
 agents_param = config_agents(variables, agents,constraints)
 
 agents_param = init_agents(agents_param,domain)
-print("avant collecte : ",agents_param)
 nouvelle = send_values(agents_param)
 print("valeurs envoyees : ",nouvelle)
 nouv = collect_values(agents_param,nouvelle)
 print("après collecte : ",nouv)
-calculate_constraint(agents_param,cons_dict,variables)
+print(calculate_constraint(agents_param,cons_dict))

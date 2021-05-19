@@ -21,7 +21,7 @@ constraints:
     CB:
       type: extensional
       variables: vB
-      function: vB - 2 * vC
+      function: -2 * vC + vB
 
     CC:
       type: extensional
