@@ -93,12 +93,14 @@ def calculate_constraint(agents_param,cons_dict):
         var_value[agent["variable"]] = int(agent["value"])
 
     for agent in agents_param.values():
-        il len(agent["constraint"]) != 0:
-            for i in range (len(agent["constraint"]):
+        if len(agent["constraint"]) != 0:
+            for i in range (len(agent["constraint"])):
+                value = float(agent["cons_value"])
                 constraint = agent["constraint"][i]
                 constraint_formula = cons_dict[constraint][0]
                 formula = prepare_formula(constraint_formula, var_value)
-                agent["cons_value"] = str(RVN(formula))
+                value += RVN(formula)
+            agent["cons_value"] = str(value)
     return agents_param
 
 def prepare_formula(constraint_formula, var_value):
@@ -162,4 +164,6 @@ nouvelle = send_values(agents_param)
 print("valeurs envoyees : ",nouvelle)
 nouv = collect_values(agents_param,nouvelle)
 print("après collecte : ",nouv)
-print(calculate_constraint(agents_param,cons_dict))
+print("1 : ",calculate_constraint(agents_param,cons_dict))
+agents_param['a1']["constraint"].append('CB')
+print("2 : ",calculate_constraint(agents_param,cons_dict))
