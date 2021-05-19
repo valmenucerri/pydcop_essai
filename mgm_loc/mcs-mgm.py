@@ -32,6 +32,7 @@ def config_agents(variables,agents,constraints):
             if var2 != actual_agent["variable"]:
                 actual_agent["neighbors"][var2] = None
         actual_agent["cons_value"] = 0
+        actual_agent["prev_cons_value"] = 0
     return agents_param
 
 
@@ -81,10 +82,10 @@ def collect_values(agents_param, value_mess):
 def calculate_constraint(agents_param,cons_dict):
     '''
     Compute the value of the constraint for each variable
-    :param agents_param:
-    :param cons_dict:
-    :param variables:
-    :return:
+    :param agents_param: all the agents with their parameters. type : dict
+    :param cons_dict: formula of all the constraints. type : dict
+    :param variables: all the variables with the domain they take their values from. type : dict
+    :return: agents_param. All the agents with their parameters and their constraints value. type : dict
     '''
     var_value = {}
 
@@ -92,10 +93,12 @@ def calculate_constraint(agents_param,cons_dict):
         var_value[agent["variable"]] = int(agent["value"])
 
     for agent in agents_param.values():
-        constraint = agent["constraint"][0]
-        constraint_formula = cons_dict[constraint][0]
-        formula = prepare_formula(constraint_formula, var_value)
-        agent["cons_value"] = str(RVN(formula))
+        il len(agent["constraint"]) != 0:
+            for i in range (len(agent["constraint"]):
+                constraint = agent["constraint"][i]
+                constraint_formula = cons_dict[constraint][0]
+                formula = prepare_formula(constraint_formula, var_value)
+                agent["cons_value"] = str(RVN(formula))
     return agents_param
 
 def prepare_formula(constraint_formula, var_value):
@@ -148,8 +151,10 @@ def RVN(formula_ready):
             pile.append(a / b)
         else:
             pile.append(int(elt))
-    cons_value = pile.pop()
+    cons_value = pile.pop() #Keep only the final result by popping the last operator
     return cons_value
+
+
 agents_param = config_agents(variables, agents,constraints)
 
 agents_param = init_agents(agents_param,domain)
