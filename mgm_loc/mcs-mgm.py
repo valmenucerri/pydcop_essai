@@ -3,9 +3,14 @@ import sys
 import random as r
 file = hf.file_name(sys.argv)
 domain, variables , constraints , cons_dict , cons_for_var , agents= hf.get_data(file)
+print("domain :",domain)
+print("variables : ",variables)
+print("constraints :",constraints)
+print("cons_dict : ",cons_dict)
+print("cons_for_var : ",cons_for_var)
 
 
-def config_agents(variables,agents):
+def config_agents(variables,agents,constraints):
     '''
     Create a dictionary with all the details for each agent.
     :param variables: all the variables of the file, with their domain. type : dict
@@ -19,13 +24,14 @@ def config_agents(variables,agents):
     for ag in range(len(agents)):
         actual_agent = {}
         actual_agent["variable"] = all_var[ag]
+        actual_agent["constraint"] = constraints[all_var[ag]]
         actual_agent["value"] = None
         actual_agent["neighbors"] = {}
         agents_param[agents[ag]] = actual_agent
         for var2 in all_var:
             if var2 != actual_agent["variable"]:
                 actual_agent["neighbors"][var2] = None
-
+        actual_agent["cons_value"] = 0
     return agents_param
 
 
@@ -39,7 +45,10 @@ def init_agents(agents_param,domain):
     for agent in agents_param.values():
         for values in domain.values():
             random_val = r.choice(values)
-            agent["value"]= random_val
+            try:
+                agent["value"]= random_val
+            except:
+                pass
     return agents_param
 
 def send_values(agents_param):
@@ -68,11 +77,54 @@ def collect_values(agents_param, value_mess):
                     agent["neighbors"][neighbor] = value_mess[var]
     return agents_param
 
-agents_param = config_agents(variables, agents)
+
+def calculate_constraint(agents_param,cons_dict,variables):
+    '''
+    Compute the value of the constraint for each variable
+    :param agents_param:
+    :param cons_dict:
+    :param variables:
+    :return:
+    '''
+    var_value = {}
+
+    for agent in agents_param.values():
+        var_value[agent["variable"]] = int(agent["value"])
+
+
+def prepare_formula(constraint_formula, var_value):
+    '''
+    Get the formula of a constraint and change it in order to have an iterable, that can be used with Reverse Polish
+    Notation
+    :param constraint_formula:the formula of the constraint. type : str
+    :param var_value:the variables and all their values. type : dict
+    :return: formula_ready. The formula that can be used with the RVN. type : list
+    '''
+    formula = constraint_formula.split()
+    formula_ready = []
+    operator = ["+", "-", "/", "*"]
+    for element in (formula):
+        try:
+            eval(element)
+            value = float(element)
+        except:
+            if element in operator:
+                opera = element
+                continue
+            else:
+                value = var_value[element]
+        formula_ready.append(value)
+        try:
+            formula_ready.append(opera)
+        except:
+            pass
+    return formula_ready
+agents_param = config_agents(variables, agents,constraints)
 
 agents_param = init_agents(agents_param,domain)
-print(agents_param)
+print("avant collecte : ",agents_param)
 nouvelle = send_values(agents_param)
-print(nouvelle)
+print("valeurs envoyees : ",nouvelle)
 nouv = collect_values(agents_param,nouvelle)
-print(nouv)
+print("après collecte : ",nouv)
+calculate_constraint(agents_param,cons_dict,variables)

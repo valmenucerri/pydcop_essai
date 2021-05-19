@@ -213,7 +213,7 @@ def get_agent(file_list,first_index,variables):
 
 
 
-print(get_data("graph_coloring.yaml"))
+
 
 
 

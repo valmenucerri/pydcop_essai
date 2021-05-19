@@ -16,13 +16,16 @@ variables:
 constraints:
     CA:
       type: extensional
+      variables: vA
       function: vA - vB - vC
     CB:
       type: extensional
+      variables: vB
       function: vB - 2 * vC
 
     CC:
       type: extensional
+      variables: vC
       function: vA + vC 
 
 
