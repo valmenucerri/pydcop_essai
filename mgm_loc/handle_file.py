@@ -1,3 +1,14 @@
+def time_limit(command):
+    '''
+    Get the time limit chosen by the user.
+    :param command: the command line. type : list
+    :return: time_lim: number max of cycles. type : list
+    '''
+    for arg in range(len(command)):
+        if command[arg] == "time":
+            time_lim = float(command[arg+1])
+    return time_lim
+
 def file_name(command):
     '''
     Get the name of the file from the command line

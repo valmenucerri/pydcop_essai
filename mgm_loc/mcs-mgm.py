@@ -33,6 +33,8 @@ def config_agents(variables,agents,constraints):
                 actual_agent["neighbors"][var2] = None
         actual_agent["cons_value"] = 0
         actual_agent["prev_cons_value"] = 0
+        actual_agent["current_LR"] = 0
+        actual_agent["last_LR"] = 0
     return agents_param
 
 
@@ -79,7 +81,7 @@ def collect_values(agents_param, value_mess):
     return agents_param
 
 
-def calculate_constraint(agents_param,cons_dict):
+def calculate_constraint(agents_param,cons_dict,var_value):
     '''
     Compute the value of the constraint for each variable
     :param agents_param: all the agents with their parameters. type : dict
@@ -87,10 +89,7 @@ def calculate_constraint(agents_param,cons_dict):
     :param variables: all the variables with the domain they take their values from. type : dict
     :return: agents_param. All the agents with their parameters and their constraints value. type : dict
     '''
-    var_value = {}
 
-    for agent in agents_param.values():
-        var_value[agent["variable"]] = int(agent["value"])
 
     for agent in agents_param.values():
         if len(agent["constraint"]) != 0:
@@ -156,7 +155,27 @@ def RVN(formula_ready):
     cons_value = pile.pop() #Keep only the final result by popping the last operator
     return cons_value
 
+def get_delta(agent,prev_var_value):
+    '''
+    Compute the value of delta for one agent.
+    :param agent: an agent of the problem. type : dict
+    :return: delta: value of delta. type : float
+    '''
+    agent["prev_cons_value"] = agent["cons_value"]
+    for neighbor in agent["neighbors"]:
+        prev_var_value[neighbor]=float(agent["neighbors"][neighbor])
 
+def get_var_value(agents_param):
+    '''
+    Get the values of each variable, anytime
+    :param agents_param: all the agents with their parameters
+    :return: var_value: values of each variable. type : dict
+    '''
+    var_value = {}
+
+    for agent in agents_param.values():
+        var_value[agent["variable"]] = int(agent["value"])
+    return var_value
 agents_param = config_agents(variables, agents,constraints)
 
 agents_param = init_agents(agents_param,domain)
@@ -164,6 +183,7 @@ nouvelle = send_values(agents_param)
 print("valeurs envoyees : ",nouvelle)
 nouv = collect_values(agents_param,nouvelle)
 print("après collecte : ",nouv)
-print("1 : ",calculate_constraint(agents_param,cons_dict))
-agents_param['a1']["constraint"].append('CB')
-print("2 : ",calculate_constraint(agents_param,cons_dict))
+var_value = get_var_value(agents_param)
+print("1 : ",calculate_constraint(agents_param,cons_dict,var_value))
+
+print("2 : ",calculate_constraint(agents_param,cons_dict,var_value))
