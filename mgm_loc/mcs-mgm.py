@@ -119,6 +119,31 @@ def prepare_formula(constraint_formula, var_value):
         except:
             pass
     return formula_ready
+
+def RVN(formula_ready):
+    '''
+    Use the RVN technic in order to get the value of a constraint, if this constraint depends of other variables.
+    :param formula_ready: the formula that gives the value of the constrait. type : list
+    :return: cons_value: the value of the constraint. type : float
+    '''
+    pile = []
+    for elt in formula_ready:
+        if elt == '+':
+            b, a = pile.pop(), pile.pop()
+            pile.append(a + b)
+        elif elt == '-':
+            b, a = pile.pop(), pile.pop()
+            pile.append(a - b)
+        elif elt == '*':
+            b, a = pile.pop(), pile.pop()
+            pile.append(a * b)
+        elif elt == '/':
+            b, a = pile.pop(), pile.pop()
+            pile.append(a / b)
+        else:
+            pile.append(int(elt))
+    cons_value = pile.pop()
+    return cons_value
 agents_param = config_agents(variables, agents,constraints)
 
 agents_param = init_agents(agents_param,domain)
