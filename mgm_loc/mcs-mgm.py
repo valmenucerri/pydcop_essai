@@ -215,7 +215,7 @@ def compute_LR(agent,domain):
     '''
     Try all the values with the constraint of a variable in order to find the best LR.
     :param: agent: an agent of the problem. type : dict
-    :return: best_LR : the best possible local reduction in cost. type : float
+    :return: best_LR : the best possible local reduction in cost, wit the value associated. type : list
     '''
     each_LR = {}
     var_values = {}
@@ -223,12 +223,34 @@ def compute_LR(agent,domain):
         var_values[neighbor] = float(neigh_val)
 
     for new_value in domain["cost"]:
-        each_LR[new_value] = None
+        var_values[agent["variable"]] = float(new_value)
+        old_cons = float(agent["prev_cons_value"])
+        new_cons = float(calculate_constraint_agent(agent,cons_dict,var_values)["cons_value"])
+        LR = old_cons - new_cons
+        each_LR[new_value] = [LR]
+    value_best_LR = max_dict(each_LR)
+    assoc_LR = each_LR[value_best_LR]
+    best_LR = [assoc_LR,value_best_LR]
+    return best_LR
 
 
 
+def max_dict(dictio):
+    '''
+    Compute the index associated to the max value in a dictionary of iterable.
+    :param dictio: the iterable in which we want to ave the index of the max value. type : dict
+    :return: key: the index of the maximum value. type : str
+    '''
+    values = []
+    for i in dictio.values():
+        values.append(i[0])
 
+    maximum = max(values)
+    for k, val in dictio.items():
+        if maximum == val[0]:
+            key = k
 
+    return key
 
 agents_param = config_agents(variables, agents,constraints)
 
