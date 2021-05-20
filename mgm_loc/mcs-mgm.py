@@ -229,10 +229,37 @@ def compute_LR(agent,domain):
         LR = old_cons - new_cons
         each_LR[new_value] = [LR]
     value_best_LR = max_dict(each_LR)
-    assoc_LR = each_LR[value_best_LR]
+    assoc_LR = each_LR[value_best_LR][0]
     best_LR = [assoc_LR,value_best_LR]
     return best_LR
 
+def all_LR(agents_param):
+    '''
+    Create an iterable with all the best LRs and the value associated, for all variables.
+    :param agents_param: agents_param: all the agents with their parameters. type : dict
+    :return: all_LR: all the LRs with their associated variable and value for this variable. type : dict
+    '''
+    all_LR = {}
+    for agent in agents_param.values():
+        current_var = agent["variable"]
+        current_best_LR = compute_LR(agent,domain)
+        all_LR[current_var] = current_best_LR
+
+    return all_LR
+
+def update_value(agents_param,all_LR):
+    '''
+    Update the value of a variable chosen thanks to its LR.
+    :param agents_param: all the agents with their parameters. type : dict
+    :param all_LR: all the LRs with their associated variable and value for this variable. type : dict
+    :return: agents_param: all the agents with their parameters, and the value updated. type : dict
+    '''
+    key = max_dict(all_LR)
+    for agent in agents_param.values():
+        if agent["variable"] == key:
+            agent["value"] = all_LR[key][1]
+
+    return agents_param
 
 
 def max_dict(dictio):
@@ -243,11 +270,11 @@ def max_dict(dictio):
     '''
     values = []
     for i in dictio.values():
-        values.append(i[0])
+        values.append(float(i[0]))
 
     maximum = max(values)
     for k, val in dictio.items():
-        if maximum == val[0]:
+        if maximum == float(val[0]):
             key = k
 
     return key
@@ -261,5 +288,6 @@ nouv = collect_values(agents_param,nouvelle)
 print("après collecte : ",nouv)
 prev_var_value = get_var_value(agents_param)
 print("1 : ",calculate_constraint(agents_param,cons_dict,prev_var_value))
-for agent in agents_param.values():
-    print(share_constraint(agent,prev_var_value))
+all_lr = all_LR(agents_param)
+print(all_lr)
+print(update_value(agents_param,all_lr))
