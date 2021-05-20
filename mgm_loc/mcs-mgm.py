@@ -207,7 +207,12 @@ def calculate_constraint_agent(agent,cons_dict,var_value):
         agent["cons_value"] = str(value)
     return agents
 
-
+def compute_LR(agent):
+    '''
+    Try all the values with the constraint of a variable in order to find the best LR.
+    :param: agent: an agent of the problem. type : dict
+    :return: best_LR : the best possible local reduction in cost. type : float
+    '''
 
 
 
