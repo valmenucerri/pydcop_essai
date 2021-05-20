@@ -24,7 +24,7 @@ def get_objective(file):
     :param file: name of the file. type : str
     :return: objective: objective min or max. type : str
     '''
-    with open(file,'r') as f:
+    with open(file, 'r') as f:
         objective = None
         for line in f:
             line = line.strip()

@@ -27,14 +27,16 @@ def config_agents(variables,agents,constraints):
         actual_agent["constraint"] = constraints[all_var[ag]]
         actual_agent["value"] = None
         actual_agent["neighbors"] = {}
+        actual_agent["neighbors_LR"] = {}
         agents_param[agents[ag]] = actual_agent
         for var2 in all_var:
             if var2 != actual_agent["variable"]:
                 actual_agent["neighbors"][var2] = None
+                actual_agent["neighbors_LR"][var2] = None
         actual_agent["cons_value"] = 0
         actual_agent["prev_cons_value"] = 0
         actual_agent["current_LR"] = 0
-        actual_agent["last_LR"] = 0
+
     return agents_param
 
 
@@ -157,13 +159,21 @@ def RVN(formula_ready):
 
 def get_delta(agent,prev_var_value):
     '''
-    Compute the value of delta for one agent.
+    Update constraint value if it's necessary
     :param agent: an agent of the problem. type : dict
-    :return: delta: value of delta. type : float
+    :param prev_var_value: values of the variables during previous cycle. type : dict
+    :return: cons_to_send: value of the constraints that have to be transfered, and the recipient. type : dict
     '''
+    cons_to_send = {}
     agent["prev_cons_value"] = agent["cons_value"]
     for neighbor in agent["neighbors"]:
         prev_var_value[neighbor]=float(agent["neighbors"][neighbor])
+        actual_cons = calculate_constraint_agent(agent,cons_dict,prev_var_value)
+        delta = agent["prev_cons_value"] - actual_cons
+        if delta > agent["neighbors_LR"][neighbor]:
+            cons_to_send[neighbor] = agent["constraint"]
+            agent["cons_value"] = 0
+
 
 def get_var_value(agents_param):
     '''
@@ -176,6 +186,31 @@ def get_var_value(agents_param):
     for agent in agents_param.values():
         var_value[agent["variable"]] = int(agent["value"])
     return var_value
+
+def calculate_constraint_agent(agent,cons_dict,var_value):
+    '''
+    Compute the value of the constraint for each variable
+    :param agents_param: all the agents with their parameters. type : dict
+    :param cons_dict: formula of all the constraints. type : dict
+    :param variables: all the variables with the domain they take their values from. type : dict
+    :return: agents_param. All the agents with their parameters and their constraints value. type : dict
+    '''
+
+    if len(agent["constraint"]) != 0:
+        for i in range (len(agent["constraint"])):
+            value = float(agent["cons_value"])
+            constraint = agent["constraint"][i]
+            constraint_formula = cons_dict[constraint][0]
+            formula = prepare_formula(constraint_formula, var_value)
+            value += RVN(formula)
+        agent["cons_value"] = str(value)
+    return agents
+
+
+
+
+
+
 agents_param = config_agents(variables, agents,constraints)
 
 agents_param = init_agents(agents_param,domain)
