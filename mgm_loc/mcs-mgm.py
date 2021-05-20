@@ -157,12 +157,13 @@ def RVN(formula_ready):
     cons_value = pile.pop() #Keep only the final result by popping the last operator
     return cons_value
 
-def get_delta(agent,prev_var_value):
+def share_constraint(agent,prev_var_value):
     '''
     Update constraint value if it's necessary
     :param agent: an agent of the problem. type : dict
     :param prev_var_value: values of the variables during previous cycle. type : dict
     :return: cons_to_send: value of the constraints that have to be transfered, and the recipient. type : dict
+    :return: agent: an agent of the problem, with his constraint updated
     '''
     cons_to_send = {}
     agent["prev_cons_value"] = agent["cons_value"]
@@ -173,7 +174,7 @@ def get_delta(agent,prev_var_value):
         if delta > agent["neighbors_LR"][neighbor]:
             cons_to_send[neighbor] = agent["constraint"]
             agent["cons_value"] = 0
-
+    return agent, cons_to_send
 
 def get_var_value(agents_param):
     '''
