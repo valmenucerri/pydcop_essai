@@ -167,13 +167,17 @@ def share_constraint(agent,prev_var_value):
     '''
     cons_to_send = {}
     agent["prev_cons_value"] = agent["cons_value"]
+    cond = False
     for neighbor in agent["neighbors"]:
         prev_var_value[neighbor]=float(agent["neighbors"][neighbor])
         actual_cons = calculate_constraint_agent(agent,cons_dict,prev_var_value)
-        delta = agent["prev_cons_value"] - actual_cons
-        if delta > agent["neighbors_LR"][neighbor]:
+        delta = float(agent["prev_cons_value"]) - float(actual_cons["cons_value"])
+        if delta > 0:
+            cond = True
             cons_to_send[neighbor] = agent["constraint"]
-            agent["cons_value"] = 0
+
+    if cond:
+        agent["cons_value"] = 0
     return agent, cons_to_send
 
 def get_var_value(agents_param):
@@ -205,14 +209,23 @@ def calculate_constraint_agent(agent,cons_dict,var_value):
             formula = prepare_formula(constraint_formula, var_value)
             value += RVN(formula)
         agent["cons_value"] = str(value)
-    return agents
+    return agent
 
-def compute_LR(agent):
+def compute_LR(agent,domain):
     '''
     Try all the values with the constraint of a variable in order to find the best LR.
     :param: agent: an agent of the problem. type : dict
     :return: best_LR : the best possible local reduction in cost. type : float
     '''
+    each_LR = {}
+    var_values = {}
+    for neighbor,neigh_val in agent["neighbors"].items():
+        var_values[neighbor] = float(neigh_val)
+
+    for new_value in domain["cost"]:
+        each_LR[new_value] = None
+
+
 
 
 
@@ -224,7 +237,7 @@ nouvelle = send_values(agents_param)
 print("valeurs envoyees : ",nouvelle)
 nouv = collect_values(agents_param,nouvelle)
 print("après collecte : ",nouv)
-var_value = get_var_value(agents_param)
-print("1 : ",calculate_constraint(agents_param,cons_dict,var_value))
-
-print("2 : ",calculate_constraint(agents_param,cons_dict,var_value))
+prev_var_value = get_var_value(agents_param)
+print("1 : ",calculate_constraint(agents_param,cons_dict,prev_var_value))
+for agent in agents_param.values():
+    print(share_constraint(agent,prev_var_value))
