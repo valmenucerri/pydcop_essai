@@ -95,8 +95,8 @@ def calculate_constraint(agents_param,cons_dict,var_value):
 
     for agent in agents_param.values():
         if len(agent["constraint"]) != 0:
+            value = 0
             for i in range (len(agent["constraint"])):
-                value = float(agent["cons_value"])
                 constraint = agent["constraint"][i]
                 constraint_formula = cons_dict[constraint][0]
                 formula = prepare_formula(constraint_formula, var_value)
@@ -202,8 +202,8 @@ def calculate_constraint_agent(agent,cons_dict,var_value):
     '''
 
     if len(agent["constraint"]) != 0:
+        value = 0
         for i in range (len(agent["constraint"])):
-            value = float(agent["cons_value"])
             constraint = agent["constraint"][i]
             constraint_formula = cons_dict[constraint][0]
             formula = prepare_formula(constraint_formula, var_value)

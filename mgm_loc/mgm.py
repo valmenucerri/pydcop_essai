@@ -14,6 +14,8 @@ while nbr_cycle < time_limit:
     agents_param = hp.collect_values(agents_param,value_mess)
     all_LR = hp.all_LR(agents_param)
     agents_param = hp.update_value(agents_param,all_LR)
+    var_value = hp.get_var_value(agents_param)
+    agents_param = hp.calculate_constraint(agents_param,cons_dict,var_value)
     nbr_cycle += 1
 
 hp.show_result(agents_param,file)
