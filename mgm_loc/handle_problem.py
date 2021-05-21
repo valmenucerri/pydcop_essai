@@ -58,7 +58,7 @@ def init_agents(agents_param,domain):
 
 def send_values(agents_param):
     '''
-    Create an iterable and put the new values of the variable inside.
+    Create an iterable (a message) and put the new values of the variable inside.
     :param agents_param: all the agents with their parameters. type : dict
     :return: value_mess: all the new values of the variables. type : dict
     '''
@@ -70,7 +70,7 @@ def send_values(agents_param):
 
 def collect_values(agents_param, value_mess):
     '''
-    Indicate to each agent his variable's neighbor's value.
+    Indicate to each agent his neighbors' variable's value.
     :param agents_param: all the agents with their parameters. type : dict
     :param value_mess: all the values that the agents have sent. type : dict
     :return: agents_param: all the agents with their parameters and their neighbors new values. type : dict
@@ -279,15 +279,25 @@ def max_dict(dictio):
 
     return key
 
-agents_param = config_agents(variables, agents,constraints)
+def show_result(agents_param,file):
+    '''
+    how the results; with the value of each variable and the constraints cost for each variable
+    :param agents_param: all the agents with the final parameters. type : dict
+    :return: None
+    '''
+    with open("Results/{}_results".format(file.strip(".yaml")),'w') as f:
+        f.write("Assignments :"+"\n")
+        for agent in agents_param.values():
+            f.write(agent["variable"]+" : "+ str(agent["value"])+"\n")
+        f.write("\n")
+        f.write("Costs :"+"\n")
+        for agent in agents_param.values():
+            f.write(agent["variable"]+" : "+str(agent["cons_value"])+"\n")
+        f.write("\n")
+        f.write("Total cost : ")
+        cost = 0
+        for agent in agents_param.values():
+            cost += float(agent["cons_value"])
+        f.write(str(cost))
 
-agents_param = init_agents(agents_param,domain)
-nouvelle = send_values(agents_param)
-print("valeurs envoyees : ",nouvelle)
-nouv = collect_values(agents_param,nouvelle)
-print("après collecte : ",nouv)
-prev_var_value = get_var_value(agents_param)
-print("1 : ",calculate_constraint(agents_param,cons_dict,prev_var_value))
-all_lr = all_LR(agents_param)
-print(all_lr)
-print(update_value(agents_param,all_lr))
+
