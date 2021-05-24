@@ -35,7 +35,7 @@ def config_agents(variables,agents,constraints):
                 actual_agent["neighbors_LR"][var2] = None
         actual_agent["cons_value"] = 0
         actual_agent["prev_cons_value"] = 0
-        actual_agent["current_LR"] = 0
+        actual_agent["current_LR"] = None
 
     return agents_param
 
@@ -157,7 +157,7 @@ def RVN(formula_ready):
     cons_value = pile.pop() #Keep only the final result by popping the last operator
     return cons_value
 
-def share_constraint(agent,prev_var_value):
+def share_constraint_2(agent,prev_var_value):
     '''
     Update constraint value if it's necessary
     :param agent: an agent of the problem. type : dict
@@ -179,6 +179,47 @@ def share_constraint(agent,prev_var_value):
     if cond:
         agent["cons_value"] = 0
     return agent, cons_to_send
+
+def share_constraint_1(agent,prev_var_value):
+    '''
+    Update constraint value if it's necessary
+    :param agent: an agent of the problem. type : dict
+    :param prev_var_value: values of the variables during previous cycle. type : dict
+    :return: cons_to_send: value of the constraints that have to be transfered, and the recipient. type : dict
+    :return: agent: an agent of the problem, with his constraint updated
+    '''
+    cons_to_send = {}
+    agent["prev_cons_value"] = agent["cons_value"]
+    cond = False
+    for neighbor in agent["neighbors"]:
+        prev_var_value[neighbor]=float(agent["neighbors"][neighbor])
+        actual_cons = calculate_constraint_agent(agent,cons_dict,prev_var_value)
+        delta = float(agent["prev_cons_value"]) - float(actual_cons["cons_value"])
+        try :
+            if delta > float(agent["neighbors_LR"][neighbor]):
+                cond = True
+                cons_to_send[neighbor] = agent["constraint"]
+        except:
+            pass
+
+    if cond:
+        agent["cons_value"] = 0
+    return agent, cons_to_send
+
+def distrib_cons(cons_to_send,agents_param):
+    '''
+    Update constraints for each variable by distributing constraints that must be transferred
+    :param cons_to_send: the constraints that must be transferred. type : dict
+    :param agents_param: all the agents with their parameters. type : dict
+    :return: agents_param: all the agents with their parameters and the constraits updated. type : dict
+    '''
+    for agent in agents_param.values():
+        for var,cons in cons_to_send.items():
+            if var == agent["variable"]:
+                for i in range (len(cons_to_send[var])):
+                    agent["constraint"].append(cons[i])
+
+    return agents_param
 
 def get_var_value(agents_param):
     '''
@@ -215,7 +256,7 @@ def compute_LR(agent,domain):
     '''
     Try all the values with the constraint of a variable in order to find the best LR.
     :param: agent: an agent of the problem. type : dict
-    :return: best_LR : the best possible local reduction in cost, wit the value associated. type : list
+    :return: best_LR : the best possible local reduction in cost, with the value associated. type : list
     '''
     each_LR = {}
     var_values = {}
@@ -231,6 +272,7 @@ def compute_LR(agent,domain):
     value_best_LR = max_dict(each_LR)
     assoc_LR = each_LR[value_best_LR][0]
     best_LR = [assoc_LR,value_best_LR]
+    agent["current_LR"] = float(assoc_LR)
     return best_LR
 
 def all_LR(agents_param):
@@ -246,6 +288,21 @@ def all_LR(agents_param):
         all_LR[current_var] = current_best_LR
 
     return all_LR
+
+def collect_LR(agents_param, all_LR):
+    '''
+    Indicate to each agent his neighbors' LR's value.
+    :param agents_param: all the agents with their parameters. type : dict
+    :param all_LR: all the LRs that the agents have sent. type : dict
+    :return: all the agents with their parameters and their neighbors LRs. type : dict
+    '''
+
+    for agent in agents_param.values():
+        for neighbor in agent["neighbors_LR"]:
+            for var in all_LR:
+                if neighbor == var:
+                    agent["neighbors_LR"][neighbor] = all_LR[var][0]
+    return agents_param
 
 def update_value(agents_param,all_LR):
     '''
