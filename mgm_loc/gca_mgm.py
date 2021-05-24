@@ -19,6 +19,7 @@ def launch_prog():
     var_value = hp.get_var_value(agents_param)
     nbr_cycle = 0
     prev_var_value = None
+    print(nbr_cycle)
     while nbr_cycle < time_limit:
         value_mess = hp.send_values(agents_param)
         agents_param = hp.collect_values(agents_param, value_mess)  # collect values pf the neighbors
@@ -26,7 +27,7 @@ def launch_prog():
 
         for agent, param in agents_param.items():  # Here's the new part, that makes the difference between MGM and MCS-MGM
             if param["current_LR"] is not None:
-                new_agent, cons_to_transfer = hp.share_constraint_1(param, prev_var_value)
+                new_agent, cons_to_transfer = hp.share_constraint_2(param, prev_var_value)
                 agents_param[agent] = new_agent
                 cons_to_send.update(cons_to_transfer)
 

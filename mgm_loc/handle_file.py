@@ -1,3 +1,11 @@
+def get_algo(command):
+    '''
+    Get the name of the algorithm that the user wants to use
+    :param command: the command line. type : list
+    :return: algo: the algorithm's name. type : str
+    '''
+    algo = command[1]
+    return algo
 def time_limit(command):
     '''
     Get the time limit chosen by the user.

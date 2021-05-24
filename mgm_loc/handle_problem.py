@@ -206,7 +206,7 @@ def share_constraint_1(agent,prev_var_value):
         agent["cons_value"] = 0
     return agent, cons_to_send
 
-def distrib_cons(cons_to_send,agents_param):
+def update_cons(cons_to_send,agents_param):
     '''
     Update constraints for each variable by distributing constraints that must be transferred
     :param cons_to_send: the constraints that must be transferred. type : dict
@@ -336,13 +336,13 @@ def max_dict(dictio):
 
     return key
 
-def show_result(agents_param,file):
+def show_result(agents_param,file,algo):
     '''
     how the results; with the value of each variable and the constraints cost for each variable
     :param agents_param: all the agents with the final parameters. type : dict
     :return: None
     '''
-    with open("Results/{}_results".format(file.strip(".yaml")),'w') as f:
+    with open("Results/{}_results_{}.yaml".format(file.strip(".yaml"),algo.strip(".py")),'w') as f:
         f.write("Assignments :"+"\n")
         for agent in agents_param.values():
             f.write(agent["variable"]+" : "+ str(agent["value"])+"\n")
