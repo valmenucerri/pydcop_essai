@@ -228,11 +228,12 @@ def share_constraint_1(agent,prev_var_value):
     :return: agent: an agent of the problem, with his constraint updated
     '''
     cons_to_send = {}
-    agent["prev_cons_value"] = agent["cons_value"]
     cond = False
     for neighbor in agent["neighbors"]:
         prev_var_value[neighbor]=float(agent["neighbors"][neighbor])
         actual_cons = calculate_constraint_agent(agent,cons_dict,prev_var_value)
+        prev_value = agent["prev_cons_value"]
+        next_value = actual_cons["cons_value"]
         delta = float(agent["prev_cons_value"]) - float(actual_cons["cons_value"])
         try :
             if delta > float(agent["neighbors_LR"][neighbor]):
@@ -256,7 +257,8 @@ def update_cons(cons_to_send,agents_param):
         for var,cons in cons_to_send.items():
             if var == agent["variable"]:
                 for i in range (len(cons_to_send[var])):
-                    agent["constraint"].append(cons[i])
+                    if cons[i] not in agent["constraint"]:
+                        agent["constraint"].append(cons[i])
 
     return agents_param
 
@@ -300,6 +302,7 @@ def compute_LR(agent,domain):
 
     each_LR = {}
     var_values = {}
+    cons_init = agent["cons_value"]
     for neighbor,neigh_val in agent["neighbors"].items():
         var_values[neighbor] = float(neigh_val)
     old_cons = float(agent["prev_cons_value"])
@@ -308,14 +311,11 @@ def compute_LR(agent,domain):
         new_cons = float(calculate_constraint_agent(agent,cons_dict,var_values)["cons_value"])
         LR = old_cons - new_cons
         each_LR[new_value] = [LR]
-    if agent["variable"] == "vC":
-        print(agent["constraint"])
-        print(old_cons)
-        print(each_LR)
     value_best_LR = max_dict(each_LR)
     assoc_LR = each_LR[value_best_LR][0]
     best_LR = [assoc_LR,value_best_LR]
     agent["current_LR"] = float(assoc_LR)
+    agent["cons_value"] = cons_init
     return best_LR
 
 def all_LR(agents_param):

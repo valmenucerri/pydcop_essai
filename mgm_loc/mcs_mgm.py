@@ -20,6 +20,8 @@ print(var_value)
 cost = 0
 hp.calculate_constraint_init(agents_param,cons_dict,var_value)
 for agent in agents_param.values():
+    print(agent["cons_value"])
+for agent in agents_param.values():
     cost += float(agent["cons_value"])
 nbr_cycle = 0
 print(cost)
