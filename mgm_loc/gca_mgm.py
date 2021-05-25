@@ -19,7 +19,7 @@ def launch_prog():
     var_value = hp.get_var_value(agents_param)
     nbr_cycle = 0
     prev_var_value = None
-    print(nbr_cycle)
+
     while nbr_cycle < time_limit:
         value_mess = hp.send_values(agents_param)
         agents_param = hp.collect_values(agents_param, value_mess)  # collect values pf the neighbors

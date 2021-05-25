@@ -39,6 +39,21 @@ def config_agents(variables,agents,constraints):
 
     return agents_param
 
+def init_agents_contr(agents_param,domain):
+    '''
+    Initialize the algorithm, assigning one random value per variable
+    :param agents_param:  all the agents with their parameters (variable, var value, neighbors). type : dict
+    :param domain: all the values in the domain for this problem
+    :return: agents_param:  all the agents with their parameters, and a random value. type : dict
+    '''
+    for agent in agents_param.values():
+        if agent["variable"] == "vA":
+            agent["value"] = str(0)
+        if agent["variable"] == "vB":
+            agent["value"] = str(0)
+        if agent["variable"] == "vC":
+            agent["value"] = str(1)
+    return agents_param
 
 def init_agents(agents_param,domain):
     '''
@@ -82,7 +97,6 @@ def collect_values(agents_param, value_mess):
                     agent["neighbors"][neighbor] = value_mess[var]
     return agents_param
 
-
 def calculate_constraint(agents_param,cons_dict,var_value):
     '''
     Compute the value of the constraint for each variable
@@ -101,7 +115,30 @@ def calculate_constraint(agents_param,cons_dict,var_value):
                 constraint_formula = cons_dict[constraint][0]
                 formula = prepare_formula(constraint_formula, var_value)
                 value += RVN(formula)
+            agent["prev_cons_value"]= agent["cons_value"]
             agent["cons_value"] = str(value)
+    return agents_param
+
+def calculate_constraint_init(agents_param,cons_dict,var_value):
+    '''
+    Compute the value of the constraint for each variable
+    :param agents_param: all the agents with their parameters. type : dict
+    :param cons_dict: formula of all the constraints. type : dict
+    :param variables: all the variables with the domain they take their values from. type : dict
+    :return: agents_param. All the agents with their parameters and their constraints value. type : dict
+    '''
+
+
+    for agent in agents_param.values():
+        if len(agent["constraint"]) != 0:
+            value = 0
+            for i in range (len(agent["constraint"])):
+                constraint = agent["constraint"][i]
+                constraint_formula = cons_dict[constraint][0]
+                formula = prepare_formula(constraint_formula, var_value)
+                value += RVN(formula)
+            agent["cons_value"] = str(value)
+            agent["prev_cons_value"] = str(value)
     return agents_param
 
 def prepare_formula(constraint_formula, var_value):
@@ -258,17 +295,21 @@ def compute_LR(agent,domain):
     :param: agent: an agent of the problem. type : dict
     :return: best_LR : the best possible local reduction in cost, with the value associated. type : list
     '''
+
     each_LR = {}
     var_values = {}
     for neighbor,neigh_val in agent["neighbors"].items():
         var_values[neighbor] = float(neigh_val)
-
+    old_cons = float(agent["prev_cons_value"])
     for new_value in domain["cost"]:
         var_values[agent["variable"]] = float(new_value)
-        old_cons = float(agent["prev_cons_value"])
         new_cons = float(calculate_constraint_agent(agent,cons_dict,var_values)["cons_value"])
         LR = old_cons - new_cons
         each_LR[new_value] = [LR]
+    if agent["variable"] == "vC":
+        print(agent["constraint"])
+        print(old_cons)
+        print(each_LR)
     value_best_LR = max_dict(each_LR)
     assoc_LR = each_LR[value_best_LR][0]
     best_LR = [assoc_LR,value_best_LR]
@@ -357,4 +398,21 @@ def show_result(agents_param,file,algo):
             cost += float(agent["cons_value"])
         f.write(str(cost))
 
+def result_final(agents_param,cons_dict,var_value,constraint):
+    """
+    Compute the final result with only the constraints given in the initialization part
+    :param agents_param:
+    :param cons_dict:
+    :param var_value:
+    :param constraint:
+    :return:
+    """
+    final_cost = {}
 
+    for var,cons in constraint.items():
+
+        constraint_formula = cons_dict[cons[0]][0]
+        formula = prepare_formula(constraint_formula, var_value)
+        final_cost[var] = str(RVN(formula))
+
+    return final_cost
