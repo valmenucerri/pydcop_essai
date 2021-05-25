@@ -6,4 +6,5 @@ operator = ["+", "-", "/", "*"]
 var = []
 for i in range(N):
     var.append("var{}".format(i))
-with open
+with open("graph_exemple_{}".format(str(nbr_var)),'w'):
+    pass

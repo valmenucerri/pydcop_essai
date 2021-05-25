@@ -1,4 +1,4 @@
-ligne ="main.py mcs_mgm time 5  graph_exemple.yaml"
+ligne ="main.py mcs_mgm time 10  graph_exemple.yaml"
 command = ligne.split()
 
 
@@ -16,15 +16,15 @@ agents_param = hp.config_agents(variables, agents, constraints)  # Initialize ea
 #agents_param = hp.init_agents(agents_param, domain)
 agents_param = hp.init_agents_contr(agents_param, domain)
 var_value = hp.get_var_value(agents_param)
-print(var_value)
-cost = 0
+#print(var_value)
+#cost = 0
 hp.calculate_constraint_init(agents_param,cons_dict,var_value)
-for agent in agents_param.values():
-    print(agent["cons_value"])
-for agent in agents_param.values():
-    cost += float(agent["cons_value"])
+#for agent in agents_param.values():
+ #   print(agent["cons_value"])
+#for agent in agents_param.values():
+   # cost += float(agent["cons_value"])
 nbr_cycle = 0
-print(cost)
+#print(cost)
 prev_var_value = None
 while nbr_cycle < time_limit:
     value_mess = hp.send_values(agents_param)
@@ -46,13 +46,11 @@ while nbr_cycle < time_limit:
     agents_param = hp.calculate_constraint(agents_param, cons_dict, var_value)  # Calculate the new constraints values
     nbr_cycle += 1
 
-hp.show_result(agents_param, file,algo)  # Create the file with the results written on it
-final_result = hp.result_final(agents_param,cons_dict,var_value,constraints)
-print(final_result)
-tot = 0
-for val in final_result.values():
-    tot += float(val)
-print("total final : ", tot)
+final_result = hp.result_final(cons_dict,var_value,constraints)
+
+
+
+hp.show_result(agents_param, file,algo,final_result)  # Create the file with the results written on it
 """def launch_prog():
     Launch the program
     :return: None

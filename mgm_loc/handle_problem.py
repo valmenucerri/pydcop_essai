@@ -50,11 +50,11 @@ def init_agents_contr(agents_param,domain):
     '''
     for agent in agents_param.values():
         if agent["variable"] == "vA":
-            agent["value"] = str(0)
+            agent["value"] = str(2)
         if agent["variable"] == "vB":
-            agent["value"] = str(0)
+            agent["value"] = str(2)
         if agent["variable"] == "vC":
-            agent["value"] = str(1)
+            agent["value"] = str(0)
     return agents_param
 
 def init_agents(agents_param,domain):
@@ -229,12 +229,14 @@ def share_constraint_1(agent,prev_var_value):
     '''
     cons_to_send = {}
     cond = False
+    agent2 = agent.copy()
     for neighbor in agent["neighbors"]:
         prev_var_value[neighbor]=float(agent["neighbors"][neighbor])
-        actual_cons = calculate_constraint_agent(agent,cons_dict,prev_var_value)
+        actual_cons = calculate_constraint_agent(agent2,cons_dict,prev_var_value)
         prev_value = agent["prev_cons_value"]
         next_value = actual_cons["cons_value"]
         delta = float(agent["prev_cons_value"]) - float(actual_cons["cons_value"])
+        delta = abs(delta)
         try :
             if delta > float(agent["neighbors_LR"][neighbor]):
                 cond = True
@@ -379,7 +381,7 @@ def max_dict(dictio):
 
     return key
 
-def show_result(agents_param,file,algo):
+def show_result(agents_param,file,algo,final_result):
     '''
     how the results; with the value of each variable and the constraints cost for each variable
     :param agents_param: all the agents with the final parameters. type : dict
@@ -391,16 +393,16 @@ def show_result(agents_param,file,algo):
             f.write(agent["variable"]+" : "+ str(agent["value"])+"\n")
         f.write("\n")
         f.write("Costs :"+"\n")
-        for agent in agents_param.values():
-            f.write(agent["variable"]+" : "+str(agent["cons_value"])+"\n")
+        for var,cons_val in final_result.items():
+            f.write(var+" : "+str(cons_val)+"\n")
         f.write("\n")
         f.write("Total cost : ")
         cost = 0
-        for agent in agents_param.values():
-            cost += float(agent["cons_value"])
+        for val in final_result.values():
+            cost += float(val)
         f.write(str(cost))
 
-def result_final(agents_param,cons_dict,var_value,constraint):
+def result_final(cons_dict,var_value,constraint):
     """
     Compute the final result with only the constraints given in the initialization part
     :param agents_param:
