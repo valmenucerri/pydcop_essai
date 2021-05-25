@@ -233,8 +233,6 @@ def share_constraint_1(agent,prev_var_value):
     for neighbor in agent["neighbors"]:
         prev_var_value[neighbor]=float(agent["neighbors"][neighbor])
         actual_cons = calculate_constraint_agent(agent2,cons_dict,prev_var_value)
-        prev_value = agent["prev_cons_value"]
-        next_value = actual_cons["cons_value"]
         delta = float(agent["prev_cons_value"]) - float(actual_cons["cons_value"])
         delta = abs(delta)
         try :
@@ -258,7 +256,7 @@ def update_cons(cons_to_send,agents_param):
     for agent in agents_param.values():
         for var,cons in cons_to_send.items():
             if var == agent["variable"]:
-                for i in range (len(cons_to_send[var])):
+                for i in range (len(cons)):
                     if cons[i] not in agent["constraint"]:
                         agent["constraint"].append(cons[i])
 
@@ -381,7 +379,7 @@ def max_dict(dictio):
 
     return key
 
-def show_result(agents_param,file,algo,final_result):
+def show_result(agents_param,file,algo,final_result,cost_init):
     '''
     how the results; with the value of each variable and the constraints cost for each variable
     :param agents_param: all the agents with the final parameters. type : dict
@@ -396,11 +394,12 @@ def show_result(agents_param,file,algo,final_result):
         for var,cons_val in final_result.items():
             f.write(var+" : "+str(cons_val)+"\n")
         f.write("\n")
-        f.write("Total cost : ")
+        f.write("Final cost : ")
         cost = 0
         for val in final_result.values():
             cost += float(val)
-        f.write(str(cost))
+        f.write(str(cost)+"\n")
+        f.write("Initial cost : "+str(cost_init))
 
 def result_final(cons_dict,var_value,constraint):
     """
