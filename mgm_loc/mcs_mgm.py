@@ -1,12 +1,16 @@
-import handle_file as hf
-import handle_problem as hp
 ligne ="main.py mcs_mgm time 5  graph_exemple.yaml"
 command = ligne.split()
+
+
+
+import handle_file as hf
+import handle_problem as hp
+
 algo = hf.get_algo(command)
 file = hf.file_name(command)
 domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(
     file)  # Initialize the parameters of the problem
-time_limit = hf.time_limit(sys.argv)
+time_limit = hf.time_limit(command)
 
 agents_param = hp.config_agents(variables, agents, constraints)  # Initialize each agent
 #agents_param = hp.init_agents(agents_param, domain)
