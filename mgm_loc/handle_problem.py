@@ -1,18 +1,19 @@
 import handle_file as hf
 import sys
 import random as r
-ligne ="main.py mcs_mgm time 5  graph_exemple.yaml"
+
+ligne = "main.py mcs_mgm time 5  graph_exemple.yaml"
 command = ligne.split()
 file = hf.file_name(command)
-domain, variables , constraints , cons_dict , cons_for_var , agents= hf.get_data(file)
-print("domain :",domain)
-print("variables : ",variables)
-print("constraints :",constraints)
-print("cons_dict : ",cons_dict)
-print("cons_for_var : ",cons_for_var)
+domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(file)
+print("domain :", domain)
+print("variables : ", variables)
+print("constraints :", constraints)
+print("cons_dict : ", cons_dict)
+print("cons_for_var : ", cons_for_var)
 
 
-def config_agents(variables,agents,constraints):
+def config_agents(variables, agents, constraints):
     '''
     Create a dictionary with all the details for each agent.
     :param variables: all the variables of the file, with their domain. type : dict
@@ -41,7 +42,8 @@ def config_agents(variables,agents,constraints):
 
     return agents_param
 
-def init_agents_contr(agents_param,domain):
+
+def init_agents_contr(agents_param, domain):
     '''
     Initialize the algorithm, assigning one random value per variable
     :param agents_param:  all the agents with their parameters (variable, var value, neighbors). type : dict
@@ -57,7 +59,8 @@ def init_agents_contr(agents_param,domain):
             agent["value"] = str(0)
     return agents_param
 
-def init_agents(agents_param,domain):
+
+def init_agents(agents_param, domain):
     '''
     Initialize the algorithm, assigning one random value per variable
     :param agents_param:  all the agents with their parameters (variable, var value, neighbors). type : dict
@@ -68,10 +71,11 @@ def init_agents(agents_param,domain):
         for values in domain.values():
             random_val = r.choice(values)
             try:
-                agent["value"]= random_val
+                agent["value"] = random_val
             except:
                 pass
     return agents_param
+
 
 def send_values(agents_param):
     '''
@@ -84,6 +88,7 @@ def send_values(agents_param):
         value_mess[agent["variable"]] = agent["value"]
 
     return value_mess
+
 
 def collect_values(agents_param, value_mess):
     '''
@@ -99,7 +104,8 @@ def collect_values(agents_param, value_mess):
                     agent["neighbors"][neighbor] = value_mess[var]
     return agents_param
 
-def calculate_constraint(agents_param,cons_dict,var_value):
+
+def calculate_constraint(agents_param, cons_dict, var_value):
     '''
     Compute the value of the constraint for each variable
     :param agents_param: all the agents with their parameters. type : dict
@@ -108,20 +114,20 @@ def calculate_constraint(agents_param,cons_dict,var_value):
     :return: agents_param. All the agents with their parameters and their constraints value. type : dict
     '''
 
-
     for agent in agents_param.values():
         if len(agent["constraint"]) != 0:
             value = 0
-            for i in range (len(agent["constraint"])):
+            for i in range(len(agent["constraint"])):
                 constraint = agent["constraint"][i]
                 constraint_formula = cons_dict[constraint][0]
                 formula = prepare_formula(constraint_formula, var_value)
                 value += RVN(formula)
-            agent["prev_cons_value"]= agent["cons_value"]
+            agent["prev_cons_value"] = agent["cons_value"]
             agent["cons_value"] = str(value)
     return agents_param
 
-def calculate_constraint_init(agents_param,cons_dict,var_value):
+
+def calculate_constraint_init(agents_param, cons_dict, var_value):
     '''
     Compute the value of the constraint for each variable
     :param agents_param: all the agents with their parameters. type : dict
@@ -130,11 +136,10 @@ def calculate_constraint_init(agents_param,cons_dict,var_value):
     :return: agents_param. All the agents with their parameters and their constraints value. type : dict
     '''
 
-
     for agent in agents_param.values():
         if len(agent["constraint"]) != 0:
             value = 0
-            for i in range (len(agent["constraint"])):
+            for i in range(len(agent["constraint"])):
                 constraint = agent["constraint"][i]
                 constraint_formula = cons_dict[constraint][0]
                 formula = prepare_formula(constraint_formula, var_value)
@@ -142,6 +147,7 @@ def calculate_constraint_init(agents_param,cons_dict,var_value):
             agent["cons_value"] = str(value)
             agent["prev_cons_value"] = str(value)
     return agents_param
+
 
 def prepare_formula(constraint_formula, var_value):
     '''
@@ -171,6 +177,7 @@ def prepare_formula(constraint_formula, var_value):
             pass
     return formula_ready
 
+
 def RVN(formula_ready):
     '''
     Use the RVN technic in order to get the value of a constraint, if this constraint depends of other variables.
@@ -193,10 +200,11 @@ def RVN(formula_ready):
             pile.append(a / b)
         else:
             pile.append(int(elt))
-    cons_value = pile.pop() #Keep only the final result by popping the last operator
+    cons_value = pile.pop()  # Keep only the final result by popping the last operator
     return cons_value
 
-def share_constraint_2(agent,prev_var_value):
+
+def share_constraint_2(agent, prev_var_value):
     '''
     Update constraint value if it's necessary
     :param agent: an agent of the problem. type : dict
@@ -208,8 +216,8 @@ def share_constraint_2(agent,prev_var_value):
     agent["prev_cons_value"] = agent["cons_value"]
     cond = False
     for neighbor in agent["neighbors"]:
-        prev_var_value[neighbor]=float(agent["neighbors"][neighbor])
-        actual_cons = calculate_constraint_agent(agent,cons_dict,prev_var_value)
+        prev_var_value[neighbor] = float(agent["neighbors"][neighbor])
+        actual_cons = calculate_constraint_agent(agent, cons_dict, prev_var_value)
         delta = float(agent["prev_cons_value"]) - float(actual_cons["cons_value"])
         if delta > 0:
             cond = True
@@ -219,7 +227,8 @@ def share_constraint_2(agent,prev_var_value):
         agent["cons_value"] = 0
     return agent, cons_to_send
 
-def share_constraint_1(agent,prev_var_value):
+
+def share_constraint_1(agent, prev_var_value):
     '''
     Update constraint value if it's necessary
     :param agent: an agent of the problem. type : dict
@@ -231,11 +240,10 @@ def share_constraint_1(agent,prev_var_value):
     cond = False
     agent2 = agent.copy()
     for neighbor in agent["neighbors"]:
-        prev_var_value[neighbor]=float(agent["neighbors"][neighbor])
-        actual_cons = calculate_constraint_agent(agent2,cons_dict,prev_var_value)
+        prev_var_value[neighbor] = float(agent["neighbors"][neighbor])
+        actual_cons = calculate_constraint_agent(agent2, cons_dict, prev_var_value)
         delta = float(agent["prev_cons_value"]) - float(actual_cons["cons_value"])
-        delta = abs(delta)
-        try :
+        try:
             if delta > float(agent["neighbors_LR"][neighbor]):
                 cond = True
                 cons_to_send[neighbor] = agent["constraint"]
@@ -246,7 +254,8 @@ def share_constraint_1(agent,prev_var_value):
         agent["cons_value"] = 0
     return agent, cons_to_send
 
-def update_cons(cons_to_send,agents_param):
+
+def update_cons(cons_to_send, agents_param):
     '''
     Update constraints for each variable by distributing constraints that must be transferred
     :param cons_to_send: the constraints that must be transferred. type : dict
@@ -254,13 +263,14 @@ def update_cons(cons_to_send,agents_param):
     :return: agents_param: all the agents with their parameters and the constraits updated. type : dict
     '''
     for agent in agents_param.values():
-        for var,cons in cons_to_send.items():
+        for var, cons in cons_to_send.items():
             if var == agent["variable"]:
-                for i in range (len(cons)):
+                for i in range(len(cons)):
                     if cons[i] not in agent["constraint"]:
                         agent["constraint"].append(cons[i])
 
     return agents_param
+
 
 def get_var_value(agents_param):
     '''
@@ -274,7 +284,8 @@ def get_var_value(agents_param):
         var_value[agent["variable"]] = int(agent["value"])
     return var_value
 
-def calculate_constraint_agent(agent,cons_dict,var_value):
+
+def calculate_constraint_agent(agent, cons_dict, var_value):
     '''
     Compute the value of the constraint for each variable
     :param agents_param: all the agents with their parameters. type : dict
@@ -285,7 +296,7 @@ def calculate_constraint_agent(agent,cons_dict,var_value):
 
     if len(agent["constraint"]) != 0:
         value = 0
-        for i in range (len(agent["constraint"])):
+        for i in range(len(agent["constraint"])):
             constraint = agent["constraint"][i]
             constraint_formula = cons_dict[constraint][0]
             formula = prepare_formula(constraint_formula, var_value)
@@ -293,7 +304,8 @@ def calculate_constraint_agent(agent,cons_dict,var_value):
         agent["cons_value"] = str(value)
     return agent
 
-def compute_LR(agent,domain):
+
+def compute_LR(agent, domain):
     '''
     Try all the values with the constraint of a variable in order to find the best LR.
     :param: agent: an agent of the problem. type : dict
@@ -303,20 +315,21 @@ def compute_LR(agent,domain):
     each_LR = {}
     var_values = {}
     cons_init = agent["cons_value"]
-    for neighbor,neigh_val in agent["neighbors"].items():
+    for neighbor, neigh_val in agent["neighbors"].items():
         var_values[neighbor] = float(neigh_val)
     old_cons = float(agent["prev_cons_value"])
     for new_value in domain["cost"]:
         var_values[agent["variable"]] = float(new_value)
-        new_cons = float(calculate_constraint_agent(agent,cons_dict,var_values)["cons_value"])
+        new_cons = float(calculate_constraint_agent(agent, cons_dict, var_values)["cons_value"])
         LR = old_cons - new_cons
         each_LR[new_value] = [LR]
     value_best_LR = max_dict(each_LR)
     assoc_LR = each_LR[value_best_LR][0]
-    best_LR = [assoc_LR,value_best_LR]
+    best_LR = [assoc_LR, value_best_LR]
     agent["current_LR"] = float(assoc_LR)
     agent["cons_value"] = cons_init
     return best_LR
+
 
 def all_LR(agents_param):
     '''
@@ -327,10 +340,11 @@ def all_LR(agents_param):
     all_LR = {}
     for agent in agents_param.values():
         current_var = agent["variable"]
-        current_best_LR = compute_LR(agent,domain)
+        current_best_LR = compute_LR(agent, domain)
         all_LR[current_var] = current_best_LR
 
     return all_LR
+
 
 def collect_LR(agents_param, all_LR):
     '''
@@ -346,6 +360,7 @@ def collect_LR(agents_param, all_LR):
                 if neighbor == var:
                     agent["neighbors_LR"][neighbor] = all_LR[var][0]
     return agents_param
+
 
 def update_value(agents_param,all_LR):
     '''
@@ -379,41 +394,45 @@ def max_dict(dictio):
 
     return key
 
-def show_result(agents_param,file,algo,final_result,cost_init):
+
+def show_result(agents_param, file, algo, final_result, cost_init):
     '''
     how the results; with the value of each variable and the constraints cost for each variable
     :param agents_param: all the agents with the final parameters. type : dict
+    :param file: the name of the file we want to study. type : str
+    :param algo: the name of the algorithm that has been used. type : str
+    :param final_result: all the costs, considering only the constraints given in the initialization part. type : dict
+    :param cost_init: the initial cost, before solving the problem. type : float
     :return: None
     '''
-    with open("Results/{}_results_{}.yaml".format(file.strip(".yaml"),algo.strip(".py")),'w') as f:
-        f.write("Assignments :"+"\n")
+    with open("Results/{}_results_{}.yaml".format(file.strip(".yaml"), algo.strip(".py")), 'w') as f:
+        f.write("Assignments :" + "\n")
         for agent in agents_param.values():
-            f.write(agent["variable"]+" : "+ str(agent["value"])+"\n")
+            f.write(agent["variable"] + " : " + str(agent["value"]) + "\n")
         f.write("\n")
-        f.write("Costs :"+"\n")
-        for var,cons_val in final_result.items():
-            f.write(var+" : "+str(cons_val)+"\n")
+        f.write("Costs :" + "\n")
+        for var, cons_val in final_result.items():
+            f.write(var + " : " + str(cons_val) + "\n")
         f.write("\n")
         f.write("Final cost : ")
         cost = 0
         for val in final_result.values():
             cost += float(val)
-        f.write(str(cost)+"\n")
-        f.write("Initial cost : "+str(cost_init))
+        f.write(str(cost) + "\n")
+        f.write("Initial cost : " + str(cost_init))
 
-def result_final(cons_dict,var_value,constraint):
+
+def result_final(cons_dict, var_value, constraint):
     """
     Compute the final result with only the constraints given in the initialization part
-    :param agents_param:
-    :param cons_dict:
-    :param var_value:
-    :param constraint:
-    :return:
+    :param cons_dict: formulas of all the constraints. type : dict
+    :param var_value: all the values of the variables. type : dict
+    :param constraint: constraint for each variable. type: dict
+    :return: final_cost: all the costs, considering only the constraints given in the initialization part. type : dict
     """
     final_cost = {}
 
-    for var,cons in constraint.items():
-
+    for var, cons in constraint.items():
         constraint_formula = cons_dict[cons[0]][0]
         formula = prepare_formula(constraint_formula, var_value)
         final_cost[var] = str(RVN(formula))

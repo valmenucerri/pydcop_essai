@@ -1,4 +1,4 @@
-ligne = "main.py mcs_mgm time 10  graph_exemple.yaml"
+ligne = "main.py mcs_mgm time 5  graph_exemple.yaml"
 command = ligne.split()
 
 import handle_file as hf
@@ -53,7 +53,7 @@ while nbr_cycle < time_limit:
     nbr_cycle += 1
 
 final_result = hp.result_final(cons_dict, var_value, constraints)
-
+print(agents_param)
 hp.show_result(agents_param, file, algo, final_result, cost_init)  # Create the file with the results written on it
 """def launch_prog():
     Launch the program
