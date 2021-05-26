@@ -1,6 +1,6 @@
 import handle_file as hf
 import handle_problem as hp
-ligne = "main.py mgm time 5  graph_exemple.yaml"
+ligne = "main.py mgm time 5  graph_exemple_5.yaml"
 command = ligne.split()
 algo = hf.get_algo(command)
 
@@ -9,8 +9,9 @@ domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(fi
 time_limit = hf.time_limit(command)
 
 agents_param = hp.config_agents(variables, agents, constraints)
-# agents_param = hp.init_agents(agents_param, domain)
-agents_param = hp.init_agents_contr(agents_param, domain)
+agents_param = hp.init_agents(agents_param, domain)
+#agents_param = hp.init_agents_contr(agents_param, domain)
+print(agents_param)
 var_value = hp.get_var_value(agents_param)
 cost_init = 0
 hp.calculate_constraint(agents_param, cons_dict, var_value)

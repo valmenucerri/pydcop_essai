@@ -2,7 +2,7 @@ import handle_file as hf
 import sys
 import random as r
 
-ligne = "main.py mcs_mgm time 5  graph_exemple.yaml"
+ligne = "main.py mcs_mgm time 5  graph_exemple_5.yaml"
 command = ligne.split()
 file = hf.file_name(command)
 domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(file)
@@ -11,7 +11,7 @@ print("variables : ", variables)
 print("constraints :", constraints)
 print("cons_dict : ", cons_dict)
 print("cons_for_var : ", cons_for_var)
-
+print(agents)
 
 def config_agents(variables, agents, constraints):
     '''

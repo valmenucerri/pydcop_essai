@@ -1,4 +1,4 @@
-ligne = "main.py mcs_mgm time 5  graph_exemple.yaml"
+ligne = "main.py mcs_mgm time 5  graph_exemple_5.yaml"
 command = ligne.split()
 
 import handle_file as hf
@@ -11,8 +11,8 @@ domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(
 time_limit = hf.time_limit(command)
 
 agents_param = hp.config_agents(variables, agents, constraints)  # Initialize each agent
-# agents_param = hp.init_agents(agents_param, domain)
-agents_param = hp.init_agents_contr(agents_param, domain)
+agents_param = hp.init_agents(agents_param, domain)
+#agents_param = hp.init_agents_contr(agents_param, domain)
 var_value = hp.get_var_value(agents_param)
 # print(var_value)
 # cost = 0
