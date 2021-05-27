@@ -1,0 +1,15 @@
+mgm results :
+value 1.0 : 5     Initial costs : 5.0, 5.0, 5.0, 1.0, 1.0
+value 3.0 : 11     Initial costs : 5.0, 11.0, 5.0, 7.0, 7.0, 9.0, 5.0, 5.0, 11.0, 1.0, 5.0
+value 2.0 : 3     Initial costs : 6.0, 6.0, 4.0
+value 4.0 : 6     Initial costs : 8.0, 2.0, 10.0, 8.0, 2.0, 4.0
+value 5.0 : 5     Initial costs : 5.0, 11.0, 5.0, 7.0, 3.0
+
+mcs_mgm results :
+value -3.0 : 25     Initial costs : 4.0, 2.0, 5.0, 5.0, 1.0, 5.0, 7.0, 3.0, 7.0, 11.0, 0.0, 8.0, 8.0, 5.0, 3.0, 7.0, 4.0, 6.0, 9.0, 5.0, 9.0, 5.0, 6.0, 7.0, 2.0
+value -1.0 : 3     Initial costs : 11.0, 7.0, 5.0
+value 4.0 : 1     Initial costs : 0.0
+value 2.0 : 1     Initial costs : 0.0
+
+gca_mgm results :
+value -3.0 : 30     Initial costs : 7.0, 7.0, 4.0, 3.0, 4.0, 5.0, -2.0, 0.0, 10.0, 9.0, 8.0, 9.0, 11.0, 2.0, 4.0, 12.0, 3.0, 10.0, 9.0, 7.0, 3.0, 0.0, 12.0, 1.0, 4.0, 3.0, 7.0, 3.0, 8.0, 1.0
