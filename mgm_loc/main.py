@@ -3,6 +3,7 @@ import mgm
 import mcs_mgm
 import gca_mgm
 import handle_file as hf
+from handle_problem import draw_histo
 file = hf.file_name(sys.argv)
 def histogram(histo,nbr_launch,file):
     """
@@ -57,8 +58,9 @@ if '__main__' ==__name__:
                 histo["gca_mgm"][final_cost3][1].append(cost_init3)
             except:
                 histo["gca_mgm"][final_cost3] = [1, [cost_init3]]
-
+        print(histo)
         histogram(histo, nbr_launch, file)
+        draw_histo(histo,nbr_launch,file)
     else:
         final_cost = gca_mgm.launch_prog()
 

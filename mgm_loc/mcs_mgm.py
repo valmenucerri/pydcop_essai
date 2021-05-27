@@ -33,8 +33,8 @@ def launch_prog():
         for agent in agents_param.values():
             cons_to_send[agent[
                 "variable"]] = []  # prepare the dictionary where the program will put the constraints that must be sent
-
-        for agent, param in agents_param.items():  # Here's the new part, that makes the difference between MGM and MCS-MGM
+        # Here's the new part, that makes the difference between MGM and MCS-MGM
+        for agent, param in agents_param.items():
             if param["current_LR"] is not None:
                 new_agent, cons_to_transfer = hp.share_constraint_1(param, prev_var_value)
                 agents_param[agent] = new_agent

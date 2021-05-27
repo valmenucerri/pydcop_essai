@@ -1,6 +1,8 @@
 import handle_file as hf
 import sys
 import random as r
+import matplotlib .pyplot as plt
+import pylab
 
 
 file = hf.file_name(sys.argv)
@@ -443,3 +445,62 @@ def result_final(cons_dict, var_value, constraint):
         final_cost[var] = str(RVN(formula))
 
     return final_cost
+
+
+def draw_histo(histo,nbr_launch,file):
+    """
+    Create an histogram in order to compare the results found by the algorithms.
+    :param histo: all the values and the number of occurrence of each value, for each algorithm. type : dict
+    :return: None
+    """
+    values = []
+    for v in histo["mgm"]:
+        if float(v) not in values:
+            values.append(float(v))
+    for v2 in histo["mcs_mgm"]:
+        if float(v2) not in values:
+            values.append(float(v2))
+    for v3 in histo["gca_mgm"]:
+        if float(v3) not in values:
+            values.append(float(v3))
+    for j in range(int(min(values)),int(max(values))):
+        if j not in values:
+            values.append(j)
+
+    values = sorted(values)
+    #mgm
+    y = []
+    for element in values:
+        if element in histo["mgm"].keys():
+            y.append(float(histo["mgm"][element][0]))
+        else:
+            y.append(0)
+    width = 0.7
+    plt.bar(values,y,width,color = 'r',label = "MGM")
+
+    #mcs_mgm
+    y = []
+    for element in values:
+        if element in histo["mcs_mgm"].keys():
+            y.append(float(histo["mcs_mgm"][element][0]))
+        else:
+            y.append(0)
+    width = 0.4
+    plt.bar(values, y, width, color='g',label = "MCS_MGM")
+
+    #gca_mgm
+    y = []
+    for element in values:
+        if element in histo["gca_mgm"].keys():
+            y.append(float(histo["gca_mgm"][element][0]))
+        else:
+            y.append(0)
+    width = 0.2
+    axe = plt.gca()
+    axe.xaxis.set_ticks(range(int(min(values)), int(max(values)) + 1))
+    axe.yaxis.set_ticks(range(nbr_launch))
+    plt.tick_params(axis='y', labelsize=7)
+    plt.bar(values, y, width, color='b',label = "GCA_MGM")
+
+    plt.legend(loc = 'upper right')
+    plt.savefig("Results/Histogram_{}_{}.pdf".format(nbr_launch,file.strip(".yaml")))
