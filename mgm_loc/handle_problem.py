@@ -2,9 +2,8 @@ import handle_file as hf
 import sys
 import random as r
 
-ligne = "main.py mcs_mgm time 5  graph_exemple_5.yaml"
-command = ligne.split()
-file = hf.file_name(command)
+
+file = hf.file_name(sys.argv)
 domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(file)
 print("domain :", domain)
 print("variables : ", variables)
@@ -213,15 +212,18 @@ def share_constraint_2(agent, prev_var_value):
     :return: agent: an agent of the problem, with his constraint updated
     '''
     cons_to_send = {}
-    agent["prev_cons_value"] = agent["cons_value"]
     cond = False
+    agent2 = agent.copy()
     for neighbor in agent["neighbors"]:
         prev_var_value[neighbor] = float(agent["neighbors"][neighbor])
-        actual_cons = calculate_constraint_agent(agent, cons_dict, prev_var_value)
+        actual_cons = calculate_constraint_agent(agent2, cons_dict, prev_var_value)
         delta = float(agent["prev_cons_value"]) - float(actual_cons["cons_value"])
-        if delta > 0:
-            cond = True
-            cons_to_send[neighbor] = agent["constraint"]
+        try:
+            if delta > 0:
+                cond = True
+                cons_to_send[neighbor] = agent["constraint"]
+        except:
+            pass
 
     if cond:
         agent["cons_value"] = 0
@@ -239,6 +241,7 @@ def share_constraint_1(agent, prev_var_value):
     cons_to_send = {}
     cond = False
     agent2 = agent.copy()
+    var = prev_var_value.copy()
     for neighbor in agent["neighbors"]:
         prev_var_value[neighbor] = float(agent["neighbors"][neighbor])
         actual_cons = calculate_constraint_agent(agent2, cons_dict, prev_var_value)
@@ -247,6 +250,7 @@ def share_constraint_1(agent, prev_var_value):
             if delta > float(agent["neighbors_LR"][neighbor]):
                 cond = True
                 cons_to_send[neighbor] = agent["constraint"]
+
         except:
             pass
 

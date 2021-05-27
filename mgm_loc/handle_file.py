@@ -32,7 +32,7 @@ def get_objective(file):
     :param file: name of the file. type : str
     :return: objective: objective min or max. type : str
     '''
-    with open(file, 'r') as f:
+    with open("Graph/{}".format(file), 'r') as f:
         objective = None
         for line in f:
             line = line.strip()
@@ -51,7 +51,7 @@ def get_data(file):
     :return: cons_for_var: each constraint with the variables they imply on. type : dict
     :return: agents: all the agents used for the considered problem. type : list
     '''
-    with open(file,'r') as f:
+    with open("Graph/{}".format(file),'r') as f:
         line = f.readlines()
         line_corrected = []
         for element in line:

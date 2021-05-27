@@ -66,7 +66,7 @@ for i in range(nbr_var):
     cons.append("C{}".format(i))
     agents.append("a{}".format(i))
 agents =", ".join(agents)
-with open("graph_exemple_{}.yaml".format(str(nbr_var)),'w')as f:
+with open("Graph/graph_exemple_{}.yaml".format(str(nbr_var)),'w')as f:
     f.write("name: "+"graph_exemple_{}".format(str(nbr_var))+"\n")
     f.write("objective: max"+"\n")
     f.write("\n")

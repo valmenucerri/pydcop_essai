@@ -8,11 +8,11 @@ def launch_prog():
     Launch the program
     :return: None
     """
-    algo = hf.get_algo(command)
-    file = hf.file_name(command)
+    algo = hf.get_algo(sys.argv)
+    file = hf.file_name(sys.argv)
     domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(
         file)  # Initialize the parameters of the problem
-    time_limit = hf.time_limit(command)
+    time_limit = hf.time_limit(sys.argv)
 
     agents_param = hp.config_agents(variables, agents, constraints)  # Initialize each agent
     agents_param = hp.init_agents(agents_param, domain)
@@ -23,7 +23,6 @@ def launch_prog():
     for agent in agents_param.values():
         cost_init += float(agent["cons_value"])
     nbr_cycle = 0
-    # print(cost)
     prev_var_value = None
     cons_to_send = {}
     while nbr_cycle < time_limit:
