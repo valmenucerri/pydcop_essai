@@ -51,5 +51,8 @@ def launch_prog():
         nbr_cycle += 1
 
     final_result = hp.result_final(cons_dict, var_value, constraints)
-    print(agents_param)
     hp.show_result(agents_param, file, algo, final_result, cost_init)
+    cost = 0
+    for val in final_result.values():
+        cost += float(val)
+    return cost
