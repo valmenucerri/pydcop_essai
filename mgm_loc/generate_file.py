@@ -45,7 +45,8 @@ def create_cons(var,operator,numbers):
         false_ope = formula[1]
         formula[1] = formula[ind]
         formula[ind] = false_ope
-
+    if formula[2] == '0':
+        formula[2] = '1'
     formula = " ".join(formula)
     return formula
 

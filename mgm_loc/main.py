@@ -10,13 +10,15 @@ def histogram(histo,nbr_launch,file):
     :param histo:
     :return:
     """
-    with open("Results/Histogram_{}_{}.yaml".format(nbr_launch,file.strip(".yaml")),'w') as f:
+    with open("Results/Histogram_{}_{}.txt".format(nbr_launch,file.strip(".yaml")),'w') as f:
         f.write("mgm results :"+"\n")
         for  val,occur in histo["mgm"].items():
             f.write("value "+str(val)+" : "+str(occur[0])+"     "+"Initial costs : "+str(occur[1]).strip("["+"]")+"\n")
+        f.write("\n")
         f.write("mcs_mgm results :" + "\n")
         for val, occur in histo["mcs_mgm"].items():
             f.write("value " + str(val) + " : " + str(occur[0])+"     "+"Initial costs : "+str(occur[1]).strip("["+"]")+"\n")
+        f.write("\n")
         f.write("gca_mgm results :" + "\n")
         for val, occur in histo["gca_mgm"].items():
             f.write("value " + str(val) + " : " + str(occur[0])+"     "+"Initial costs : "+str(occur[1]).strip("["+"]")+"\n")
@@ -51,10 +53,11 @@ if '__main__' ==__name__:
 
             final_cost3,cost_init3 = gca_mgm.launch_prog()
             try:
-                histo["gca_mgm"][final_cost3] += 1
+                histo["gca_mgm"][final_cost3][0] += 1
                 histo["gca_mgm"][final_cost3][1].append(cost_init3)
             except:
                 histo["gca_mgm"][final_cost3] = [1, [cost_init3]]
+
         histogram(histo, nbr_launch, file)
     else:
         final_cost = gca_mgm.launch_prog()
