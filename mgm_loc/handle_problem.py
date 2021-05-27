@@ -409,21 +409,22 @@ def show_result(agents_param, file, algo, final_result, cost_init):
     :param cost_init: the initial cost, before solving the problem. type : float
     :return: None
     '''
-    with open("Results/{}_results_{}.yaml".format(file.strip(".yaml"), algo.strip(".py")), 'w') as f:
-        f.write("Assignments :" + "\n")
-        for agent in agents_param.values():
-            f.write(agent["variable"] + " : " + str(agent["value"]) + "\n")
-        f.write("\n")
-        f.write("Costs :" + "\n")
-        for var, cons_val in final_result.items():
-            f.write(var + " : " + str(cons_val) + "\n")
-        f.write("\n")
-        f.write("Final cost : ")
-        cost = 0
-        for val in final_result.values():
-            cost += float(val)
-        f.write(str(cost) + "\n")
-        f.write("Initial cost : " + str(cost_init))
+    if algo != "all":
+        with open("Results/{}_results_{}.yaml".format(file.strip(".yaml"), algo.strip(".py")), 'w') as f:
+            f.write("Assignments :" + "\n")
+            for agent in agents_param.values():
+                f.write(agent["variable"] + " : " + str(agent["value"]) + "\n")
+            f.write("\n")
+            f.write("Costs :" + "\n")
+            for var, cons_val in final_result.items():
+                f.write(var + " : " + str(cons_val) + "\n")
+            f.write("\n")
+            f.write("Final cost : ")
+            cost = 0
+            for val in final_result.values():
+                cost += float(val)
+            f.write(str(cost) + "\n")
+            f.write("Initial cost : " + str(cost_init))
 
 
 def result_final(cons_dict, var_value, constraint):

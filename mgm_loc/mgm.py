@@ -40,4 +40,4 @@ def launch_prog():
     cost = 0
     for val in final_result.values():
         cost += float(val)
-    return cost
+    return cost , cost_init
