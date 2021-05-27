@@ -1,0 +1,134 @@
+name: graph_exemple_20
+objective: max
+
+domains:
+  cost:
+    values: [0,1,2]
+
+variables:
+  var0:
+    domain: cost
+  var1:
+    domain: cost
+  var2:
+    domain: cost
+  var3:
+    domain: cost
+  var4:
+    domain: cost
+  var5:
+    domain: cost
+  var6:
+    domain: cost
+  var7:
+    domain: cost
+  var8:
+    domain: cost
+  var9:
+    domain: cost
+  var10:
+    domain: cost
+  var11:
+    domain: cost
+  var12:
+    domain: cost
+  var13:
+    domain: cost
+  var14:
+    domain: cost
+  var15:
+    domain: cost
+  var16:
+    domain: cost
+  var17:
+    domain: cost
+  var18:
+    domain: cost
+  var19:
+    domain: cost
+
+constraints:
+    C0:
+      type: extensional
+      variables: var0
+      function: var0 * 7 + 1 - 1 - 0 + 1 + var17 + 1 + var11 - 0 - 5 + 1 + var0 - 16 + var2 - 11 - 1 + 0 - 0
+    C1:
+      type: extensional
+      variables: var1
+      function: var18 - var2 - var13 - var0 - var5
+    C2:
+      type: extensional
+      variables: var2
+      function: var16 + 1 - var15 + var9 + var15 - 17 + var2 - var11 - var14 + var2 + 8 - 0 + 0 - var17 + var10 - var7 + 1 - 1 - var8
+    C3:
+      type: extensional
+      variables: var3
+      function: var8 + 19 - var13 + 1 + 1 - 1 + var1 + 9 + 1 - 1 - 1 + 0 + 0 + var6 + var3 + var4 - var10 + var16 + 0 + 0 - 0
+    C4:
+      type: extensional
+      variables: var4
+      function: var13 + var14 - 0 + var16 + 10 + var1 + 18 - var0 - 1 - 5 - var3 + 0 - var12 + 1 - 16
+    C5:
+      type: extensional
+      variables: var5
+      function: var4 + 1 + 4 + var19 + var6 - var14 + 5 + 0 + 2 - 0 + var10 - 10 + var14 - var17 - var0 - 1 + var19 - var14 + 0 + 14 + var1
+    C6:
+      type: extensional
+      variables: var6
+      function: var13 - var12
+    C7:
+      type: extensional
+      variables: var7
+      function: var17 - 15 + 10 + 0 + 1 + var13 - var4 - 0 - var3 + var18 - 1 + var9 + 1 - var14
+    C8:
+      type: extensional
+      variables: var8
+      function: var13 + var4 + 15 + 0 - 0 - 0 + var18 - 6 + var15 - var19 + var16 + var16 + var16 + var2 - var2 + var16 - var13
+    C9:
+      type: extensional
+      variables: var9
+      function: var19 + 10 + 15 + 0 + 0 + 9 + 1
+    C10:
+      type: extensional
+      variables: var10
+      function: var4 + 1 + 1 + 0 + var9 - var18 + var9 - var0 - 1 - 1 - 0 + var11 + 0 + 1 - 5 + 1 - var16
+    C11:
+      type: extensional
+      variables: var11
+      function: var9 + 6 + 1
+    C12:
+      type: extensional
+      variables: var12
+      function: var15 + var15 + var1 + 1 + 0 - 0 - var15 - var10 + var10 - var2 + var0 - 0 + var8 - 0 - var4
+    C13:
+      type: extensional
+      variables: var13
+      function: var7 + var0 - var6 + var1 + 17 + 7 - 1 + var11 - 0 - var6 + var7
+    C14:
+      type: extensional
+      variables: var14
+      function: var4 - 1 + 1
+    C15:
+      type: extensional
+      variables: var15
+      function: var15 - 1 + var2 - var12
+    C16:
+      type: extensional
+      variables: var16
+      function: var10 - var10 + 0 - 1 - var9 + var14 - 1 + 1 - var13 + 16 - 5 + var7 + var0 + 1 - var12 + 16 - var13 + 5 + 0
+    C17:
+      type: extensional
+      variables: var17
+      function: var12 - var10 - var8 + 1 - var16 + var7 + 3 + var0 + 1 - var10 - var7 + var17 - var8 - var2 - 0 - var10 - 3 + 6 - var6
+    C18:
+      type: extensional
+      variables: var18
+      function: var3 + 1 - 4 + 1 - 1 + 0 - 0 - var7 - 1 + var3 + 0 - var6 + var16 - var3 + var2 + 1 + 1 - var0 + 1
+    C19:
+      type: extensional
+      variables: var19
+      function: var8 - 1 - var1
+
+
+
+agents: [a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19]
