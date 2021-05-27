@@ -14,16 +14,10 @@ agents_param = hp.config_agents(variables, agents, constraints)  # Initialize ea
 agents_param = hp.init_agents(agents_param, domain)
 #agents_param = hp.init_agents_contr(agents_param, domain)
 var_value = hp.get_var_value(agents_param)
-# print(var_value)
-# cost = 0
 hp.calculate_constraint_init(agents_param, cons_dict, var_value)
 cost_init = 0
 for agent in agents_param.values():
     cost_init += float(agent["cons_value"])
-# for agent in agents_param.values():
-#   print(agent["cons_value"])
-# for agent in agents_param.values():
-# cost += float(agent["cons_value"])
 nbr_cycle = 0
 # print(cost)
 prev_var_value = None
