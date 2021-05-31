@@ -4,7 +4,6 @@ import sys
 
 
 def launch_prog():
-    
     """Launch the program
     :return: None"""
 
@@ -27,7 +26,6 @@ def launch_prog():
         value_mess = hp.send_values(agents_param)
         agents_param = hp.collect_values(agents_param, value_mess)  # collect values of the neighbors
 
-
         all_LR = hp.all_LR(agents_param)  # compute the LR for each variable
         agents_param = hp.collect_LR(agents_param, all_LR)
         agents_param = hp.update_value(agents_param, all_LR)  # update only one value, depending on the LRs
@@ -40,4 +38,4 @@ def launch_prog():
     cost = 0
     for val in final_result.values():
         cost += float(val)
-    return cost , cost_init
+    return cost, cost_init
