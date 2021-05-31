@@ -17,7 +17,12 @@ constraints:
     CA:
       type: extensional
       variables: vA
-      function: vA - vB - vC
+      function:
+          a = 15 + 16
+          if a < 25:
+            return -10000
+          else:
+            return 0
 
     CB:
       type: extensional
@@ -27,7 +32,7 @@ constraints:
     CC:
       type: extensional
       variables: vC
-      function: vA + vC 
+      function: vA + vC
 
 
 

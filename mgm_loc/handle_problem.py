@@ -161,7 +161,7 @@ def prepare_formula(constraint_formula, var_value):
     formula = constraint_formula.split()
     formula_ready = []
     operator = ["+", "-", "/", "*"]
-    for element in (formula):
+    for element in formula:
         try:
             eval(element)
             value = float(element)

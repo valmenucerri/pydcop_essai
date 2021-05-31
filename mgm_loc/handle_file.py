@@ -125,6 +125,7 @@ def get_constraints(file_list,first_index,variables):
     var_constraints = {}
     constraints = {}
     constraints_for_var = {}
+    print(file_list)
     words = [["values:"],["variables:"],["type:"]]
     index = first_index + 2 #index of the first constraint
     for j in variables:   #create a dictionnary with all the variables
@@ -148,33 +149,33 @@ def get_constraints(file_list,first_index,variables):
                 step_s += 1
                 line_s = file_list[i + step_s].split()
 
-            if line_s[0] == "variables:": #check that we are looking to variables
-                if len(line_s)==2: #word and variable's name are on the same line
+            if line_s[0] == "variables:": # check that we are looking to variables
+                if len(line_s) == 2:  # word and variable's name are on the same line
                     associated_var = [file_list[i+step_s].split()[1]]
-                else:   #variable's name under the constraints values
+                else:   # variable's name under the constraints values
                     step = 1
                     keys = [k for k in variables.keys()]
                     next_line = file_list[i + step_s + step]
                     next_line = next_line.split()
                     associated_var = []
                     associated_var.append(next_line[1])
-                    while len(next_line)==2:  #each variable is added, in case of multiple variables for one constraint
+                    while len(next_line)==2:  # each variable is added, in case of multiple variables for one constraint
                         step += 1
                         associated_var.append(next_line[1])
                         next_line = file_list[i + step_s + step]
                         next_line = next_line.split()
 
-            else: #add variables even if they are not explicitly mentionned in the file (in case of function for example)
+            else:  # add variables even if they are not explicitly mentioned in the file
                 associated_var = []
                 for var in file_list[i+step_s].split():
                     if var in var_constraints.keys():
                         associated_var.append(var)
 
-            for var in associated_var: #add each constraint name for each variable
+            for var in associated_var: # add each constraint name for each variable
                 var_constraints[var].append(cons_name.strip(''))
         try:
             line_cv = file_list[i + step_cv].split()
-            if line_cv[0] == "values:": #get the constraints values
+            if line_cv[0] == "values:":  # get the constraints values
                 constraints[cons_name]=[]
                 while line_cv[0] not in forbidden:
                     try:
@@ -194,6 +195,13 @@ def get_constraints(file_list,first_index,variables):
                 del nex_line[0]
                 fun = " ".join(nex_line)
                 constraints[cons_name].append(fun)
+            elif line_cv[0] == "function:" and len(line_cv[0]) == 1:
+                first_ind = file_list.index(line_cv[0]) + 1
+
+
+
+
+
         except IndexError:
             pass
     for k in constraints.keys():
