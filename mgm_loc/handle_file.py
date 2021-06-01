@@ -84,14 +84,16 @@ def correct_values(line):
     '''
     Delete undesirable characters from the domain values
     :param line: the line we want to correct. type : str
-    :return: line_ad: the line corrected/ type : str
+    :return: line_ad: the line corrected/ type : list
     '''
     line2 = line.split()
     del line2[0]
     line = " ".join(line2)
     line_ad = line.strip('[')
     line_ad = line_ad.strip(']')
-    line_ad = line_ad.split(',')
+    line_ad = line_ad.strip(',')
+    line_ad =line_ad.split(',')
+
     return line_ad
 
 
@@ -190,9 +192,11 @@ def get_constraints(file_list, first_index, variables):
 
             else:  # add variables even if they are not explicitly mentioned in the file
                 associated_var = []
+                print(file_list[i + step_s].split())
                 for var in file_list[i + step_s].split():
-                    if var in var_constraints.keys():
-                        associated_var.append(var)
+                    var2 = var.strip('['+']'+','+'('+')'+"min"+"max")
+                    if var2 in var_constraints.keys():
+                        associated_var.append(var2)
 
             for var in associated_var:  # add each constraint name for each variable
                 var_constraints[var].append(cons_name.strip(''))

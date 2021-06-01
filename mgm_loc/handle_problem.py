@@ -105,6 +105,46 @@ def collect_values(agents_param, value_mess):
                     agent["neighbors"][neighbor] = value_mess[var]
     return agents_param
 
+def max_function_result(cons,var_value):
+    """
+    Compute the constraint's cost if its formula is a max function.
+    :param cons: the formula of the constraint. type : str
+    :param var_value: the values of all variables. type : dict
+    :return: value_returned: value of the cosidered costaint. type : float
+    """
+    operator = ["+", "-", "/", "*"]
+    cons = cons.strip("max" + "(" + ")" + "[" + "]")
+    cons_list = cons.split(',')
+    for element in range(len(cons_list)):
+        nbr = False
+        opera = False
+
+        try:
+            value = eval(cons_list[element])
+            tot = [element, value]
+            nbr = True
+        except:
+            el = cons_list[element].split()
+            for j in operator:
+                if j in el:
+                    opera = True
+                    break
+            for e in el:
+                if opera:
+                    break
+                elif e in var_value.keys():
+                    cons_list[element] = float(var_value[e])
+
+        if nbr:
+            cons_list[tot[0]] = tot[1]
+        if opera:
+            formula = prepare_formula(cons_list[element], var_value)
+            tot2 = [element, RVN(formula)]
+            cons_list[tot2[0]] = tot2[1]
+
+    value_returned = max(cons_list)
+    return value_returned
+
 def condition_function_result(cons_details,var_value):
     """
     Compute the valor of a constraint in case of conditional function, with if / else
@@ -188,9 +228,15 @@ def calculate_constraint(agents_param, cons_dict, var_value):
                     cons_details = cons_dict[constraint]
                     value = condition_function_result(cons_details,var_value)
                 else:
-                    constraint_formula = cons_dict[constraint][0]
-                    formula = prepare_formula(constraint_formula, var_value)
-                    value += RVN(formula)
+                    if cons_dict[constraint][0].find("max") != -1:
+                        constraint_formula = cons_dict[constraint][0]
+                        value = max_function_result(constraint_formula,var_value)
+
+
+                    else:
+                        constraint_formula = cons_dict[constraint][0]
+                        formula = prepare_formula(constraint_formula, var_value)
+                        value += RVN(formula)
             agent["prev_cons_value"] = agent["cons_value"]
             agent["cons_value"] = str(value)
     return agents_param
@@ -210,15 +256,19 @@ def calculate_constraint_init(agents_param, cons_dict, var_value):
             value = 0
             for i in range(len(agent["constraint"])):
                 constraint = agent["constraint"][i]
-                print(constraint)
-                print(cons_dict[constraint])
                 if len(cons_dict[constraint]) != 1:
                     cons_details = cons_dict[constraint]
                     value = condition_function_result(cons_details,var_value)
                 else:
-                    constraint_formula = cons_dict[constraint][0]
-                    formula = prepare_formula(constraint_formula, var_value)
-                    value += RVN(formula)
+                    if cons_dict[constraint][0].find("max") != -1:
+                        constraint_formula = cons_dict[constraint][0]
+                        value = max_function_result(constraint_formula, var_value)
+
+
+                    else:
+                        constraint_formula = cons_dict[constraint][0]
+                        formula = prepare_formula(constraint_formula, var_value)
+                        value += RVN(formula)
             agent["cons_value"] = str(value)
             agent["prev_cons_value"] = str(value)
     return agents_param
@@ -382,9 +432,15 @@ def calculate_constraint_agent(agent, cons_dict, var_value):
                 cons_details = cons_dict[constraint]
                 value = condition_function_result(cons_details,var_value)
             else:
-                constraint_formula = cons_dict[constraint][0]
-                formula = prepare_formula(constraint_formula, var_value)
-                value += RVN(formula)
+                if cons_dict[constraint][0].find("max") != -1:
+                    constraint_formula = cons_dict[constraint][0]
+                    value = max_function_result(constraint_formula, var_value)
+
+
+                else:
+                    constraint_formula = cons_dict[constraint][0]
+                    formula = prepare_formula(constraint_formula, var_value)
+                    value += RVN(formula)
         agent["cons_value"] = str(value)
     return agent
 
@@ -522,9 +578,17 @@ def result_final(cons_dict, var_value, constraint):
             cons_details = cons_dict[cons[0]]
             final_cost[var] = str(condition_function_result(cons_details,var_value))
         else:
-            constraint_formula = cons_dict[cons[0]][0]
-            formula = prepare_formula(constraint_formula, var_value)
-            final_cost[var] = str(RVN(formula))
+            if cons_dict[cons[0]][0].find("max") != -1:
+                constraint_formula = cons_dict[cons[0]][0]
+                final_cost[var] = str(max_function_result(constraint_formula, var_value))
+
+
+            else:
+                constraint_formula = cons_dict[cons[0]][0]
+                formula = prepare_formula(constraint_formula, var_value)
+                final_cost[var] = str(RVN(formula))
+
+
 
     return final_cost
 

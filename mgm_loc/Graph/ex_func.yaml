@@ -17,16 +17,11 @@ constraints:
     CA:
       type: extensional
       variables: vA
-      function: -2 * vC + vB
+      function: max([5, vB, vC])
     CB:
       type: extensional
       variables: vB
-      function:
-        a = vA + vB
-        if a < 1:
-          return -10
-        else:
-          return 0
+      function: -2 * vC + vB
     CC:
       type: extensional
       variables: vC
