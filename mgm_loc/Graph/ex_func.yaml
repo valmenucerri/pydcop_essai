@@ -17,7 +17,7 @@ constraints:
     CA:
       type: extensional
       variables: vA
-      function: max([5, vB, vC])
+      function: min([5, vB, vC])
     CB:
       type: extensional
       variables: vB

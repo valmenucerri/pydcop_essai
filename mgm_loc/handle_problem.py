@@ -1,9 +1,8 @@
 import handle_file as hf
 import sys
 import random as r
-import matplotlib .pyplot as plt
+import matplotlib.pyplot as plt
 import pylab
-
 
 file = hf.file_name(sys.argv)
 domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(file)
@@ -13,6 +12,7 @@ print("constraints :", constraints)
 print("cons_dict : ", cons_dict)
 print("cons_for_var : ", cons_for_var)
 print(agents)
+
 
 def config_agents(variables, agents, constraints):
     '''
@@ -105,7 +105,46 @@ def collect_values(agents_param, value_mess):
                     agent["neighbors"][neighbor] = value_mess[var]
     return agents_param
 
-def max_function_result(cons,var_value):
+def min_function_result(cons,var_value):
+    """
+    Compute the constraint's cost if its formula is a min function.
+    :param cons: the formula of the constraint. type : str
+    :param var_value: the values of all variables. type : dict
+    :return: value_returned: value of the considered constraint. type : float
+    """
+    operator = ["+", "-", "/", "*"]
+    cons = cons.strip("min" +"max" + "(" + ")" + "[" + "]")
+    cons_list = cons.split(',')
+    for element in range(len(cons_list)):
+        nbr = False
+        opera = False
+
+        try:
+            value = eval(cons_list[element])
+            tot = [element, value]
+            nbr = True
+        except:
+            el = cons_list[element].split()
+            for j in operator:
+                if j in el:
+                    opera = True
+                    break
+            for e in el:
+                if opera:
+                    break
+                elif e in var_value.keys():
+                    cons_list[element] = float(var_value[e])
+
+        if nbr:
+            cons_list[tot[0]] = tot[1]
+        if opera:
+            formula = prepare_formula(cons_list[element], var_value)
+            tot2 = [element, RVN(formula)]
+            cons_list[tot2[0]] = tot2[1]
+
+    value_returned = min(cons_list)
+    return value_returned
+def max_function_result(cons, var_value):
     """
     Compute the constraint's cost if its formula is a max function.
     :param cons: the formula of the constraint. type : str
@@ -145,7 +184,8 @@ def max_function_result(cons,var_value):
     value_returned = max(cons_list)
     return value_returned
 
-def condition_function_result(cons_details,var_value):
+
+def condition_function_result(cons_details, var_value):
     """
     Compute the valor of a constraint in case of conditional function, with if / else
     :param cons_details: details about the constraint, conditions. type : list
@@ -163,22 +203,21 @@ def condition_function_result(cons_details,var_value):
             for l in range(len(element)):
 
                 if element[l] == "=":
-                    res_ind = element[l-1]
+                    res_ind = element[l - 1]
                     result[res_ind] = None
                     indice = l
                 if l > indice:
                     formula.append(element[l])
 
             formula = " ".join(formula)
-            formula_ready = prepare_formula(formula,var_value)
+            formula_ready = prepare_formula(formula, var_value)
 
             resultat = RVN(formula_ready)
             result[res_ind] = resultat
 
-
         if "if" in element:
             element.remove("if")
-            line= " ".join(element)
+            line = " ".join(element)
             line = line.strip(":")
             line = line.split()
             for e in line:
@@ -186,7 +225,7 @@ def condition_function_result(cons_details,var_value):
                     eval(e)
                     ind = line.index(e)
                     val = float(e)
-                    tot = [ind,val]
+                    tot = [ind, val]
                 except:
                     if e in comparison:
                         ind_comp = line.index(e)
@@ -198,16 +237,17 @@ def condition_function_result(cons_details,var_value):
             line[ind_val] = str(value)
             strline = " ".join(line)
             cond = eval(strline)
-            if cond :
+            if cond:
                 good_ind = cons_list.index(element) + 1
             else:
                 good_ind = cons_list.index(element) + 3
 
             for final_res in range(len(cons_list[good_ind])):
                 if cons_list[good_ind][final_res] == "return":
-                    value_returned = eval(cons_list[good_ind][final_res+1])
+                    value_returned = eval(cons_list[good_ind][final_res + 1])
 
             return value_returned
+
 
 def calculate_constraint(agents_param, cons_dict, var_value):
     '''
@@ -226,12 +266,14 @@ def calculate_constraint(agents_param, cons_dict, var_value):
                 if len(cons_dict[constraint]) != 1:
 
                     cons_details = cons_dict[constraint]
-                    value = condition_function_result(cons_details,var_value)
+                    value = condition_function_result(cons_details, var_value)
                 else:
                     if cons_dict[constraint][0].find("max") != -1:
                         constraint_formula = cons_dict[constraint][0]
-                        value = max_function_result(constraint_formula,var_value)
-
+                        value = max_function_result(constraint_formula, var_value)
+                    elif cons_dict[constraint][0].find("min") != -1:
+                        constraint_formula = cons_dict[constraint][0]
+                        value = min_function_result(constraint_formula, var_value)
 
                     else:
                         constraint_formula = cons_dict[constraint][0]
@@ -258,12 +300,14 @@ def calculate_constraint_init(agents_param, cons_dict, var_value):
                 constraint = agent["constraint"][i]
                 if len(cons_dict[constraint]) != 1:
                     cons_details = cons_dict[constraint]
-                    value = condition_function_result(cons_details,var_value)
+                    value = condition_function_result(cons_details, var_value)
                 else:
                     if cons_dict[constraint][0].find("max") != -1:
                         constraint_formula = cons_dict[constraint][0]
                         value = max_function_result(constraint_formula, var_value)
-
+                    elif cons_dict[constraint][0].find("min") != -1:
+                        constraint_formula = cons_dict[constraint][0]
+                        value = min_function_result(constraint_formula, var_value)
 
                     else:
                         constraint_formula = cons_dict[constraint][0]
@@ -430,12 +474,14 @@ def calculate_constraint_agent(agent, cons_dict, var_value):
             constraint = agent["constraint"][i]
             if len(cons_dict[constraint]) != 1:
                 cons_details = cons_dict[constraint]
-                value = condition_function_result(cons_details,var_value)
+                value = condition_function_result(cons_details, var_value)
             else:
                 if cons_dict[constraint][0].find("max") != -1:
                     constraint_formula = cons_dict[constraint][0]
                     value = max_function_result(constraint_formula, var_value)
-
+                elif cons_dict[constraint][0].find("min") != -1:
+                    constraint_formula = cons_dict[constraint][0]
+                    value = min_function_result(constraint_formula, var_value)
 
                 else:
                     constraint_formula = cons_dict[constraint][0]
@@ -502,7 +548,7 @@ def collect_LR(agents_param, all_LR):
     return agents_param
 
 
-def update_value(agents_param,all_LR):
+def update_value(agents_param, all_LR):
     '''
     Update the value of a variable chosen thanks to its LR.
     :param agents_param: all the agents with their parameters. type : dict
@@ -576,27 +622,29 @@ def result_final(cons_dict, var_value, constraint):
     for var, cons in constraint.items():
         if len(cons_dict[cons[0]]) != 1:
             cons_details = cons_dict[cons[0]]
-            final_cost[var] = str(condition_function_result(cons_details,var_value))
+            final_cost[var] = str(condition_function_result(cons_details, var_value))
         else:
             if cons_dict[cons[0]][0].find("max") != -1:
                 constraint_formula = cons_dict[cons[0]][0]
                 final_cost[var] = str(max_function_result(constraint_formula, var_value))
-
+            if cons_dict[cons[0]][0].find("min") != -1:
+                constraint_formula = cons_dict[cons[0]][0]
+                final_cost[var] = str(min_function_result(constraint_formula, var_value))
 
             else:
                 constraint_formula = cons_dict[cons[0]][0]
                 formula = prepare_formula(constraint_formula, var_value)
                 final_cost[var] = str(RVN(formula))
 
-
-
     return final_cost
 
 
-def draw_histo(histo,nbr_launch,file):
+def draw_histo(histo, nbr_launch, file):
     """
     Create an histogram in order to compare the results found by the algorithms.
     :param histo: all the values and the number of occurrence of each value, for each algorithm. type : dict
+    :param nbr_launch: the number of iterations desired. type : int
+    :param file: the name of the file that is treated. type: str
     :return: None
     """
     values = []
@@ -609,12 +657,12 @@ def draw_histo(histo,nbr_launch,file):
     for v3 in histo["gca_mgm"]:
         if float(v3) not in values:
             values.append(float(v3))
-    for j in range(int(min(values)),int(max(values))):
+    for j in range(int(min(values)), int(max(values))):
         if j not in values:
             values.append(j)
 
     values = sorted(values)
-    #mgm
+    # mgm
     y = []
     for element in values:
         if element in histo["mgm"].keys():
@@ -622,9 +670,9 @@ def draw_histo(histo,nbr_launch,file):
         else:
             y.append(0)
     width = 0.7
-    plt.bar(values,y,width,color = 'r',label = "MGM")
+    plt.bar(values, y, width, color='r', label="MGM")
 
-    #mcs_mgm
+    # mcs_mgm
     y = []
     for element in values:
         if element in histo["mcs_mgm"].keys():
@@ -632,9 +680,9 @@ def draw_histo(histo,nbr_launch,file):
         else:
             y.append(0)
     width = 0.4
-    plt.bar(values, y, width, color='g',label = "MCS_MGM")
+    plt.bar(values, y, width, color='g', label="MCS_MGM")
 
-    #gca_mgm
+    # gca_mgm
     y = []
     for element in values:
         if element in histo["gca_mgm"].keys():
@@ -646,7 +694,7 @@ def draw_histo(histo,nbr_launch,file):
     axe.xaxis.set_ticks(range(int(min(values)), int(max(values)) + 1))
     axe.yaxis.set_ticks(range(nbr_launch))
     plt.tick_params(axis='y', labelsize=7)
-    plt.bar(values, y, width, color='b',label = "GCA_MGM")
+    plt.bar(values, y, width, color='b', label="GCA_MGM")
 
-    plt.legend(loc = 'upper right')
-    plt.savefig("Results/Histogram_{}_{}.pdf".format(nbr_launch,file.strip(".yaml")))
+    plt.legend(loc='upper right')
+    plt.savefig("Results/Histogram_{}_{}.pdf".format(nbr_launch, file.strip(".yaml")))
