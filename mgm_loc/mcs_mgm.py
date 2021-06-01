@@ -13,7 +13,7 @@ def launch_prog():
     file = hf.file_name(sys.argv)
     domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(
         file)  # Initialize the parameters of the problem
-    time_limit = hf.time_limit(sys.argv)  # get the number max of cycles
+    time_limit = hf.time_limit(sys.argv)# get the number max of cycles
 
     agents_param = hp.config_agents(variables, agents, constraints)  # Initialize each agent
     agents_param = hp.init_agents(agents_param, domain) # line 1

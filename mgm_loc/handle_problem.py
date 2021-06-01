@@ -105,6 +105,69 @@ def collect_values(agents_param, value_mess):
                     agent["neighbors"][neighbor] = value_mess[var]
     return agents_param
 
+def condition_function_result(cons_details,var_value):
+    """
+    Compute the valor of a constraint in case of conditional function, with if / else
+    :param cons_details: details about the constraint, conditions. type : list
+    :return: result: the value of the constraint. type : float
+    """
+    comparison = ["<", ">", "<=", ">=", "==", "!="]
+    result = {}
+    cons_list = []
+    for c in cons_details:
+        cons_list.append(c.split())
+    for element in cons_list:
+        if "=" in element:
+            formula = []
+            indice = 1000
+            for l in range(len(element)):
+
+                if element[l] == "=":
+                    res_ind = element[l-1]
+                    result[res_ind] = None
+                    indice = l
+                if l > indice:
+                    formula.append(element[l])
+
+            formula = " ".join(formula)
+            formula_ready = prepare_formula(formula,var_value)
+
+            resultat = RVN(formula_ready)
+            result[res_ind] = resultat
+
+
+        if "if" in element:
+            element.remove("if")
+            line= " ".join(element)
+            line = line.strip(":")
+            line = line.split()
+            for e in line:
+                try:
+                    eval(e)
+                    ind = line.index(e)
+                    val = float(e)
+                    tot = [ind,val]
+                except:
+                    if e in comparison:
+                        ind_comp = line.index(e)
+                    else:
+                        value = float(result[e])
+                        ind_val = line.index(e)
+            # build the final condition
+            line[tot[0]] = str(tot[1])
+            line[ind_val] = str(value)
+            strline = " ".join(line)
+            cond = eval(strline)
+            if cond :
+                good_ind = cons_list.index(element) + 1
+            else:
+                good_ind = cons_list.index(element) + 3
+
+            for final_res in range(len(cons_list[good_ind])):
+                if cons_list[good_ind][final_res] == "return":
+                    value_returned = eval(cons_list[good_ind][final_res+1])
+
+            return value_returned
 
 def calculate_constraint(agents_param, cons_dict, var_value):
     '''
@@ -120,9 +183,14 @@ def calculate_constraint(agents_param, cons_dict, var_value):
             value = 0
             for i in range(len(agent["constraint"])):
                 constraint = agent["constraint"][i]
-                constraint_formula = cons_dict[constraint][0]
-                formula = prepare_formula(constraint_formula, var_value)
-                value += RVN(formula)
+                if len(cons_dict[constraint]) != 1:
+
+                    cons_details = cons_dict[constraint]
+                    value = condition_function_result(cons_details,var_value)
+                else:
+                    constraint_formula = cons_dict[constraint][0]
+                    formula = prepare_formula(constraint_formula, var_value)
+                    value += RVN(formula)
             agent["prev_cons_value"] = agent["cons_value"]
             agent["cons_value"] = str(value)
     return agents_param
@@ -142,9 +210,15 @@ def calculate_constraint_init(agents_param, cons_dict, var_value):
             value = 0
             for i in range(len(agent["constraint"])):
                 constraint = agent["constraint"][i]
-                constraint_formula = cons_dict[constraint][0]
-                formula = prepare_formula(constraint_formula, var_value)
-                value += RVN(formula)
+                print(constraint)
+                print(cons_dict[constraint])
+                if len(cons_dict[constraint]) != 1:
+                    cons_details = cons_dict[constraint]
+                    value = condition_function_result(cons_details,var_value)
+                else:
+                    constraint_formula = cons_dict[constraint][0]
+                    formula = prepare_formula(constraint_formula, var_value)
+                    value += RVN(formula)
             agent["cons_value"] = str(value)
             agent["prev_cons_value"] = str(value)
     return agents_param
@@ -304,9 +378,13 @@ def calculate_constraint_agent(agent, cons_dict, var_value):
         value = 0
         for i in range(len(agent["constraint"])):
             constraint = agent["constraint"][i]
-            constraint_formula = cons_dict[constraint][0]
-            formula = prepare_formula(constraint_formula, var_value)
-            value += RVN(formula)
+            if len(cons_dict[constraint]) != 1:
+                cons_details = cons_dict[constraint]
+                value = condition_function_result(cons_details,var_value)
+            else:
+                constraint_formula = cons_dict[constraint][0]
+                formula = prepare_formula(constraint_formula, var_value)
+                value += RVN(formula)
         agent["cons_value"] = str(value)
     return agent
 
@@ -440,9 +518,13 @@ def result_final(cons_dict, var_value, constraint):
     final_cost = {}
 
     for var, cons in constraint.items():
-        constraint_formula = cons_dict[cons[0]][0]
-        formula = prepare_formula(constraint_formula, var_value)
-        final_cost[var] = str(RVN(formula))
+        if len(cons_dict[cons[0]]) != 1:
+            cons_details = cons_dict[cons[0]]
+            final_cost[var] = str(condition_function_result(cons_details,var_value))
+        else:
+            constraint_formula = cons_dict[cons[0]][0]
+            formula = prepare_formula(constraint_formula, var_value)
+            final_cost[var] = str(RVN(formula))
 
     return final_cost
 
