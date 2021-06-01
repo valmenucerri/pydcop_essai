@@ -17,11 +17,16 @@ constraints:
     CA:
       type: extensional
       variables: vA
-      function: min([5, vB, vC])
+      function: -2 * vC + vB
     CB:
       type: extensional
       variables: vB
-      function: -2 * vC + vB
+      function:
+        a = vA + vB + vB + vB + vB * 2
+        if a < 2:
+          return -10
+        else:
+          return 0
     CC:
       type: extensional
       variables: vC

@@ -192,7 +192,6 @@ def get_constraints(file_list, first_index, variables):
 
             else:  # add variables even if they are not explicitly mentioned in the file
                 associated_var = []
-                print(file_list[i + step_s].split())
                 for var in file_list[i + step_s].split():
                     var2 = var.strip('['+']'+','+'('+')'+"min"+"max")
                     if var2 in var_constraints.keys():
