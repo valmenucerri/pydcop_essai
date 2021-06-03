@@ -1,5 +1,5 @@
 name: graph coloring ex
-je suis val
+objective: max
 
 domains:
   cost:
@@ -17,16 +17,11 @@ constraints:
     CA:
       type: extensional
       variables: vA
-      function: -2 * vC + vB
+      function: vA - vB - vC
     CB:
       type: extensional
       variables: vB
-      function:
-        a = vA + vB + vB + vB + vB * 2
-        if a < 2:
-          return -10
-        else:
-          return 0
+      function: -2 * vC + vB
     CC:
       type: extensional
       variables: vC

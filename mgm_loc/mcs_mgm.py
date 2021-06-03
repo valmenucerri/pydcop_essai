@@ -34,7 +34,7 @@ def launch_prog():
         # Here's the new part, that makes the difference between MGM and MCS-MGM
         for agent, param in agents_param.items(): # line 5
             if param["current_LR"] is not None:
-                new_agent, cons_to_transfer = hp.share_constraint_1(param, prev_var_value)  # line 7/8/9
+                new_agent, cons_to_transfer = hp.share_constraint_1(param, prev_var_value,cons_dict)  # line 7/8/9
                 agents_param[agent] = new_agent
                 for var, cons in cons_to_transfer.items():
                     for i in range (len(cons)):

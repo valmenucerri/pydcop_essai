@@ -424,7 +424,7 @@ def share_constraint_2(agent, prev_var_value):
     return agent, cons_to_send
 
 
-def share_constraint_1(agent, prev_var_value):
+def share_constraint_1(agent, prev_var_value,cons_dict):
     '''
     Update constraint value if it's necessary
     :param agent: an agent of the problem. type : dict
@@ -443,8 +443,25 @@ def share_constraint_1(agent, prev_var_value):
         try:
             if delta > float(agent["neighbors_LR"][neighbor]):
                 cond = True
-                cons_to_send[neighbor] = agent["constraint"]
-
+                for cons in agent["constraint"]:
+                    current_formula = cons_dict[cons][0]
+                    list_formula = current_formula.split()
+                    for element in range(len(list_formula)):
+                        if list_formula[element] == neighbor:
+                            str_cons_to_send = str( list_formula[element])
+                            try:
+                                if list_formula[element-1] == "*":
+                                    nbr = float(list_formula[element-2])
+                                    str_cons_to_send = str( nbr) + ' '+str(list_formula[element-1]) +' '+ str(list_formula[element])
+                            except:
+                                str_cons_to_send += str( list_formula[element-1])
+                            try:
+                                cons_to_send[neighbor] += str_cons_to_send
+                            except:
+                                cons_to_send[neighbor] = str_cons_to_send
+                            if cons_to_send[neighbor] in prev_var_value.keys():
+                                cons_to_send[neighbor] = "+ " + cons_to_send[neighbor]
+                print(cons_to_send)
         except:
             pass
 

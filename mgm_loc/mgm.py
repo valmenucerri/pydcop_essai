@@ -20,6 +20,7 @@ def launch_prog():
     hp.calculate_constraint_init(agents_param, cons_dict, var_value)
     cost_init = 0
     for agent in agents_param.values():
+        print(agent)
         cost_init += float(agent["cons_value"])
     nbr_cycle = 0
     while nbr_cycle < time_limit:
