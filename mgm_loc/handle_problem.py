@@ -718,7 +718,9 @@ def draw_histo(histo, nbr_launch, file):
     axe.xaxis.set_ticks(range(int(min(values)), int(max(values)) + 1))
     axe.yaxis.set_ticks(range(nbr_launch))
     plt.tick_params(axis='y', labelsize=7)
+    plt.tick_params(axis='x', labelsize=7)
     plt.bar(values, y, width, color='b', label="GCA_MGM")
-
+    plt.xlabel("Coûts finaux")
+    plt.ylabel("Nombre d'occurences")
     plt.legend(loc='upper right')
     plt.savefig("Results/Histogram_{}_{}.pdf".format(nbr_launch, file.strip(".yaml")))

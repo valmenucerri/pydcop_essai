@@ -62,5 +62,5 @@ if '__main__' ==__name__:
         draw_histo(histo,nbr_launch,file)
     else:
         final_cost = gca_mgm.launch_prog()
-
+    print('\a')
 
