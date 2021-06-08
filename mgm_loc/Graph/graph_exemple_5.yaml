@@ -25,7 +25,7 @@ constraints:
     C1:
       type: extensional
       variables: var1
-      function: var4 / 1 + var4
+      function: var4 * 1 + var4
     C2:
       type: extensional
       variables: var2

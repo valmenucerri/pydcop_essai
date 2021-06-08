@@ -44,7 +44,7 @@ def launch_prog():
                         cons_dict[constraints[var][0]][0] = cons +" + "+ cons_dict[constraints[var][0]][0]
                     else:
                         cons_dict[constraints[var][0]][0] += " "+cons
-        print("new_cons_dict : ",cons_dict)
+
         #agents_param = hp.update_cons(cons_to_send, agents_param)  # line 10/11
         # compute the LR for each variable
         all_LR = hp.all_LR(agents_param)  # line 12/13

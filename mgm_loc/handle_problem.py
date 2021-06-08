@@ -397,7 +397,7 @@ def RVN(formula_ready):
     return cons_value
 
 
-def share_constraint_2(agent, prev_var_value):
+def share_constraint_2(agent, prev_var_value,cons_dict):
     '''
     Update constraint value if it's necessary
     :param agent: an agent of the problem. type : dict
@@ -432,13 +432,13 @@ def share_constraint_2(agent, prev_var_value):
                                 if element != 0 :
                                     str_cons_to_send = str( list_formula[element-1]) + " "+str_cons_to_send
                             try:
-                                cons_to_send[neighbor] = str_cons_to_send + cons_to_send[neighbor]
+                                cons_to_send[neighbor] = str_cons_to_send + " "+ cons_to_send[neighbor]
                             except:
                                 cons_to_send[neighbor] = str_cons_to_send
                             if cons_to_send[neighbor] in prev_var_value.keys():
                                 cond = True
                                 cons_to_remp = cons_to_send[neighbor]
-                                cons_to_send[neighbor] = "+ " + cons_to_send[neighbor]
+                                cons_to_send[neighbor] = " + " + cons_to_send[neighbor]
 
 
                 if cond:
@@ -487,7 +487,7 @@ def share_constraint_1(agent, prev_var_value,cons_dict):
                                 if element != 0 :
                                     str_cons_to_send = str( list_formula[element-1]) + " "+str_cons_to_send
                             try:
-                                cons_to_send[neighbor] = str_cons_to_send + cons_to_send[neighbor]
+                                cons_to_send[neighbor] = str_cons_to_send + " " + cons_to_send[neighbor]
                             except:
                                 cons_to_send[neighbor] = str_cons_to_send
                             if cons_to_send[neighbor] in prev_var_value.keys():

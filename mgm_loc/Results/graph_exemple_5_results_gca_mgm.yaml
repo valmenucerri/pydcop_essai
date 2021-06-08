@@ -1,16 +1,16 @@
 Assignments :
 var0 : 0
-var1 : 2
+var1 : 1
 var2 : 0
-var3 : 0
-var4 : 0
+var3 : 2
+var4 : 2
 
 Costs :
 var0 : 1
-var1 : 0.0
-var2 : -2
-var3 : 0
-var4 : -2
+var1 : 3
+var2 : 0
+var3 : 4
+var4 : -4
 
-Final cost : -3.0
-Initial cost : 5.0
+Final cost : 4.0
+Initial cost : 4.0
