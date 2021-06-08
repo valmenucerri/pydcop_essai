@@ -1,0 +1,68 @@
+name: graph_exemple_9
+objective: max
+
+domains:
+  cost:
+    values: [0,1,2]
+
+variables:
+  var0:
+    domain: cost
+  var1:
+    domain: cost
+  var2:
+    domain: cost
+  var3:
+    domain: cost
+  var4:
+    domain: cost
+  var5:
+    domain: cost
+  var6:
+    domain: cost
+  var7:
+    domain: cost
+  var8:
+    domain: cost
+
+constraints:
+    C0:
+      type: extensional
+      variables: var0
+      function: var2 * 1 + 1 + 0 - 1 - var5 - var2 + var7 + var0
+    C1:
+      type: extensional
+      variables: var1
+      function: var0 + var0 - 7 - 1
+    C2:
+      type: extensional
+      variables: var2
+      function: var6 - var7 - var2 - 0 - 1 - 2 + var1 + 6 + 1 - var7
+    C3:
+      type: extensional
+      variables: var3
+      function: var3 + 1 - var7 + var1 + var1 - 1 - 0 - var2 + var6
+    C4:
+      type: extensional
+      variables: var4
+      function: var5 - var7 + var6 + var5 + var1 - var4
+    C5:
+      type: extensional
+      variables: var5
+      function: var7 - 1 + var3 - 1 + var1
+    C6:
+      type: extensional
+      variables: var6
+      function: var3 + 1 - var4 + 0
+    C7:
+      type: extensional
+      variables: var7
+      function: var1 + 4
+    C8:
+      type: extensional
+      variables: var8
+      function: var4 - var4 - var4 - 1 + 0 - 1
+
+
+
+agents: [a0, a1, a2, a3, a4, a5, a6, a7, a8]
