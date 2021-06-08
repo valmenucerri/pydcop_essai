@@ -4,6 +4,8 @@ import handle_file as hf
 import handle_problem as hp
 import sys
 
+
+
 def launch_prog():
     """
     Launch the program
@@ -37,10 +39,13 @@ def launch_prog():
                 new_agent, cons_to_transfer = hp.share_constraint_1(param, prev_var_value,cons_dict)  # line 7/8/9
                 agents_param[agent] = new_agent
                 for var, cons in cons_to_transfer.items():
-                    for i in range (len(cons)):
-                        cons_to_send[var].append(cons[i])
-
-        agents_param = hp.update_cons(cons_to_send, agents_param)  # line 10/11
+                    formula_list = cons.split()
+                    if "*" in formula_list:
+                        cons_dict[constraints[var][0]][0] = cons +" + "+ cons_dict[constraints[var][0]][0]
+                    else:
+                        cons_dict[constraints[var][0]][0] += " "+cons
+        print("new_cons_dict : ",cons_dict)
+        #agents_param = hp.update_cons(cons_to_send, agents_param)  # line 10/11
         # compute the LR for each variable
         all_LR = hp.all_LR(agents_param)  # line 12/13
         agents_param = hp.collect_LR(agents_param, all_LR)  # line 14
@@ -56,3 +61,4 @@ def launch_prog():
     for val in final_result.values():
         cost += float(val)
     return cost,cost_init
+

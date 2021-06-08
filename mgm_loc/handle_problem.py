@@ -408,19 +408,47 @@ def share_constraint_2(agent, prev_var_value):
     cons_to_send = {}
     cond = False
     agent2 = agent.copy()
+    var = prev_var_value.copy()
     for neighbor in agent["neighbors"]:
         prev_var_value[neighbor] = float(agent["neighbors"][neighbor])
         actual_cons = calculate_constraint_agent(agent2, cons_dict, prev_var_value)
         delta = float(agent["prev_cons_value"]) - float(actual_cons["cons_value"])
         try:
             if delta > 0:
-                cond = True
-                cons_to_send[neighbor] = agent["constraint"]
+                for cons in agent["constraint"]:
+                    current_formula = cons_dict[cons][0]
+                    list_formula = current_formula.split()
+                    for element in range(len(list_formula)):
+                        if list_formula[element] == neighbor:
+                            str_cons_to_send = str( list_formula[element])
+
+                            if list_formula[element-1] == "*":
+                                try:
+                                    nbr = int(list_formula[element-2])
+                                except:
+                                    nbr = list_formula[element-2]
+                                str_cons_to_send = str( nbr) + ' '+str(list_formula[element-1]) +' '+ str(list_formula[element])
+                            else:
+                                if element != 0 :
+                                    str_cons_to_send = str( list_formula[element-1]) + " "+str_cons_to_send
+                            try:
+                                cons_to_send[neighbor] = str_cons_to_send + cons_to_send[neighbor]
+                            except:
+                                cons_to_send[neighbor] = str_cons_to_send
+                            if cons_to_send[neighbor] in prev_var_value.keys():
+                                cond = True
+                                cons_to_remp = cons_to_send[neighbor]
+                                cons_to_send[neighbor] = "+ " + cons_to_send[neighbor]
+
+
+                if cond:
+                    cons_dict[agent["constraint"][0]][0] = cons_dict[agent["constraint"][0]][0].replace(cons_to_remp,"0")
+                    cond = False
+                else:
+                    cons_dict[agent["constraint"][0]][0] =  cons_dict[agent["constraint"][0]][0].replace(neighbor,"0")
         except:
             pass
 
-    if cond:
-        agent["cons_value"] = 0
     return agent, cons_to_send
 
 
@@ -442,31 +470,40 @@ def share_constraint_1(agent, prev_var_value,cons_dict):
         delta = float(agent["prev_cons_value"]) - float(actual_cons["cons_value"])
         try:
             if delta > float(agent["neighbors_LR"][neighbor]):
-                cond = True
                 for cons in agent["constraint"]:
                     current_formula = cons_dict[cons][0]
                     list_formula = current_formula.split()
                     for element in range(len(list_formula)):
                         if list_formula[element] == neighbor:
                             str_cons_to_send = str( list_formula[element])
+
+                            if list_formula[element-1] == "*":
+                                try:
+                                    nbr = int(list_formula[element-2])
+                                except:
+                                    nbr = list_formula[element-2]
+                                str_cons_to_send = str( nbr) + ' '+str(list_formula[element-1]) +' '+ str(list_formula[element])
+                            else:
+                                if element != 0 :
+                                    str_cons_to_send = str( list_formula[element-1]) + " "+str_cons_to_send
                             try:
-                                if list_formula[element-1] == "*":
-                                    nbr = float(list_formula[element-2])
-                                    str_cons_to_send = str( nbr) + ' '+str(list_formula[element-1]) +' '+ str(list_formula[element])
-                            except:
-                                str_cons_to_send += str( list_formula[element-1])
-                            try:
-                                cons_to_send[neighbor] += str_cons_to_send
+                                cons_to_send[neighbor] = str_cons_to_send + cons_to_send[neighbor]
                             except:
                                 cons_to_send[neighbor] = str_cons_to_send
                             if cons_to_send[neighbor] in prev_var_value.keys():
+                                cond = True
+                                cons_to_remp = cons_to_send[neighbor]
                                 cons_to_send[neighbor] = "+ " + cons_to_send[neighbor]
-                print(cons_to_send)
+
+
+                if cond:
+                    cons_dict[agent["constraint"][0]][0] = cons_dict[agent["constraint"][0]][0].replace(cons_to_remp,"0")
+                    cond = False
+                else:
+                    cons_dict[agent["constraint"][0]][0] =  cons_dict[agent["constraint"][0]][0].replace(neighbor,"0")
         except:
             pass
 
-    if cond:
-        agent["cons_value"] = 0
     return agent, cons_to_send
 
 
