@@ -92,7 +92,10 @@ def correct_values(line):
     line_ad = line.strip('[')
     line_ad = line_ad.strip(']')
     line_ad = line_ad.strip(',')
+
     line_ad =line_ad.split(',')
+    for element in range(len(line_ad)):
+        line_ad[element] = line_ad[element].strip(' ')
 
     return line_ad
 

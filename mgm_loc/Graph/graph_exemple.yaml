@@ -1,5 +1,5 @@
 name: graph coloring ex
-objective: max
+objective: min
 
 domains:
   cost:

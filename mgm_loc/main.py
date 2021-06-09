@@ -3,8 +3,11 @@ import mgm
 import mcs_mgm
 import gca_mgm
 import handle_file as hf
-from handle_problem import draw_histo
-file = hf.file_name(sys.argv)
+#from handle_problem import draw_histo
+
+
+
+
 def histogram(histo,nbr_launch,file):
     """
     Create a file with all the results on multiple problems
@@ -26,11 +29,17 @@ def histogram(histo,nbr_launch,file):
 
 
 if '__main__' ==__name__:
-    if sys.argv[1] == "mgm":
+    argv = "main.py mcs_mgm  time 15 graph_exemple.yaml"
+    argv = argv.split()
+    print(argv)
+    #argv = sys.argv
+    if argv[1] == "mgm":
         final_cost = mgm.launch_prog()
-    elif sys.argv[1] == "mcs_mgm":
-        final_cost2 = mcs_mgm.launch_prog()
-    elif sys.argv[1] == "all":
+    elif argv[1] == "mcs_mgm":
+        final_cost2 = mcs_mgm.launch_prog(argv)
+    else:
+        final_cost = gca_mgm.launch_prog()
+    """elif argv[1] == "all":
         for element in range(len(sys.argv)):
             if sys.argv[element] == "nbr_iter":
                 nbr_launch = int(sys.argv[element + 1])
@@ -59,8 +68,7 @@ if '__main__' ==__name__:
             except:
                 histo["gca_mgm"][final_cost3] = [1, [cost_init3]]
         histogram(histo, nbr_launch, file)
-        draw_histo(histo,nbr_launch,file)
-    else:
-        final_cost = gca_mgm.launch_prog()
+        draw_histo(histo,nbr_launch,file)"""
+
 
 
