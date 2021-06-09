@@ -4,9 +4,10 @@ import random as r
 import matplotlib.pyplot as plt
 import pylab
 
-#self.domain, variables, constraints, cons_dict, cons_for_var, agents = 0
+
+# self.domain, variables, constraints, cons_dict, cons_for_var, agents = 0
 class HP:
-    def __init__(self,domain, variables, constraints, cons_dict, cons_for_var, agents):
+    def __init__(self, domain, variables, constraints, cons_dict, cons_for_var, agents):
         self.domain = domain
         self.variables = variables
         self.constraints = constraints
@@ -14,11 +15,9 @@ class HP:
         self.cons_for_var = cons_for_var
         self.agents = agents
 
-
-    def init_problem(self,argv):
+    def init_problem(self, argv):
         file = hf.file_name(argv)
         self.domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(file)
-
 
     def config_agents(self):
         '''
@@ -49,8 +48,7 @@ class HP:
 
         return agents_param
 
-
-    def init_agents_contr(self,agents_param):
+    def init_agents_contr(self, agents_param):
         '''
         Initialize the algorithm, assigning one random value per variable
         :param agents_param:  all the agents with their parameters (variable, var value, neighbors). type : dict
@@ -66,8 +64,7 @@ class HP:
                 agent["value"] = str(0)
         return agents_param
 
-
-    def init_agents(self,agents_param):
+    def init_agents(self, agents_param):
         '''
         Initialize the algorithm, assigning one random value per variable
         :param agents_param:  all the agents with their parameters (variable, var value, neighbors). type : dict
@@ -83,8 +80,7 @@ class HP:
                     pass
         return agents_param
 
-
-    def send_values(self,agents_param):
+    def send_values(self, agents_param):
         '''
         Create an iterable (a message) and put the new values of the variable inside.
         :param agents_param: all the agents with their parameters. type : dict
@@ -96,8 +92,7 @@ class HP:
 
         return value_mess
 
-
-    def collect_values(self,agents_param,value_mess):
+    def collect_values(self, agents_param, value_mess):
         '''
         Indicate to each agent his neighbors' variable's value.
         :param agents_param: all the agents with their parameters. type : dict
@@ -111,8 +106,7 @@ class HP:
                         agent["neighbors"][neighbor] = value_mess[var]
         return agents_param
 
-
-    def min_function_result(self,cons,var_value):
+    def min_function_result(self, cons, var_value):
         """
         Compute the constraint's cost if its formula is a min function.
         :param cons: the formula of the constraint. type : str
@@ -120,7 +114,7 @@ class HP:
         :return: value_returned: value of the considered constraint. type : float
         """
         operator = ["+", "-", "/", "*"]
-        cons = cons.strip("min" +"max" + "(" + ")" + "[" + "]") # keep only the elements that must be compared
+        cons = cons.strip("min" + "max" + "(" + ")" + "[" + "]")  # keep only the elements that must be compared
         cons_list = cons.split(',')
         for element in range(len(cons_list)):
             nbr = False
@@ -128,24 +122,24 @@ class HP:
             # If the considered element is a float
             try:
                 value = eval(cons_list[element])
-                tot = [element, value] # keep the index and the value that have to be placed in the final list
+                tot = [element, value]  # keep the index and the value that have to be placed in the final list
                 nbr = True
             except:
                 # If the considered element is unknown, impossible to evaluate
                 el = cons_list[element].split()
                 for j in operator:
                     if j in el:
-                        opera = True # Check if the element is an operation
+                        opera = True  # Check if the element is an operation
                         break
                 for e in el:
                     if opera:
                         break
-                    elif e in var_value.keys(): # Check if the element is only a variable
+                    elif e in var_value.keys():  # Check if the element is only a variable
                         cons_list[element] = float(var_value[e])
 
             if nbr:  # If the considered element is a number, change it by its value
                 cons_list[tot[0]] = tot[1]
-            if opera: # If the considered element is an operation, change it by its result
+            if opera:  # If the considered element is an operation, change it by its result
                 formula = self.prepare_formula(cons_list[element], var_value)
                 tot2 = [element, self.RVN(formula)]
                 cons_list[tot2[0]] = tot2[1]
@@ -153,8 +147,7 @@ class HP:
         value_returned = min(cons_list)
         return value_returned
 
-
-    def max_function_result(self,cons, var_value):
+    def max_function_result(self, cons, var_value):
         """
         Compute the constraint's cost if its formula is a max function.
         :param cons: the formula of the constraint. type : str
@@ -195,8 +188,7 @@ class HP:
         value_returned = max(cons_list)
         return value_returned
 
-
-    def condition_function_result(self,cons_details, var_value):
+    def condition_function_result(self, cons_details, var_value):
         """
         Compute the valor of a constraint in case of conditional function, with if / else
         :param cons_details: details about the constraint, conditions. type : list
@@ -223,7 +215,7 @@ class HP:
                 formula = " ".join(formula)
                 formula_ready = self.prepare_formula(formula, var_value)
 
-                resultat = self.RVN(formula_ready) # Compute the right side of the equality
+                resultat = self.RVN(formula_ready)  # Compute the right side of the equality
                 result[res_ind] = resultat
 
             if "if" in element:  # Check if the element is the first condition line
@@ -253,11 +245,11 @@ class HP:
                             value = float(var_value[e])
                             new_value = True
                         else:
-                        # If e is the variable of the equality
+                            # If e is the variable of the equality
                             value2 = float(result[e])
                             ind_val = line.index(e)
                             val_equa = True
-                # build the final condition
+                    # build the final condition
                     if nbr:
                         line[tot[0]] = str(tot[1])
                     if val_equa:
@@ -278,8 +270,7 @@ class HP:
 
                 return value_returned
 
-
-    def calculate_constraint(self,agents_param, var_value):
+    def calculate_constraint(self, agents_param, var_value):
         '''
         Compute the value of the constraint for each variable
         :param agents_param: all the agents with their parameters. type : dict
@@ -293,7 +284,8 @@ class HP:
                 value = 0
                 for i in range(len(agent["constraint"])):
                     constraint = agent["constraint"][i]
-                    if len(self.cons_dict[constraint]) != 1:  # If the constraint is a conditional constraint with if/else
+                    if len(self.cons_dict[
+                               constraint]) != 1:  # If the constraint is a conditional constraint with if/else
 
                         cons_details = self.cons_dict[constraint]
                         value = self.condition_function_result(cons_details, var_value)
@@ -306,15 +298,15 @@ class HP:
                             value = self.min_function_result(constraint_formula, var_value)
 
                         else:
-                            constraint_formula = self.cons_dict[constraint][0]  # If the constraint is a simple constraint
+                            constraint_formula = self.cons_dict[constraint][
+                                0]  # If the constraint is a simple constraint
                             formula = self.prepare_formula(constraint_formula, var_value)
                             value += self.RVN(formula)
                 agent["prev_cons_value"] = agent["cons_value"]
                 agent["cons_value"] = str(value)
         return agents_param
 
-
-    def calculate_constraint_init(self,agents_param, var_value):
+    def calculate_constraint_init(self, agents_param, var_value):
         '''
         Compute the value of the constraint for each variable
         :param agents_param: all the agents with their parameters. type : dict
@@ -347,8 +339,7 @@ class HP:
                 agent["prev_cons_value"] = str(value)
         return agents_param
 
-
-    def prepare_formula(self,constraint_formula, var_value):
+    def prepare_formula(self, constraint_formula, var_value):
         '''
         Get the formula of a constraint and change it in order to have an iterable, that can be used with Reverse Polish
         Notation
@@ -376,8 +367,7 @@ class HP:
                 pass
         return formula_ready
 
-
-    def RVN(self,formula_ready):
+    def RVN(self, formula_ready):
         '''
         Use the RVN technic in order to get the value of a constraint, if this constraint depends of other variables.
         :param formula_ready: the formula that gives the value of the constrait. type : list
@@ -402,8 +392,7 @@ class HP:
         cons_value = pile.pop()  # Keep only the final result by popping the last operator
         return cons_value
 
-
-    def share_constraint_2(self,agent, prev_var_value):
+    def share_constraint_2(self, agent, prev_var_value):
         '''
         Update constraint value if it's necessary
         :param agent: an agent of the problem. type : dict
@@ -426,19 +415,20 @@ class HP:
                         list_formula = current_formula.split()
                         for element in range(len(list_formula)):
                             if list_formula[element] == neighbor:
-                                str_cons_to_send = str( list_formula[element])
+                                str_cons_to_send = str(list_formula[element])
 
-                                if list_formula[element-1] == "*":
+                                if list_formula[element - 1] == "*":
                                     try:
-                                        nbr = int(list_formula[element-2])
+                                        nbr = int(list_formula[element - 2])
                                     except:
-                                        nbr = list_formula[element-2]
-                                    str_cons_to_send = str( nbr) + ' '+str(list_formula[element-1]) +' '+ str(list_formula[element])
+                                        nbr = list_formula[element - 2]
+                                    str_cons_to_send = str(nbr) + ' ' + str(list_formula[element - 1]) + ' ' + str(
+                                        list_formula[element])
                                 else:
-                                    if element != 0 :
-                                        str_cons_to_send = str( list_formula[element-1]) + " "+str_cons_to_send
+                                    if element != 0:
+                                        str_cons_to_send = str(list_formula[element - 1]) + " " + str_cons_to_send
                                 try:
-                                    cons_to_send[neighbor] = str_cons_to_send + " "+ cons_to_send[neighbor]
+                                    cons_to_send[neighbor] = str_cons_to_send + " " + cons_to_send[neighbor]
                                 except:
                                     cons_to_send[neighbor] = str_cons_to_send
                                 if cons_to_send[neighbor] in prev_var_value.keys():
@@ -446,19 +436,19 @@ class HP:
                                     cons_to_remp = cons_to_send[neighbor]
                                     cons_to_send[neighbor] = " + " + cons_to_send[neighbor]
 
-
                     if cond:
-                        self.cons_dict[agent["constraint"][0]][0] = self.cons_dict[agent["constraint"][0]][0].replace(cons_to_remp,"0")
+                        self.cons_dict[agent["constraint"][0]][0] = self.cons_dict[agent["constraint"][0]][0].replace(
+                            cons_to_remp, "0")
                         cond = False
                     else:
-                        self.cons_dict[agent["constraint"][0]][0] =  self.cons_dict[agent["constraint"][0]][0].replace(neighbor,"0")
+                        self.cons_dict[agent["constraint"][0]][0] = self.cons_dict[agent["constraint"][0]][0].replace(
+                            neighbor, "0")
             except:
                 pass
 
         return agent, cons_to_send
 
-
-    def share_constraint_1(self,agent, prev_var_value):
+    def share_constraint_1(self, agent, prev_var_value):
         '''
         Update constraint value if it's necessary
         :param agent: an agent of the problem. type : dict
@@ -481,17 +471,18 @@ class HP:
                         list_formula = current_formula.split()
                         for element in range(len(list_formula)):
                             if list_formula[element] == neighbor:
-                                str_cons_to_send = str( list_formula[element])
+                                str_cons_to_send = str(list_formula[element])
 
-                                if list_formula[element-1] == "*":
+                                if list_formula[element - 1] == "*":
                                     try:
-                                        nbr = int(list_formula[element-2])
+                                        nbr = int(list_formula[element - 2])
                                     except:
-                                        nbr = list_formula[element-2]
-                                    str_cons_to_send = str( nbr) + ' '+str(list_formula[element-1]) +' '+ str(list_formula[element])
+                                        nbr = list_formula[element - 2]
+                                    str_cons_to_send = str(nbr) + ' ' + str(list_formula[element - 1]) + ' ' + str(
+                                        list_formula[element])
                                 else:
-                                    if element != 0 :
-                                        str_cons_to_send = str( list_formula[element-1]) + " "+str_cons_to_send
+                                    if element != 0:
+                                        str_cons_to_send = str(list_formula[element - 1]) + " " + str_cons_to_send
                                 try:
                                     cons_to_send[neighbor] = str_cons_to_send + " " + cons_to_send[neighbor]
                                 except:
@@ -501,19 +492,19 @@ class HP:
                                     cons_to_remp = cons_to_send[neighbor]
                                     cons_to_send[neighbor] = "+ " + cons_to_send[neighbor]
 
-
                     if cond:
-                        self.cons_dict[agent["constraint"][0]][0] = self.cons_dict[agent["constraint"][0]][0].replace(cons_to_remp,"0")
+                        self.cons_dict[agent["constraint"][0]][0] = self.cons_dict[agent["constraint"][0]][0].replace(
+                            cons_to_remp, "0")
                         cond = False
                     else:
-                        self.cons_dict[agent["constraint"][0]][0] =  self.cons_dict[agent["constraint"][0]][0].replace(neighbor,"0")
+                        self.cons_dict[agent["constraint"][0]][0] = self.cons_dict[agent["constraint"][0]][0].replace(
+                            neighbor, "0")
             except:
                 pass
 
         return agent, cons_to_send
 
-
-    def update_cons(self,cons_to_send, agents_param):
+    def update_cons(self, cons_to_send, agents_param):
         '''
         Update constraints for each variable by distributing constraints that must be transferred
         :param cons_to_send: the constraints that must be transferred. type : dict
@@ -529,8 +520,7 @@ class HP:
 
         return agents_param
 
-
-    def get_var_value(self,agents_param):
+    def get_var_value(self, agents_param):
         '''
         Get the values of each variable, anytime
         :param agents_param: all the agents with their parameters
@@ -542,8 +532,7 @@ class HP:
             var_value[agent["variable"]] = int(agent["value"])
         return var_value
 
-
-    def calculate_constraint_agent(self,agent, var_value):
+    def calculate_constraint_agent(self, agent, var_value):
         '''
         Compute the value of the constraint for each variable
         :param agents_param: all the agents with their parameters. type : dict
@@ -574,8 +563,7 @@ class HP:
             agent["cons_value"] = str(value)
         return agent
 
-
-    def compute_LR_min(self,agent):
+    def compute_LR_min(self, agent):
         '''
         Try all the values with the constraint of a variable in order to find the best LR.
         :param: agent: an agent of the problem. type : dict
@@ -600,8 +588,7 @@ class HP:
         agent["cons_value"] = cons_init
         return best_LR
 
-
-    def compute_LR_max(self,agent):
+    def compute_LR_max(self, agent):
         '''
         Try all the values with the constraint of a variable in order to find the best LR objective is max)
         :param: agent: an agent of the problem. type : dict
@@ -626,8 +613,7 @@ class HP:
         agent["cons_value"] = cons_init
         return best_LR
 
-
-    def all_LR(self,agents_param,objective):
+    def all_LR(self, agents_param, objective):
         '''
         Create an iterable with all the best LRs and the value associated, for all variables.
         :param agents_param: agents_param: all the agents with their parameters. type : dict
@@ -644,8 +630,7 @@ class HP:
 
         return all_LR
 
-
-    def collect_LR(self,agents_param, all_LR):
+    def collect_LR(self, agents_param, all_LR):
         '''
         Indicate to each agent his neighbors' LR's value.
         :param agents_param: all the agents with their parameters. type : dict
@@ -660,8 +645,7 @@ class HP:
                         agent["neighbors_LR"][neighbor] = all_LR[var][0]
         return agents_param
 
-
-    def update_value(self,agents_param, all_LR,objective):
+    def update_value(self, agents_param, all_LR, objective):
         '''
         Update the value of a variable chosen thanks to its LR.
         :param agents_param: all the agents with their parameters. type : dict
@@ -678,8 +662,7 @@ class HP:
 
         return agents_param
 
-
-    def max_dict(self,dictio):
+    def max_dict(self, dictio):
         '''
         Compute the index associated to the max value in a dictionary of iterable.
         :param dictio: the iterable in which we want to have the index of the max value. type : dict
@@ -696,7 +679,7 @@ class HP:
 
         return key
 
-    def min_dict(selfself,dictio):
+    def min_dict(selfself, dictio):
         """
         Compute the index associated to the min value in a dictionary of iterable.
         :param dictio: the iterable in which we want to have the index of the min value. type : dict
@@ -713,7 +696,6 @@ class HP:
 
         return key
 
-
     def cons_update(self, cons_to_transfer):
         for var, cons in cons_to_transfer.items():
             formula_list = cons.split()
@@ -722,7 +704,7 @@ class HP:
             else:
                 self.cons_dict[self.constraints[var][0]][0] += " " + cons
 
-    def show_result(self,agents_param, file, algo, final_result, cost_init):
+    def show_result(self, agents_param, file, algo, final_result, cost_init, height_cons):
         '''
         how the results; with the value of each variable and the constraints cost for each variable
         :param agents_param: all the agents with the final parameters. type : dict
@@ -730,8 +712,12 @@ class HP:
         :param algo: the name of the algorithm that has been used. type : str
         :param final_result: all the costs, considering only the constraints given in the initialization part. type : dict
         :param cost_init: the initial cost, before solving the problem. type : float
+        :param height_cons: len of each constraint in the initialisation. type : dict
         :return: None
         '''
+        new_height = {}
+        for cons, form in self.cons_dict.items():
+            new_height[cons] = len(form[0].split())
         if algo != "all":
             with open("Results/{}_results_{}.yaml".format(file.strip(".yaml"), algo.strip(".py")), 'w') as f:
                 f.write("Assignments :" + "\n")
@@ -747,12 +733,16 @@ class HP:
                 for val in final_result.values():
                     cost += float(val)
                 f.write(str(cost) + "\n")
-                f.write("Initial cost : " + str(cost_init))
-
+                f.write("Initial cost : " + str(cost_init) + "\n")
+                f.write("\n")
+                f.write("Constraints initial length :" + "          " + "Constraints new length :" + "\n")
+                for cons in height_cons:
+                    f.write("{} :{}".format(cons, height_cons[cons]) + "                                    ")
+                    f.write("{} :{}".format(cons, new_height[cons]) + "\n")
 
     def result_final(self, var_value, constraint):
         """
-        Compute the final result with only the constraints given in the initialization part
+        Compute the final result with only the constraits given in the initialization part
         :param cons_dict: formulas of all the constraints. type : dict
         :param var_value: all the values of the variables. type : dict
         :param constraint: constraint for each variable. type: dict
@@ -778,8 +768,7 @@ class HP:
 
         return final_cost
 
-
-    def draw_histo(self,histo, nbr_launch, file):
+    def draw_histo(self, histo, nbr_launch, file):
         """
         Create an histogram in order to compare the results found by the algorithms.
         :param histo: all the values and the number of occurrence of each value, for each algorithm. type : dict

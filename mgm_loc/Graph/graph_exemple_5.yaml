@@ -1,43 +1,43 @@
 name: graph_exemple_5
-objective: max
+objective: min
 
 domains:
   cost:
     values: [0,1,2]
 
 variables:
-  var0:
+  a0:
     domain: cost
-  var1:
+  a1:
     domain: cost
-  var2:
+  a2:
     domain: cost
-  var3:
+  a3:
     domain: cost
-  var4:
+  a4:
     domain: cost
 
 constraints:
     C0:
       type: extensional
-      variables: var0
-      function: var0 - var4 - var4 + 1 - var4
+      variables: a0
+      function: a3 - 1 - a0 + a3 + 1 + a2
     C1:
       type: extensional
-      variables: var1
-      function: var4 * 1 + var4
+      variables: a1
+      function: a0 / 1 + 0 + a0
     C2:
       type: extensional
-      variables: var2
-      function: var2 + var4 + 0 - var1 + var4 + var0
+      variables: a2
+      function: a1 - a1
     C3:
       type: extensional
-      variables: var3
-      function: var4 + 0 - 0
+      variables: a3
+      function: a0 - a0 + a1 + a1 - a2 - a0
     C4:
       type: extensional
-      variables: var4
-      function: var3 + var2 - 2
+      variables: a4
+      function: a4 + 1 - 0 - 1 + a2
 
 
 

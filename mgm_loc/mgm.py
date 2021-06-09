@@ -13,6 +13,9 @@ def launch_prog(argv):
     domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(
         file)
     obj = hp.HP(domain, variables, constraints, cons_dict, cons_for_var, agents)
+    height_cons = {}
+    for cons, form in cons_dict.items():
+        height_cons[cons] = len(form[0].split())
 
     # Initialize the parameters of the problem
     obj.init_problem(argv)
@@ -39,7 +42,7 @@ def launch_prog(argv):
                                                var_value)  # Calculate the new constraints values
         nbr_cycle += 1
     final_result = obj.result_final(var_value, constraints)
-    obj.show_result(agents_param, file, algo, final_result, cost_init)
+    obj.show_result(agents_param, file, algo, final_result, cost_init,height_cons)
     cost = 0
     for val in final_result.values():
         cost += float(val)
