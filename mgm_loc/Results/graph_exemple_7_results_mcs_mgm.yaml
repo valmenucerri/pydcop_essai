@@ -1,0 +1,29 @@
+Assignments :
+a0 : 2
+a1 : 2
+a2 : 0
+a3 : 2
+a4 : 0
+a5 : 2
+a6 : 0
+
+Costs :
+a0 : -2.0
+a1 : -1
+a2 : 3
+a3 : 0
+a4 : 0
+a5 : -6
+a6 : 1
+
+Final cost : -5.0
+Initial cost : -3.0
+
+Constraints initial length :          Constraints new length :
+C0 :7                                    C0 :9
+C1 :15                                    C1 :21
+C2 :13                                    C2 :17
+C3 :7                                    C3 :9
+C4 :7                                    C4 :13
+C5 :9                                    C5 :17
+C6 :3                                    C6 :7

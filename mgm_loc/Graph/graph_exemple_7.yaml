@@ -1,0 +1,56 @@
+name: graph_exemple_7
+objective: min
+
+domains:
+  cost:
+    values: [0,1,2]
+
+variables:
+  a0:
+    domain: cost
+  a1:
+    domain: cost
+  a2:
+    domain: cost
+  a3:
+    domain: cost
+  a4:
+    domain: cost
+  a5:
+    domain: cost
+  a6:
+    domain: cost
+
+constraints:
+    C0:
+      type: extensional
+      variables: a0
+      function: a4 / 3 + a3 - a1
+    C1:
+      type: extensional
+      variables: a1
+      function: a2 + 1 - a4 - 1 - a1 + a6 - 1 - a5
+    C2:
+      type: extensional
+      variables: a2
+      function: a4 - a5 + a6 + 4 - a5 - 0 - 1
+    C3:
+      type: extensional
+      variables: a3
+      function: a1 - a5 - a3 + a5
+    C4:
+      type: extensional
+      variables: a4
+      function: a1 + 1 - 1 + a2
+    C5:
+      type: extensional
+      variables: a5
+      function: a4 - 1 - a0 - 1 + 0
+    C6:
+      type: extensional
+      variables: a6
+      function: a5 + 1
+
+
+
+agents: [a0, a1, a2, a3, a4, a5, a6]
