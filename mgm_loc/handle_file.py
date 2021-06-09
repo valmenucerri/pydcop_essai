@@ -39,10 +39,11 @@ def get_objective(file):
     with open("Graph/{}".format(file), 'r') as f:
         objective = None
         for line in f:
-            line = line.strip()
-            if line[0] == "objective:":
-                objective = line[1]
-                break
+            line = line.split()
+            if line != []:
+                if line[0] == "objective:":
+                    objective = line[1]
+                    break
     return objective
 
 

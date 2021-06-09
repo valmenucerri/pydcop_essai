@@ -10,6 +10,7 @@ def launch_prog(argv):
     """
     algo = hf.get_algo(argv)
     file = hf.file_name(argv)
+    objective = hf.get_objective(file)
     domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(
         file)
     obj = hp.HP(domain, variables, constraints, cons_dict, cons_for_var, agents)
@@ -46,10 +47,10 @@ def launch_prog(argv):
                         cons_dict[constraints[var][0]][0] += " " + cons
 
         agents_param = obj.update_cons(cons_to_send, agents_param)  # collect the neighbors constraints update
-        all_LR = obj.all_LR(agents_param)  # compute the LR for each variable
+        all_LR = obj.all_LR(agents_param,objective)  # compute the LR for each variable
         agents_param = obj.collect_LR(agents_param, all_LR)
         prev_var_value = obj.get_var_value(agents_param)
-        agents_param = obj.update_value(agents_param, all_LR)  # update only one value, depending on the LRs
+        agents_param = obj.update_value(agents_param, all_LR,objective)  # update only one value, depending on the LRs
         var_value = obj.get_var_value(agents_param)
         agents_param = obj.calculate_constraint(agents_param,
                                                var_value)  # Calculate the new constraints values

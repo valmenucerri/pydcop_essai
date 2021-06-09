@@ -61,9 +61,18 @@ for j in range(nbr_var):
 var = []
 cons= []
 agents = []
-
+a=ord('a')
+assigned = 0
+alph=[chr(i) for i in range(a,a+26)]
+for letter in alph:
+    for i in range(10):
+        var.append("{}{}".format(letter,i))
+        assigned += 1
+        if assigned == nbr_var:
+            break
+    if assigned == nbr_var:
+        break
 for i in range(nbr_var):
-    var.append("var{}".format(i))
     cons.append("C{}".format(i))
     agents.append("a{}".format(i))
 agents =", ".join(agents)

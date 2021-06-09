@@ -13,6 +13,7 @@ def launch_prog(argv):
     """
     algo = hf.get_algo(argv)
     file = hf.file_name(argv)
+    objective = hf.get_objective(file)
     domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(
         file)
     obj = hp.HP(domain, variables, constraints, cons_dict, cons_for_var, agents)
@@ -46,10 +47,10 @@ def launch_prog(argv):
                 obj.cons_update(cons_to_transfer)
         #agents_param = obj.update_cons(cons_to_send, agents_param)  # line 10/11
         # compute the LR for each variable
-        all_LR = obj.all_LR(agents_param)  # line 12/13
+        all_LR = obj.all_LR(agents_param,objective)  # line 12/13
         agents_param = obj.collect_LR(agents_param, all_LR)  # line 14
         prev_var_value = obj.get_var_value(agents_param)
-        agents_param = obj.update_value(agents_param, all_LR)  # line 15/16/17
+        agents_param = obj.update_value(agents_param, all_LR,objective)  # line 15/16/17
         var_value = obj.get_var_value(agents_param)
         agents_param = obj.calculate_constraint(agents_param,var_value)
         nbr_cycle += 1

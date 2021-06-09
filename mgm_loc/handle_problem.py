@@ -3,7 +3,7 @@ import sys
 import random as r
 import matplotlib.pyplot as plt
 import pylab
-argv = "main.py mcs_mgm  time 15 graph_exemple.yaml"
+
 #self.domain, variables, constraints, cons_dict, cons_for_var, agents = 0
 class HP:
     def __init__(self,domain, variables, constraints, cons_dict, cons_for_var, agents):
@@ -575,7 +575,7 @@ class HP:
         return agent
 
 
-    def compute_LR(self,agent):
+    def compute_LR_min(self,agent):
         '''
         Try all the values with the constraint of a variable in order to find the best LR.
         :param: agent: an agent of the problem. type : dict
@@ -601,7 +601,33 @@ class HP:
         return best_LR
 
 
-    def all_LR(self,agents_param):
+    def compute_LR_max(self,agent):
+        '''
+        Try all the values with the constraint of a variable in order to find the best LR objective is max)
+        :param: agent: an agent of the problem. type : dict
+        :return: best_LR : the best possible local reduction in cost, with the value associated. type : list
+        '''
+
+        each_LR = {}
+        var_values = {}
+        cons_init = agent["cons_value"]
+        for neighbor, neigh_val in agent["neighbors"].items():
+            var_values[neighbor] = float(neigh_val)
+        old_cons = float(agent["prev_cons_value"])
+        for new_value in self.domain["cost"]:
+            var_values[agent["variable"]] = float(new_value)
+            new_cons = float(self.calculate_constraint_agent(agent, var_values)["cons_value"])
+            LR = old_cons - new_cons
+            each_LR[new_value] = [LR]
+        value_best_LR = self.min_dict(each_LR)
+        assoc_LR = each_LR[value_best_LR][0]
+        best_LR = [assoc_LR, value_best_LR]
+        agent["current_LR"] = float(assoc_LR)
+        agent["cons_value"] = cons_init
+        return best_LR
+
+
+    def all_LR(self,agents_param,objective):
         '''
         Create an iterable with all the best LRs and the value associated, for all variables.
         :param agents_param: agents_param: all the agents with their parameters. type : dict
@@ -610,7 +636,10 @@ class HP:
         all_LR = {}
         for agent in agents_param.values():
             current_var = agent["variable"]
-            current_best_LR = self.compute_LR(agent)
+            if objective == "min":
+                current_best_LR = self.compute_LR_min(agent)
+            else:
+                current_best_LR = self.compute_LR_max(agent)
             all_LR[current_var] = current_best_LR
 
         return all_LR
@@ -632,14 +661,17 @@ class HP:
         return agents_param
 
 
-    def update_value(self,agents_param, all_LR):
+    def update_value(self,agents_param, all_LR,objective):
         '''
         Update the value of a variable chosen thanks to its LR.
         :param agents_param: all the agents with their parameters. type : dict
         :param all_LR: all the LRs with their associated variable and value for this variable. type : dict
         :return: agents_param: all the agents with their parameters, and the value updated. type : dict
         '''
-        key = self.max_dict(all_LR)
+        if objective == "min":
+            key = self.max_dict(all_LR)
+        else:
+            key = self.min_dict(all_LR)
         for agent in agents_param.values():
             if agent["variable"] == key:
                 agent["value"] = all_LR[key][1]
@@ -650,7 +682,7 @@ class HP:
     def max_dict(self,dictio):
         '''
         Compute the index associated to the max value in a dictionary of iterable.
-        :param dictio: the iterable in which we want to ave the index of the max value. type : dict
+        :param dictio: the iterable in which we want to have the index of the max value. type : dict
         :return: key: the index of the maximum value. type : str
         '''
         values = []
@@ -660,6 +692,23 @@ class HP:
         maximum = max(values)
         for k, val in dictio.items():
             if maximum == float(val[0]):
+                key = k
+
+        return key
+
+    def min_dict(selfself,dictio):
+        """
+        Compute the index associated to the min value in a dictionary of iterable.
+        :param dictio: the iterable in which we want to have the index of the min value. type : dict
+        :return: key: the index of the minimum value. type : str
+        """
+        values = []
+        for i in dictio.values():
+            values.append(float(i[0]))
+
+        minimum = min(values)
+        for k, val in dictio.items():
+            if minimum == float(val[0]):
                 key = k
 
         return key
