@@ -61,11 +61,19 @@ for j in range(nbr_var):
 var = []
 cons= []
 agents = []
-
-for i in range(nbr_var):
-    var.append("var{}".format(i))
-    cons.append("C{}".format(i))
-    agents.append("a{}".format(i))
+a=ord('a')
+assigned = 0
+alph=[chr(i) for i in range(a,a+26)]
+for letter in alph:
+    for i in range(10):
+        var.append("{}{}".format(letter,i))
+        cons.append("C{}".format(i))
+        agents.append("a{}".format(i))
+        assigned += 1
+        if assigned == nbr_var:
+            break
+    if assigned == nbr_var:
+        break
 agents =", ".join(agents)
 with open("Graph/graph_exemple_{}.yaml".format(str(nbr_var)),'w')as f:
     f.write("name: "+"graph_exemple_{}".format(str(nbr_var))+"\n")

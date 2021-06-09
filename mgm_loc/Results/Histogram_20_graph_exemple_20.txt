@@ -1,34 +1,35 @@
 mgm results :
-value 88.0 : 1     Initial costs : 91.0
-value 52.0 : 2     Initial costs : 59.0, 72.0
-value 60.0 : 1     Initial costs : 63.0
-value 79.0 : 1     Initial costs : 91.0
-value 93.0 : 1     Initial costs : 95.0
-value 64.0 : 1     Initial costs : 86.0
-value 72.0 : 1     Initial costs : 75.0
-value 81.0 : 1     Initial costs : 90.0
-value 86.0 : 1     Initial costs : 94.0
-value 75.0 : 2     Initial costs : 80.0, 75.0
-value 69.0 : 2     Initial costs : 68.0, 88.0
-value 96.0 : 2     Initial costs : 96.0, 100.0
-value 36.0 : 1     Initial costs : 36.0
-value 55.0 : 1     Initial costs : 51.0
-value 50.0 : 1     Initial costs : 65.0
-value 61.0 : 1     Initial costs : 63.0
+value 41.0 : 1     Initial costs : 44.0
+value 73.0 : 1     Initial costs : 84.0
+value 58.0 : 1     Initial costs : 63.0
+value 81.0 : 1     Initial costs : 82.0
+value 74.0 : 2     Initial costs : 80.0, 73.0
+value 67.0 : 1     Initial costs : 67.0
+value 57.0 : 2     Initial costs : 68.0, 71.0
+value 65.0 : 1     Initial costs : 72.0
+value 91.0 : 1     Initial costs : 97.0
+value 92.0 : 1     Initial costs : 103.0
+value 56.0 : 2     Initial costs : 69.0, 58.0
+value 66.0 : 2     Initial costs : 73.0, 76.0
+value 69.0 : 1     Initial costs : 71.0
+value 59.0 : 2     Initial costs : 64.0, 63.0
+value 72.0 : 1     Initial costs : 81.0
 
 mcs_mgm results :
-value 43.0 : 1     Initial costs : 92.0
-value 55.0 : 1     Initial costs : 66.0
-value 26.0 : 7     Initial costs : 80.0, 82.0, 70.0, 89.0, 91.0, 93.0, 77.0
-value 50.0 : 3     Initial costs : 86.0, 64.0, 53.0
-value 44.0 : 1     Initial costs : 72.0
-value 41.0 : 1     Initial costs : 69.0
-value 68.0 : 1     Initial costs : 86.0
-value 48.0 : 1     Initial costs : 65.0
-value 77.0 : 1     Initial costs : 77.0
-value 75.0 : 1     Initial costs : 79.0
-value 74.0 : 1     Initial costs : 77.0
-value 36.0 : 1     Initial costs : 58.0
+value 26.0 : 6     Initial costs : 80.0, 75.0, 61.0, 77.0, 72.0, 66.0
+value 44.0 : 1     Initial costs : 83.0
+value 55.0 : 1     Initial costs : 73.0
+value 60.0 : 1     Initial costs : 76.0
+value 39.0 : 1     Initial costs : 81.0
+value 42.0 : 1     Initial costs : 69.0
+value 57.0 : 2     Initial costs : 64.0, 79.0
+value 63.0 : 1     Initial costs : 76.0
+value 80.0 : 1     Initial costs : 91.0
+value 59.0 : 1     Initial costs : 62.0
+value 47.0 : 1     Initial costs : 75.0
+value 83.0 : 1     Initial costs : 95.0
+value 74.0 : 1     Initial costs : 78.0
+value 64.0 : 1     Initial costs : 68.0
 
 gca_mgm results :
-value 26.0 : 20     Initial costs : 71.0, 88.0, 68.0, 91.0, 60.0, 73.0, 83.0, 85.0, 78.0, 97.0, 92.0, 55.0, 66.0, 71.0, 84.0, 66.0, 83.0, 63.0, 72.0, 53.0
+value 26.0 : 20     Initial costs : 77.0, 88.0, 83.0, 94.0, 77.0, 85.0, 72.0, 53.0, 79.0, 65.0, 68.0, 85.0, 60.0, 53.0, 53.0, 82.0, 73.0, 54.0, 82.0, 94.0
