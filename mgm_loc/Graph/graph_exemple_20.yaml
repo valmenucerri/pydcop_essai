@@ -5,129 +5,129 @@ domains:
   cost:
     values: [0,1,2]
 
-variables:
-  var0:
+vriables:
+  vr0:
     domain: cost
-  var1:
+  vr1:
     domain: cost
-  var2:
+  vr2:
     domain: cost
-  var3:
+  vr3:
     domain: cost
-  var4:
+  vr4:
     domain: cost
-  var5:
+  vr5:
     domain: cost
-  var6:
+  vr6:
     domain: cost
-  var7:
+  vr7:
     domain: cost
-  var8:
+  vr8:
     domain: cost
-  var9:
+  vr9:
     domain: cost
-  var10:
+  a:
     domain: cost
-  var11:
+  b:
     domain: cost
-  var12:
+  c:
     domain: cost
-  var13:
+  d:
     domain: cost
-  var14:
+  e:
     domain: cost
-  var15:
+  f:
     domain: cost
-  var16:
+  g:
     domain: cost
-  var17:
+  h:
     domain: cost
-  var18:
+  i:
     domain: cost
-  var19:
+  j:
     domain: cost
 
 constraints:
     C0:
       type: extensional
-      variables: var0
-      function: var0 * 7 + 1 - 1 - 0 + 1 + var17 + 1 + var11 - 0 - 5 + 1 + var0 - 16 + var2 - 11 - 1 + 0 - 0
+      variables: vr0
+      function: vr0 * 7 + 1 - 1 - 0 + 1 + h + 1 + b - 0 - 5 + 1 + vr0 - 16 + vr2 - 11 - 1 + 0 - 0
     C1:
       type: extensional
-      variables: var1
-      function: var18 - var2 - var13 - var0 - var5
+      variables: vr1
+      function: i - vr2 - d - vr0 - vr5
     C2:
       type: extensional
-      variables: var2
-      function: var16 + 1 - var15 + var9 + var15 - 17 + var2 - var11 - var14 + var2 + 8 - 0 + 0 - var17 + var10 - var7 + 1 - 1 - var8
+      variables: vr2
+      function: g + 1 - f + vr9 + f - 17 + vr2 - b - e + vr2 + 8 - 0 + 0 - h + a - vr7 + 1 - 1 - vr8
     C3:
       type: extensional
-      variables: var3
-      function: var8 + 19 - var13 + 1 + 1 - 1 + var1 + 9 + 1 - 1 - 1 + 0 + 0 + var6 + var3 + var4 - var10 + var16 + 0 + 0 - 0
+      variables: vr3
+      function: vr8 + 19 - d + 1 + 1 - 1 + vr1 + 9 + 1 - 1 - 1 + 0 + 0 + vr6 + vr3 + vr4 - a + g + 0 + 0 - 0
     C4:
       type: extensional
-      variables: var4
-      function: var13 + var14 - 0 + var16 + 10 + var1 + 18 - var0 - 1 - 5 - var3 + 0 - var12 + 1 - 16
+      variables: vr4
+      function: d + e - 0 + g + 10 + vr1 + 18 - vr0 - 1 - 5 - vr3 + 0 - c + 1 - 16
     C5:
       type: extensional
-      variables: var5
-      function: var4 + 1 + 4 + var19 + var6 - var14 + 5 + 0 + 2 - 0 + var10 - 10 + var14 - var17 - var0 - 1 + var19 - var14 + 0 + 14 + var1
+      variables: vr5
+      function: vr4 + 1 + 4 + j + vr6 - e + 5 + 0 + 2 - 0 + a - 10 + e - h - vr0 - 1 + j - e + 0 + 14 + vr1
     C6:
       type: extensional
-      variables: var6
-      function: var13 - var12
+      variables: vr6
+      function: d - c
     C7:
       type: extensional
-      variables: var7
-      function: var17 - 15 + 10 + 0 + 1 + var13 - var4 - 0 - var3 + var18 - 1 + var9 + 1 - var14
+      variables: vr7
+      function: h - 15 + 10 + 0 + 1 + d - vr4 - 0 - vr3 + i - 1 + vr9 + 1 - e
     C8:
       type: extensional
-      variables: var8
-      function: var13 + var4 + 15 + 0 - 0 - 0 + var18 - 6 + var15 - var19 + var16 + var16 + var16 + var2 - var2 + var16 - var13
+      variables: vr8
+      function: d + vr4 + 15 + 0 - 0 - 0 + i - 6 + f - j + g + g + g + vr2 - vr2 + g - d
     C9:
       type: extensional
-      variables: var9
-      function: var19 + 10 + 15 + 0 + 0 + 9 + 1
+      variables: vr9
+      function: j + 10 + 15 + 0 + 0 + 9 + 1
     C10:
       type: extensional
-      variables: var10
-      function: var4 + 1 + 1 + 0 + var9 - var18 + var9 - var0 - 1 - 1 - 0 + var11 + 0 + 1 - 5 + 1 - var16
+      variables: a
+      function: vr4 + 1 + 1 + 0 + vr9 - i + vr9 - vr0 - 1 - 1 - 0 + b + 0 + 1 - 5 + 1 - g
     C11:
       type: extensional
-      variables: var11
-      function: var9 + 6 + 1
+      variables: b
+      function: vr9 + 6 + 1
     C12:
       type: extensional
-      variables: var12
-      function: var15 + var15 + var1 + 1 + 0 - 0 - var15 - var10 + var10 - var2 + var0 - 0 + var8 - 0 - var4
+      variables: c
+      function: f + f + vr1 + 1 + 0 - 0 - f - a + a - vr2 + vr0 - 0 + vr8 - 0 - vr4
     C13:
       type: extensional
-      variables: var13
-      function: var7 + var0 - var6 + var1 + 17 + 7 - 1 + var11 - 0 - var6 + var7
+      variables: d
+      function: vr7 + vr0 - vr6 + vr1 + 17 + 7 - 1 + b - 0 - vr6 + vr7
     C14:
       type: extensional
-      variables: var14
-      function: var4 - 1 + 1
+      variables: e
+      function: vr4 - 1 + 1
     C15:
       type: extensional
-      variables: var15
-      function: var15 - 1 + var2 - var12
+      variables: f
+      function: f - 1 + vr2 - c
     C16:
       type: extensional
-      variables: var16
-      function: var10 - var10 + 0 - 1 - var9 + var14 - 1 + 1 - var13 + 16 - 5 + var7 + var0 + 1 - var12 + 16 - var13 + 5 + 0
+      variables: g
+      function: a - a + 0 - 1 - vr9 + e - 1 + 1 - d + 16 - 5 + vr7 + vr0 + 1 - c + 16 - d + 5 + 0
     C17:
       type: extensional
-      variables: var17
-      function: var12 - var10 - var8 + 1 - var16 + var7 + 3 + var0 + 1 - var10 - var7 + var17 - var8 - var2 - 0 - var10 - 3 + 6 - var6
+      variables: h
+      function: c - a - vr8 + 1 - g + vr7 + 3 + vr0 + 1 - a - vr7 + h - vr8 - vr2 - 0 - a - 3 + 6 - vr6
     C18:
       type: extensional
-      variables: var18
-      function: var3 + 1 - 4 + 1 - 1 + 0 - 0 - var7 - 1 + var3 + 0 - var6 + var16 - var3 + var2 + 1 + 1 - var0 + 1
+      variables: i
+      function: vr3 + 1 - 4 + 1 - 1 + 0 - 0 - vr7 - 1 + vr3 + 0 - vr6 + g - vr3 + vr2 + 1 + 1 - vr0 + 1
     C19:
       type: extensional
-      variables: var19
-      function: var8 - 1 - var1
+      variables: j
+      function: vr8 - 1 - vr1
 
 
 

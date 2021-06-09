@@ -81,9 +81,6 @@ class HP:
                     agent["value"] = random_val
                 except:
                     pass
-        agents_param["a1"]["value"] = "1"
-        agents_param["a2"]["value"] = "1"
-        agents_param["a3"]["value"] = "0"
         return agents_param
 
 
@@ -420,8 +417,8 @@ class HP:
         var = prev_var_value.copy()
         for neighbor in agent["neighbors"]:
             prev_var_value[neighbor] = float(agent["neighbors"][neighbor])
-            actual_cons = self.calculate_constraint_agent(agent2, self.cons_dict, prev_var_value)
-            delta = float(agent["prev_cons_value"]) - float(actual_cons["cons_value"])
+            actual_cons = self.calculate_constraint_agent(agent2, prev_var_value)
+            delta = float(actual_cons["cons_value"]) - float(agent["prev_cons_value"])
             try:
                 if delta > 0:
                     for cons in agent["constraint"]:
@@ -478,7 +475,7 @@ class HP:
             actual_cons = self.calculate_constraint_agent(agent2, prev_var_value)
             delta = float(actual_cons["cons_value"]) - float(agent["prev_cons_value"])
             try:
-                if delta > 0:#float(agent["neighbors_LR"][neighbor]):
+                if delta > float(agent["neighbors_LR"][neighbor]):
                     for cons in agent["constraint"]:
                         current_formula = self.cons_dict[cons][0]
                         list_formula = current_formula.split()
@@ -713,7 +710,6 @@ class HP:
         :return: final_cost: all the costs, considering only the constraints given in the initialization part. type : dict
         """
         final_cost = {}
-
         for var, cons in constraint.items():
             if len(self.cons_dict[cons[0]]) != 1:
                 cons_details = self.cons_dict[cons[0]]

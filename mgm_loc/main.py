@@ -3,7 +3,8 @@ import mgm
 import mcs_mgm
 import gca_mgm
 import handle_file as hf
-#from handle_problem import draw_histo
+import handle_problem as hp
+
 
 
 
@@ -29,24 +30,24 @@ def histogram(histo,nbr_launch,file):
 
 
 if '__main__' ==__name__:
-    argv = "main.py mcs_mgm  time 15 graph_exemple.yaml"
-    argv = argv.split()
-    print(argv)
-    #argv = sys.argv
+    argv = sys.argv
+    file = hf.file_name(argv)
+    domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(
+        file)
+    obj = hp.HP(domain, variables, constraints, cons_dict, cons_for_var, agents)
+
     if argv[1] == "mgm":
-        final_cost = mgm.launch_prog()
+        final_cost = mgm.launch_prog(argv)
     elif argv[1] == "mcs_mgm":
         final_cost2 = mcs_mgm.launch_prog(argv)
-    else:
-        final_cost = gca_mgm.launch_prog()
-    """elif argv[1] == "all":
+    elif argv[1] == "all":
         for element in range(len(sys.argv)):
             if sys.argv[element] == "nbr_iter":
                 nbr_launch = int(sys.argv[element + 1])
         histo = {"mgm": {}, "mcs_mgm": {}, "gca_mgm": {}}
 
         for rep in range(nbr_launch):
-            final_cost,cost_init = mgm.launch_prog()
+            final_cost,cost_init = mgm.launch_prog(argv)
             try:
                 histo["mgm"][final_cost][0] += 1
                 histo["mgm"][final_cost][1].append(cost_init)
@@ -54,21 +55,22 @@ if '__main__' ==__name__:
             except:
                 histo["mgm"][final_cost] = [1,[cost_init]]
 
-            final_cost2,cost_init2 = mcs_mgm.launch_prog()
+            final_cost2,cost_init2 = mcs_mgm.launch_prog(argv)
             try:
                 histo["mcs_mgm"][final_cost2][0] += 1
                 histo["mcs_mgm"][final_cost2][1].append(cost_init2)
             except:
                 histo["mcs_mgm"][final_cost2] = [1,[cost_init2]]
 
-            final_cost3,cost_init3 = gca_mgm.launch_prog()
+            final_cost3,cost_init3 = gca_mgm.launch_prog(argv)
             try:
                 histo["gca_mgm"][final_cost3][0] += 1
                 histo["gca_mgm"][final_cost3][1].append(cost_init3)
             except:
                 histo["gca_mgm"][final_cost3] = [1, [cost_init3]]
         histogram(histo, nbr_launch, file)
-        draw_histo(histo,nbr_launch,file)"""
-
-
+        obj.draw_histo(histo,nbr_launch,file)
+        print("\a")
+    else:
+        final_cost = gca_mgm.launch_prog(argv)
 
