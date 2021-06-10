@@ -156,19 +156,30 @@ def max_function_result(cons, var_value):
     :return: value_returned: value of the cosidered costaint. type : float
     """
     operator = ["+", "-", "/", "*"]
-    cons = cons.strip("min" + "max" + "(" + ")" + "[" + "]")  # keep only the elements that must be compared
-    cons_list = cons.split(',')
-    for element in range(len(cons_list)):
+    e = cons.find(")")
+    s = cons.find("max")
+    max_part = cons[s:e+1]
+    other_before = cons[:s]
+    other_after = cons[e+1:]
+    print(max_part)
+    print(other_before)
+    print(other_after)
+    cons_max_list = max_part.split(',')
+
+    for c in range(len(cons_max_list)):
+        cons_max_list[c] = cons_max_list[c].strip("min" + "max" + "(" + ")" + "[" + "]" +",")# keep only the elements that must be compared
+
+    for element in range(len(cons_max_list)):
         nbr = False
         opera = False
         # If the considered element is a float
         try:
-            value = eval(cons_list[element])
+            value = eval(cons_max_list[element])
             tot = [element, value]  # keep the index and the value that have to be placed in the final list
             nbr = True
         except:
             # If the considered element is unknown, impossible to evaluate
-            el = cons_list[element].split()
+            el = cons_max_list[element].split()
             for j in operator:
                 if j in el:
                     opera = True  # Check if the element is an operation
@@ -177,17 +188,28 @@ def max_function_result(cons, var_value):
                 if opera:
                     break
                 elif e in var_value.keys():  # Check if the element is only a variable
-                    cons_list[element] = float(var_value[e])
+                    cons_max_list[element] = float(var_value[e])
 
         if nbr:  # If the considered element is a number, change it by its value
-            cons_list[tot[0]] = tot[1]
+            cons_max_list[tot[0]] = tot[1]
         if opera:  # If the considered element is an operation, change it by its result
-            formula = prepare_formula(cons_list[element], var_value)
+            formula = prepare_formula(cons_max_list[element], var_value)
             tot2 = [element, RVN(formula)]
-            cons_list[tot2[0]] = tot2[1]
+            cons_max_list[tot2[0]] = tot2[1]
 
-    value_returned = max(cons_list)
-    return value_returned
+    value_returned = max(cons_max_list)
+    final_cons = other_before + str(value_returned) + other_after
+    print(var_value)
+    print(final_cons)
+    if str(value_returned) == final_cons:
+        print("value1 :",value_returned)
+        return value_returned
+    else:
+        formula = prepare_formula(final_cons,var_value)
+        value_returned = RVN(formula)
+        return value_returned
+
+
 
 
 def condition_function_result(cons_details, var_value):
@@ -651,11 +673,12 @@ def result_final(cons_dict, var_value, constraint):
             if cons_dict[cons[0]][0].find("max") != -1:
                 constraint_formula = cons_dict[cons[0]][0]
                 final_cost[var] = str(max_function_result(constraint_formula, var_value))
-            if cons_dict[cons[0]][0].find("min") != -1:
+            elif cons_dict[cons[0]][0].find("min") != -1:
                 constraint_formula = cons_dict[cons[0]][0]
                 final_cost[var] = str(min_function_result(constraint_formula, var_value))
 
             else:
+
                 constraint_formula = cons_dict[cons[0]][0]
                 formula = prepare_formula(constraint_formula, var_value)
                 final_cost[var] = str(RVN(formula))
