@@ -108,25 +108,34 @@ class HP:
 
     def min_function_result(self, cons, var_value):
         """
-        Compute the constraint's cost if its formula is a min function.
-        :param cons: the formula of the constraint. type : str
-        :param var_value: the values of all variables. type : dict
-        :return: value_returned: value of the considered constraint. type : float
+        Compute the valor of a constraint if it's a min function.
+        :param cons: the considered constraint. type : str
+        :param var_value: values of all the variables. type : dict
+        :return: value_returned: the value of the constraint. type : float
         """
         operator = ["+", "-", "/", "*"]
-        cons = cons.strip("min" + "max" + "(" + ")" + "[" + "]")  # keep only the elements that must be compared
-        cons_list = cons.split(',')
-        for element in range(len(cons_list)):
+        e = cons.find(")")
+        s = cons.find("min")
+        min_part = cons[s:e + 1]
+        other_before = cons[:s]
+        other_after = cons[e + 1:]
+        cons_min_list = min_part.split(',')
+
+        for c in range(len(cons_min_list)):
+            cons_min_list[c] = cons_min_list[c].strip(
+                "min" + "max" + "(" + ")" + "[" + "]" + ",")  # keep only the elements that must be compared
+
+        for element in range(len(cons_min_list)):
             nbr = False
             opera = False
             # If the considered element is a float
             try:
-                value = eval(cons_list[element])
+                value = eval(cons_min_list[element])
                 tot = [element, value]  # keep the index and the value that have to be placed in the final list
                 nbr = True
             except:
                 # If the considered element is unknown, impossible to evaluate
-                el = cons_list[element].split()
+                el = cons_min_list[element].split()
                 for j in operator:
                     if j in el:
                         opera = True  # Check if the element is an operation
@@ -135,39 +144,55 @@ class HP:
                     if opera:
                         break
                     elif e in var_value.keys():  # Check if the element is only a variable
-                        cons_list[element] = float(var_value[e])
+                        cons_min_list[element] = float(var_value[e])
 
             if nbr:  # If the considered element is a number, change it by its value
-                cons_list[tot[0]] = tot[1]
+                cons_min_list[tot[0]] = tot[1]
             if opera:  # If the considered element is an operation, change it by its result
-                formula = self.prepare_formula(cons_list[element], var_value)
+                formula = self.prepare_formula(cons_min_list[element], var_value)
                 tot2 = [element, self.RVN(formula)]
-                cons_list[tot2[0]] = tot2[1]
+                cons_min_list[tot2[0]] = tot2[1]
 
-        value_returned = min(cons_list)
-        return value_returned
+        value_returned = min(cons_min_list)
+        final_cons = other_before + str(value_returned) + other_after
+        if str(value_returned) == final_cons:
+            return value_returned
+        else:
+            formula = self.prepare_formula(final_cons, var_value)
+            value_returned = self.RVN(formula)
+            return value_returned
+
 
     def max_function_result(self, cons, var_value):
         """
-        Compute the constraint's cost if its formula is a max function.
-        :param cons: the formula of the constraint. type : str
-        :param var_value: the values of all variables. type : dict
-        :return: value_returned: value of the cosidered costaint. type : float
+        Compute the valor of a constraint if it's a max function.
+        :param cons: the considered constraint. type : str
+        :param var_value: values of all the variables. type : dict
+        :return: value_returned: the value of the constraint. type : float
         """
         operator = ["+", "-", "/", "*"]
-        cons = cons.strip("min" + "max" + "(" + ")" + "[" + "]")  # keep only the elements that must be compared
-        cons_list = cons.split(',')
-        for element in range(len(cons_list)):
+        e = cons.find(")")
+        s = cons.find("max")
+        min_part = cons[s:e + 1]
+        other_before = cons[:s]
+        other_after = cons[e + 1:]
+        cons_min_list = min_part.split(',')
+
+        for c in range(len(cons_min_list)):
+            cons_min_list[c] = cons_min_list[c].strip(
+                "min" + "max" + "(" + ")" + "[" + "]" + ",")  # keep only the elements that must be compared
+
+        for element in range(len(cons_min_list)):
             nbr = False
             opera = False
             # If the considered element is a float
             try:
-                value = eval(cons_list[element])
+                value = eval(cons_min_list[element])
                 tot = [element, value]  # keep the index and the value that have to be placed in the final list
                 nbr = True
             except:
                 # If the considered element is unknown, impossible to evaluate
-                el = cons_list[element].split()
+                el = cons_min_list[element].split()
                 for j in operator:
                     if j in el:
                         opera = True  # Check if the element is an operation
@@ -176,99 +201,106 @@ class HP:
                     if opera:
                         break
                     elif e in var_value.keys():  # Check if the element is only a variable
-                        cons_list[element] = float(var_value[e])
+                        cons_min_list[element] = float(var_value[e])
 
             if nbr:  # If the considered element is a number, change it by its value
-                cons_list[tot[0]] = tot[1]
+                cons_min_list[tot[0]] = tot[1]
             if opera:  # If the considered element is an operation, change it by its result
-                formula = self.prepare_formula(cons_list[element], var_value)
+                formula = self.prepare_formula(cons_min_list[element], var_value)
                 tot2 = [element, self.RVN(formula)]
-                cons_list[tot2[0]] = tot2[1]
+                cons_min_list[tot2[0]] = tot2[1]
 
-        value_returned = max(cons_list)
-        return value_returned
+        value_returned = max(cons_min_list)
+        final_cons = other_before + str(value_returned) + other_after
+        if str(value_returned) == final_cons:
+            return value_returned
+        else:
+            formula = self.prepare_formula(final_cons, var_value)
+            value_returned = self.RVN(formula)
+            return value_returned
+
 
     def condition_function_result(self, cons_details, var_value):
-        """
-        Compute the valor of a constraint in case of conditional function, with if / else
-        :param cons_details: details about the constraint, conditions. type : list
-        :return: result: the value of the constraint. type : float
-        """
-        comparison = ["<", ">", "<=", ">=", "==", "!="]
-        result = {}
-        cons_list = []
-        for c in cons_details:
-            cons_list.append(c.split())
-        for element in cons_list:
-            if "=" in element:  # Check if the element is an equality
-                formula = []
-                ind = 1000
-                for l in range(len(element)):
+            """
+            Compute the valor of a constraint in case of conditional function, with if / else
+            :param cons_details: details about the constraint, conditions. type : list
+            :return: result: the value of the constraint. type : float
+            """
+            comparison = ["<", ">", "<=", ">=", "==", "!="]
+            result = {}
+            cons_list = []
+            for c in cons_details:
+                cons_list.append(c.split())
+            for element in cons_list:
+                if "=" in element:  # Check if the element is an equality
+                    formula = []
+                    ind = 1000
+                    for l in range(len(element)):
 
-                    if element[l] == "=":
-                        res_ind = element[l - 1]  # Get the left side of the equality
-                        result[res_ind] = None
-                        ind = l
-                    if l > ind:
-                        formula.append(element[l])  # Get the right side of the equality, which is an operation
+                        if element[l] == "=":
+                            res_ind = element[l - 1]  # Get the left side of the equality
+                            result[res_ind] = None
+                            ind = l
+                        if l > ind:
+                            formula.append(element[l])  # Get the right side of the equality, which is an operation
 
-                formula = " ".join(formula)
-                formula_ready = self.prepare_formula(formula, var_value)
+                    formula = " ".join(formula)
+                    formula_ready = self.prepare_formula(formula, var_value)
 
-                resultat = self.RVN(formula_ready)  # Compute the right side of the equality
-                result[res_ind] = resultat
+                    resultat = self.RVN(formula_ready)  # Compute the right side of the equality
+                    result[res_ind] = resultat
 
-            if "if" in element:  # Check if the element is the first condition line
-                # Prepare the line that describes the first condition
-                element.remove("if")
-                line = " ".join(element)
-                line = line.strip(":")
-                line = line.split()
-                for e in line:
-                    new_value = False
-                    val_equa = False
-                    nbr = False
-                    # Check if the e is a number, and get its value
-                    try:
-                        eval(e)
-                        ind = line.index(e)
-                        val = float(e)
-                        tot = [ind, val]
-                        nbr = True
+                if "if" in element:  # Check if the element is the first condition line
+                    # Prepare the line that describes the first condition
+                    element.remove("if")
+                    line = " ".join(element)
+                    line = line.strip(":")
+                    line = line.split()
+                    for e in line:
+                        new_value = False
+                        val_equa = False
+                        nbr = False
+                        # Check if the e is a number, and get its value
+                        try:
+                            eval(e)
+                            ind = line.index(e)
+                            val = float(e)
+                            tot = [ind, val]
+                            nbr = True
 
-                    except:
-                        if e in comparison:
-                            ind_comp = line.index(e)
-                        # If e is a variable of the problem
-                        elif e in var_value.keys():
-                            ind_var = line.index(e)
-                            value = float(var_value[e])
-                            new_value = True
-                        else:
-                            # If e is the variable of the equality
-                            value2 = float(result[e])
-                            ind_val = line.index(e)
-                            val_equa = True
-                    # build the final condition
-                    if nbr:
-                        line[tot[0]] = str(tot[1])
-                    if val_equa:
-                        line[ind_val] = str(value2)
-                    if new_value:
-                        line[ind_var] = str(value)
-                strline = " ".join(line)
-                cond = eval(strline)
-                # Find the goodind, which is the index of the return part
-                if cond:
-                    good_ind = cons_list.index(element) + 1
-                else:
-                    good_ind = cons_list.index(element) + 3
-                # Find the value that has to be returned
-                for final_res in range(len(cons_list[good_ind])):
-                    if cons_list[good_ind][final_res] == "return":
-                        value_returned = eval(cons_list[good_ind][final_res + 1])
+                        except:
+                            if e in comparison:
+                                ind_comp = line.index(e)
+                            # If e is a variable of the problem
+                            elif e in var_value.keys():
+                                ind_var = line.index(e)
+                                value = float(var_value[e])
+                                new_value = True
+                            else:
+                                # If e is the variable of the equality
+                                value2 = float(result[e])
+                                ind_val = line.index(e)
+                                val_equa = True
+                        # build the final condition
+                        if nbr:
+                            line[tot[0]] = str(tot[1])
+                        if val_equa:
+                            line[ind_val] = str(value2)
+                        if new_value:
+                            line[ind_var] = str(value)
+                    strline = " ".join(line)
+                    cond = eval(strline)
+                    # Find the goodind, which is the index of the return part
+                    if cond:
+                        good_ind = cons_list.index(element) + 1
+                    else:
+                        good_ind = cons_list.index(element) + 3
+                    # Find the value that has to be returned
+                    for final_res in range(len(cons_list[good_ind])):
+                        if cons_list[good_ind][final_res] == "return":
+                            value_returned = eval(cons_list[good_ind][final_res + 1])
 
-                return value_returned
+                    return value_returned
 
     def calculate_constraint(self, agents_param, var_value):
         '''
