@@ -1,12 +1,12 @@
 Assignments :
 vA : 0
-vB : 0
-vC : 1
+vB : 2
+vC : 0
 
 Costs :
-vA : -1
-vB : -3
-vC : 1
+vA : -2
+vB : -8
+vC : 0
 
-Final cost : -3.0
+Final cost : -10.0
 Initial cost : -3.0

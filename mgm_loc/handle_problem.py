@@ -114,38 +114,53 @@ def min_function_result(cons,var_value):
     :return: value_returned: value of the considered constraint. type : float
     """
     operator = ["+", "-", "/", "*"]
-    cons = cons.strip("min" +"max" + "(" + ")" + "[" + "]") # keep only the elements that must be compared
-    cons_list = cons.split(',')
-    for element in range(len(cons_list)):
+    e = cons.find(")")
+    s = cons.find("min")
+    min_part = cons[s:e + 1]
+    other_before = cons[:s]
+    other_after = cons[e + 1:]
+    cons_min_list = min_part.split(',')
+
+    for c in range(len(cons_min_list)):
+        cons_min_list[c] = cons_min_list[c].strip(
+            "min" + "max" + "(" + ")" + "[" + "]" + ",")  # keep only the elements that must be compared
+
+    for element in range(len(cons_min_list)):
         nbr = False
         opera = False
         # If the considered element is a float
         try:
-            value = eval(cons_list[element])
-            tot = [element, value] # keep the index and the value that have to be placed in the final list
+            value = eval(cons_min_list[element])
+            tot = [element, value]  # keep the index and the value that have to be placed in the final list
             nbr = True
         except:
             # If the considered element is unknown, impossible to evaluate
-            el = cons_list[element].split()
+            el = cons_min_list[element].split()
             for j in operator:
                 if j in el:
-                    opera = True # Check if the element is an operation
+                    opera = True  # Check if the element is an operation
                     break
             for e in el:
                 if opera:
                     break
-                elif e in var_value.keys(): # Check if the element is only a variable
-                    cons_list[element] = float(var_value[e])
+                elif e in var_value.keys():  # Check if the element is only a variable
+                    cons_min_list[element] = float(var_value[e])
 
         if nbr:  # If the considered element is a number, change it by its value
-            cons_list[tot[0]] = tot[1]
-        if opera: # If the considered element is an operation, change it by its result
-            formula = prepare_formula(cons_list[element], var_value)
+            cons_min_list[tot[0]] = tot[1]
+        if opera:  # If the considered element is an operation, change it by its result
+            formula = prepare_formula(cons_min_list[element], var_value)
             tot2 = [element, RVN(formula)]
-            cons_list[tot2[0]] = tot2[1]
+            cons_min_list[tot2[0]] = tot2[1]
 
-    value_returned = min(cons_list)
-    return value_returned
+    value_returned = min(cons_min_list)
+    final_cons = other_before + str(value_returned) + other_after
+    if str(value_returned) == final_cons:
+        return value_returned
+    else:
+        formula = prepare_formula(final_cons, var_value)
+        value_returned = RVN(formula)
+        return value_returned
 
 
 def max_function_result(cons, var_value):
@@ -161,9 +176,6 @@ def max_function_result(cons, var_value):
     max_part = cons[s:e+1]
     other_before = cons[:s]
     other_after = cons[e+1:]
-    print(max_part)
-    print(other_before)
-    print(other_after)
     cons_max_list = max_part.split(',')
 
     for c in range(len(cons_max_list)):
@@ -199,10 +211,7 @@ def max_function_result(cons, var_value):
 
     value_returned = max(cons_max_list)
     final_cons = other_before + str(value_returned) + other_after
-    print(var_value)
-    print(final_cons)
     if str(value_returned) == final_cons:
-        print("value1 :",value_returned)
         return value_returned
     else:
         formula = prepare_formula(final_cons,var_value)
