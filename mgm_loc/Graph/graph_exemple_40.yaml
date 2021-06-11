@@ -1,0 +1,254 @@
+name: graph_exemple_40
+objective: max
+
+domains:
+  cost:
+    values: [0,1,2]
+
+variables:
+  a0:
+    domain: cost
+  a1:
+    domain: cost
+  a2:
+    domain: cost
+  a3:
+    domain: cost
+  a4:
+    domain: cost
+  a5:
+    domain: cost
+  a6:
+    domain: cost
+  a7:
+    domain: cost
+  a8:
+    domain: cost
+  a9:
+    domain: cost
+  b0:
+    domain: cost
+  b1:
+    domain: cost
+  b2:
+    domain: cost
+  b3:
+    domain: cost
+  b4:
+    domain: cost
+  b5:
+    domain: cost
+  b6:
+    domain: cost
+  b7:
+    domain: cost
+  b8:
+    domain: cost
+  b9:
+    domain: cost
+  c0:
+    domain: cost
+  c1:
+    domain: cost
+  c2:
+    domain: cost
+  c3:
+    domain: cost
+  c4:
+    domain: cost
+  c5:
+    domain: cost
+  c6:
+    domain: cost
+  c7:
+    domain: cost
+  c8:
+    domain: cost
+  c9:
+    domain: cost
+  d0:
+    domain: cost
+  d1:
+    domain: cost
+  d2:
+    domain: cost
+  d3:
+    domain: cost
+  d4:
+    domain: cost
+  d5:
+    domain: cost
+  d6:
+    domain: cost
+  d7:
+    domain: cost
+  d8:
+    domain: cost
+  d9:
+    domain: cost
+
+constraints:
+    C0:
+      type: extensional
+      variables: a0
+      function: c2 * a0 - 20 + 14 + 9 + d9 - 36 - a4 - a6 + 0 + a4 - a6 + 0 - b0 - d4 + 0 - 0 - c0 + b2 - 1 + 1 - 4 + 30 + 0 + b6 + d7 + a6 + a2 + 38 - 8 + 38
+    C1:
+      type: extensional
+      variables: a1
+      function: a0 - 36 - 0 - d1 + 1 + d4 + 1 - 1 + 36 + 7 - c0 + b0 - 22 - 17 + 1 + c2 - d1 - c5 + d9 + 1 + 2 + 1 - d4 + d1 - 1 + 0 + 0 + 35 + 20 + 0
+    C2:
+      type: extensional
+      variables: a2
+      function: b0 - 1 - 1 + b2 + 0 - b8 - d1 - d2 + b3 + c4 + 1 + 1 + 37 - 0 - d7 - 0 - 17 + d5 + 25 + 1 + a5 - 0 - 1 + d4 + d0 + d9 + 17 - 0 - d4 - d8 + b0 + a3 + b3 - a7 + c9 + 1
+    C3:
+      type: extensional
+      variables: a3
+      function: d0 - c2 + 4 - b9 - a5 - 23 + d3 + 1 + 1 + a0 + c6 - c7 + a0 + c6 + a0 + 0 + d7 + 1 + d2 + a2 + 17 + b8 + c2 + a6 + 1 + 0 + 1 - a0
+    C4:
+      type: extensional
+      variables: a4
+      function: c2 - a9 - 1 + a6 + 19 - 26 - a3 - 29 + a1
+    C5:
+      type: extensional
+      variables: a5
+      function: b6 + 12 - 1 + a4 + 0 - 0 - 5 - b8 - b9 - a9 + 0 + d0 - 0 - 14 - d5 + b0 + d2 - a2 - b6 - 33 + a4 - d3 - d8 - 17
+    C6:
+      type: extensional
+      variables: a6
+      function: b3 - 28 - 1 + d5 + d6 + 26 - b5 + d0 + 38 + a7 + 1 - a7 - 0 + b1 - 0 - c1 + 0 + b9 + c6 + c1 - a8 + b7 - 6 + 1 - 1 - 1 - 1 - 0 + a7 + c6 - a6 + b9 + a9 + d7 - 0 + 0 - a7 - a6 + d4 - a4
+    C7:
+      type: extensional
+      variables: a7
+      function: a9 + a9 - 0 + c5 - 38 + c1 + 9 + d4 - 35 - d2 + a2 - 30 - a6 + b8 + 32 - 0 + d6 - 0 + b7 - a3
+    C8:
+      type: extensional
+      variables: a8
+      function: a3 + 1 + 11 + c2 - b1 + 0 - b8
+    C9:
+      type: extensional
+      variables: a9
+      function: d0 - 1 + d5 - a1
+    C10:
+      type: extensional
+      variables: b0
+      function: b0 + a6 + a1 + 1 + 1 + c3
+    C11:
+      type: extensional
+      variables: b1
+      function: c9 + b0 - 1 + 0 - 1 - a4 + 14 - 28 + 4 + b8 + d4
+    C12:
+      type: extensional
+      variables: b2
+      function: c7 - 1 + a4 + b6 - 1 - 0 + c1 - c8 + b3 - a2 + 1 - 0 + 1 + 0 - b0 + 21 - a8 + b1 - b8 - 20 - 1 + a9 - 37 + 0 - b6 - d6 + 1 - c5 + c2
+    C13:
+      type: extensional
+      variables: b3
+      function: d9 - d0 - 35 + 11 + b5 - 1 - 0 - 0 + 33 + c5 + 8 - 0 + a8 + b1 - 0 + a6 - b2 + c0 - c0 - d6 + c4 + c3 - 14 + c1 + 1 + a2 + a6 - a5 - d8 + d1 - b9 + 0 + d4 + a4 - 1
+    C14:
+      type: extensional
+      variables: b4
+      function: c7 + 13 - a1 + a8 - 0 + 1 - 0 + d3 + 17 - d4 + b8 + c7 + c5 - b2 + d8 - 1 - b2
+    C15:
+      type: extensional
+      variables: b5
+      function: a7 + a5 - b6 - 21 + 1 + 1 - 9 - 0 - a4 - 4 + c8 + 0 + b5 + 0 + 0 - 0 + b9 + c6 + 0 - d9 - 0 + 1 - d6 + 1 - 31 - 34 + 1 - b9 + d7 + b8 + 8 - c8 - c8 - 1 - 1
+    C16:
+      type: extensional
+      variables: b6
+      function: a8 - b6 - 1 - c8 + a1 - 7 - a3 - c8 - c1 + a9 - 0 + a1 + 0 + 0 - c8
+    C17:
+      type: extensional
+      variables: b7
+      function: b1 - b6 - d4 + 1 + 3 - a8 - b5 + d6 - 33 + 1 - 0 - a6 - 0 + 0 - b2 - c6 + d5 - 1 + 0 - 16 - 12 - b0 + b4 + 32 - a3 + b8 - 0 + c3 - a3 - 1 - 1 + d3 - 38 + c8 - b6 + c0 + b9 - d9 - 0 - c3 - b7
+    C18:
+      type: extensional
+      variables: b8
+      function: a2 - b6 - 0 + a5 - 27 + 1 + b7 - 1 - b8 + 1 + b5 + a9 - 0 - 15 + 1 - 38 - b4 + b9 + 1 + 0 - a6 - a7 + c7 + c6 + 29 - 1 - d2 + 0 - b7 - 27 - 0 + 1 - c6 + 1 + 1
+    C19:
+      type: extensional
+      variables: b9
+      function: d6 + 27 + c5 + 3 - 1 - 1 - 1 - d4 - 0 - d9
+    C20:
+      type: extensional
+      variables: c0
+      function: d7 - 1 + 21 - 15 + a1 + d9 - 29 - c1 - 1 - c7 - 1 - b0 - 0 - b9 - 3 - c7 + b8 + d4 - 0 + c1 + 3 - 8 - d3 + c1 - d2 - c1 + 15 + d7 + 1 + 1 + 8 + b9 + d0 + c7 + b3 + 17
+    C21:
+      type: extensional
+      variables: c1
+      function: b4 + c6 - c0 - b7 - a7 + 1 + c1 - d9 + b6 + d3 + d7 + 1 - 1 - 20 + 1 - b3
+    C22:
+      type: extensional
+      variables: c2
+      function: c1 - b7 - 25 + a3 + c5 - 1 - 16 - a2 - d2 + b1 + a8 - c7 + 0 + 0 - c0 + b3 + a7 - b6 + 1 + 1 + 0 - a6 + b6 + a7 - 25 + c7 - d4 + 1
+    C23:
+      type: extensional
+      variables: c3
+      function: c4 + c5 - c6 - c3 - d6 - 0 + 1 - b8 + 1 - b5 - a1 - 1 + 6 + d0 + 26 + 1 - 1 + c8 - a7 - 1 + 1 + c9 - 1 - a2
+    C24:
+      type: extensional
+      variables: c4
+      function: a3 - 1 + d7 + 7 + 33 - 0
+    C25:
+      type: extensional
+      variables: c5
+      function: d6 + a4 - d7 - c5 - 0 + 8 + 0 + a1 - 1 + a9 + b6 - 18 + b4 - 1 - b1 + 1 + 1 + 21 - b7 - 0 - c2 - d5 + b5 - 0 + 0 - b1 + 0 - a4 - d2 + c5 - 17 + 0
+    C26:
+      type: extensional
+      variables: c6
+      function: b7 - b9
+    C27:
+      type: extensional
+      variables: c7
+      function: a4 + 9 + 14 + d9 - a5 + d7 + b5 + 1 + 1 - 0 + 1 + a6 + 1 - b0 - a9 + 16 + 0 + 28 - 1 + d2 + 1 - 1 - a6 - b8 + 0 - 23 - c0 - c3 + b4 - 0 - 1 - c3 + b5 + 12 - c8
+    C28:
+      type: extensional
+      variables: c8
+      function: d4 - 1 - 1 - b2 + 1 + a8 - 1 + a2 - c6 + 1 - 0 - 1 + 0 + c1 - b9 - b2 - 11 - c7 + 1 - 1 + 0 + 13 + 37 - a2 + 1 - 0 - 0 - b6 - 6 - 14 - 0 + 26 + 1 - 1 - 0
+    C29:
+      type: extensional
+      variables: c9
+      function: b5 - 1 - 0 - 0 + 1 + a6 + 39 - c3 + c6 + 8
+    C30:
+      type: extensional
+      variables: d0
+      function: d3 + 1 - c3 - b1 + d8 - 1 - 36 - c0 + d8 + a9 - c1 + a8 - 0 + 39 + c0 - a9 - d9 + a4 - a7 - c5 - 1 - a8 - d8 + b4 - 1 - c0 + 0 - 17 - c1
+    C31:
+      type: extensional
+      variables: d1
+      function: d3 + a1 - a0 - a5 - 16 - 1 - 0 + 32 + 0 - d3 - 6 - 0 - c7 - a5 + d7 + 0 - a7 + 0 + 33 + d7 + c9 - a9 + 1
+    C32:
+      type: extensional
+      variables: d2
+      function: d7 - 18 + 7 - 1 + d0 + 26 + 38 - 0 - 1 - d7 - c4 + c1 + 1 - 1
+    C33:
+      type: extensional
+      variables: d3
+      function: a1 - d4 - a6 - 1 - d6
+    C34:
+      type: extensional
+      variables: d4
+      function: a3 + d8 - c8 + 25 - 2 + a8 + 19 - 3 + d9 + b8 + c1 - a6 - 1 - 0 + a1 + c3 - a6 - d6 + c5 + 1 + c9 - a0 - 1 - a6 - 1 - 0 - 30 - 20 - 0 + 1
+    C35:
+      type: extensional
+      variables: d5
+      function: b5 - b4
+    C36:
+      type: extensional
+      variables: d6
+      function: b8 + a8 + a3 + a7 - b7 - 11 - c4 + 0 + b7 - a3 - 1 - 1 + 1 + a4 + c3 - 1 - a5 - 27 - b0 + b2 + c3 + 1 + 1 - b7 + d5 + b0 - d1 + c8 + d3 + b5 - a1 + c4 + 1 + 1 - a2 + 0
+    C37:
+      type: extensional
+      variables: d7
+      function: c3 - d1 + 1 - 0 - a5 + 0 - 1 - 1 - 0 + d8 - 1 - 0 + a1 + d0 - 0 + b4 + b9 + d5 + 1 - d3 + 0
+    C38:
+      type: extensional
+      variables: d8
+      function: b5 - 1 - 6 - 1 + d6 - c2 + 22 + d2 - d2 - 1 - b6 - c8 - 1 + a1 + 0 - b0 - b1 - 35 + 31 - 0 - c6 - b5 + 1 + d5 + 0 - 1 + 0 + 0 + c4 + 1 - c7 + a4 + 0 + b7 - 7 - b0
+    C39:
+      type: extensional
+      variables: d9
+      function: a2 + b9 + c5 + 0 + 31 + d6 + 18 - 1 + 1 - a1
+
+
+
+agents: [a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35, a36, a37, a38, a39]

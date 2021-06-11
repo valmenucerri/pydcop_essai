@@ -1,0 +1,314 @@
+name: graph_exemple_50
+objective: max
+
+domains:
+  cost:
+    values: [0,1,2]
+
+variables:
+  a0:
+    domain: cost
+  a1:
+    domain: cost
+  a2:
+    domain: cost
+  a3:
+    domain: cost
+  a4:
+    domain: cost
+  a5:
+    domain: cost
+  a6:
+    domain: cost
+  a7:
+    domain: cost
+  a8:
+    domain: cost
+  a9:
+    domain: cost
+  b0:
+    domain: cost
+  b1:
+    domain: cost
+  b2:
+    domain: cost
+  b3:
+    domain: cost
+  b4:
+    domain: cost
+  b5:
+    domain: cost
+  b6:
+    domain: cost
+  b7:
+    domain: cost
+  b8:
+    domain: cost
+  b9:
+    domain: cost
+  c0:
+    domain: cost
+  c1:
+    domain: cost
+  c2:
+    domain: cost
+  c3:
+    domain: cost
+  c4:
+    domain: cost
+  c5:
+    domain: cost
+  c6:
+    domain: cost
+  c7:
+    domain: cost
+  c8:
+    domain: cost
+  c9:
+    domain: cost
+  d0:
+    domain: cost
+  d1:
+    domain: cost
+  d2:
+    domain: cost
+  d3:
+    domain: cost
+  d4:
+    domain: cost
+  d5:
+    domain: cost
+  d6:
+    domain: cost
+  d7:
+    domain: cost
+  d8:
+    domain: cost
+  d9:
+    domain: cost
+  e0:
+    domain: cost
+  e1:
+    domain: cost
+  e2:
+    domain: cost
+  e3:
+    domain: cost
+  e4:
+    domain: cost
+  e5:
+    domain: cost
+  e6:
+    domain: cost
+  e7:
+    domain: cost
+  e8:
+    domain: cost
+  e9:
+    domain: cost
+
+constraints:
+    C0:
+      type: extensional
+      variables: a0
+      function: a9 / 1 + a0 + 41 + c0 - d3 - 1 + d5 + d9 - 16 + a4 - a4 + 44 + 0 + b4 - 49 + 0 - e1
+    C1:
+      type: extensional
+      variables: a1
+      function: d7 + d2 - 17 + 35 - b3 - c0 + 0 + 11 + 11 - 0 - b0 + 30 - d0 - d2 - e6 - 1 - 1 + 1 + 0 - 1 + 0 + a3 + 43 + d9 - 0 + 1 + 1 + 1 - 0 + 1
+    C2:
+      type: extensional
+      variables: a2
+      function: b8 + b6 + 49 + 0 + 1 - a7 - 0 + 46 + 1 + a1 + 1 - a6 - a8 + 35 - d7 + d8 + b2 - d7 - d8 + 0 - 1 + 0 + 1 - 23 + d6 - 1 + 18 + c6 + b3 + b4 - 1 + c1 + 3
+    C3:
+      type: extensional
+      variables: a3
+      function: e6 + 1 - 44 - b2 + a1 - a9 - 1 + 1 + 1 + 1 + 9 - 0 + e2 + 13 - 1 + 0 + 0 + b9 - a8 + e7 - 46 - 37 - e7 + 0 - 26 - b3 + d4 - 1 - 0 + d0 + e4 + b4 + e4 + 0 - 1 + 1 - a8 + 45 + d5 + 8 + 1 + e3 - 30 - b2
+    C4:
+      type: extensional
+      variables: a4
+      function: c7 - d7 - 6
+    C5:
+      type: extensional
+      variables: a5
+      function: c5 - a6 - d2 + c2 + 1 - 0 - e6 - a9 - a2 + c8 + 23 - d7 + a3 + b7 + 0 + e0 - d4 - 1 + 1 - a0 - a6 + e6 + e2 - 39 + 0
+    C6:
+      type: extensional
+      variables: a6
+      function: e5 + b7 - e3 + 11 + d2 - d4 + 0 - 1 + e4 - 41 - c5 + d6 - c4 + e5 - 0 - 1 - 0 - 0 - d7 - c5 - 0 + b4 + e9 + a6 - e4 + b5 - b4 + b3 + 0 + e7 + c0 - 27 + d9 + c8 - b2 - 1 + 0 + c0 + 18 + e6 + b1 + 1 + e9 - 20 - 1 - d3 - 44
+    C7:
+      type: extensional
+      variables: a7
+      function: c3 - c0 + e2 - 46 + 0 + b7 + d4 - 1 + a1 + a2 + d1 + d0 - 19 + a3 + a4 + 0 - d7 + a1 + 1 + 0
+    C8:
+      type: extensional
+      variables: a8
+      function: c5 - c2 + 1 + 1 + 42 - a5 - e1 + b4 + 41 - 1 - 0 - b8 + 25 + 0 - 49 - 0 + 1 + c2 + e5 + c4
+    C9:
+      type: extensional
+      variables: a9
+      function: c4 - 1 - e5 + d7 - a5 + 0 - e6 + d9 + 22 + c1 - e9 + 1 + a9
+    C10:
+      type: extensional
+      variables: b0
+      function: e8 - d2 + c3 - 0 - b7 + b5 + a6 + e9 - 41 - c1 - b5 - d0 + e8 + 1 + c6 + c8 + d2 + 1 + 0 - 5 + 45 - b9 + b6 - c6 - 1 + c8 - 26 + 1 + a3 - 1 + 1 - a4 + 26 - 16 + 0 - 1 - 10 + 1 + a5 + b8 + 40 + 0 - 21 + 41 + a9 + c9 - 1 - 1 - d9 + b5 + e0
+    C11:
+      type: extensional
+      variables: b1
+      function: d8 - c9 + 31 - 33 - 0 + b0 + d7 - 1 + e2 - 0 - 1 + 23 - a0 + a8 + e5 + 1 - 46 + 0 + b9 - e1 - 1 + c3 - c7 + 45 + 0
+    C12:
+      type: extensional
+      variables: b2
+      function: e5 - d9 + 1 - c6 + c6 - a9 - c1 - 0 + 1 - 0 - 24 + 27 - c9 + d5 + 1 + 0 + 0 - d6 + 0 - 47 + 0 - 44 - 0 - e6 + 1 - 12
+    C13:
+      type: extensional
+      variables: b3
+      function: a1 - a3 - d5 + 1 - 1 - e2 + a7 - a9 + 48 + b4 + d2 - 1 - 1 - a3 - c4 - e4 + 0 + d2 + c7 + c3 + a1 - 35 - 0 + 1 - c0 - 1 + 1 - b0 + d1 + a4 + e4 - c3 - 0 + 0 + 40 + c8 - a7 - c7 + a2 - 1 - a7 + 24 - 1 + 1 + 29 - 49 - d1 + b7 - 33 + 0 + a5
+    C14:
+      type: extensional
+      variables: b4
+      function: b2 - a3 + 10 + 24 + 0 - 0 + c0
+    C15:
+      type: extensional
+      variables: b5
+      function: c0 - e4 - d7 + 0 - 0 + a4 + 0 - 19 + c2 - 1 - 0 + a4 + 1 + 1 - 1 + e6 - 0 - 1 - 0 - 1
+    C16:
+      type: extensional
+      variables: b6
+      function: b3 + d6 + e9 - 44 - 1 - 1 - e5 - c8 + a1 + e2 + 1 - a2 + a8 - b9 + 1 + b8
+    C17:
+      type: extensional
+      variables: b7
+      function: a5 - b9 + 42 - d7
+    C18:
+      type: extensional
+      variables: b8
+      function: b4 - 20 - c6 - b9 - 0 + 0 + d7 + 14 - a3 + b8 + 0 - d8 - 1 - 1 - 16 + d8 - d5 - 42 - 39 - e1 + a4 - 2 - d4 + e0 + e5
+    C19:
+      type: extensional
+      variables: b9
+      function: b2 - a8 - 1 + 28 - a2 + 33 - c7 - 1 + 1 + 1 + e7 - 49 + a6 - e9 - 0 - 0 + 1 - 0 - b9 - 38 + c3 + 0 + c9 + 0 + 23 - b3 - e9 + 18 + c2 + b6 + a9 + d6 - d9 - e8 + e8 + 45 + 0
+    C20:
+      type: extensional
+      variables: c0
+      function: e3 - a2 + e1 - c6 + 1 + a9 + b3 - a6 - a1 + 35 + 1 + 0 - 1
+    C21:
+      type: extensional
+      variables: c1
+      function: d6 + 1 + c4 - d1 - 1 + 1 - 1 - a1 - 41 - 13 - e1 - d8 + 1 - 1 + 29 + b4 - d1 + 1 - a1 + c2 - 1 + 0 - 1 + 0 + b3 + c9 - b6 + 0 - c2 + d5 + d5 - e0 - 1 + 1 + e3
+    C22:
+      type: extensional
+      variables: c2
+      function: b1 - a7 + c7 + e2 + a9 - 1 + 1 + d5 - c1 - d7 - d2 + c3 - 3 + a1 + e6 + b2 + 1 - c5 + e0 - d2 + 19 - 1
+    C23:
+      type: extensional
+      variables: c3
+      function: d2 + e0 + a9 - b2 - a9 - c1 - b0 + a7 + 0 - 0 + c9 + c8 - 4 - e1 + 16 + c6 - 15 - 0 + 1 - 15 - 0 + 0 + 1 - 1 + 0 - d2 + c8 + d8 - d2 - d3 + d7 - 7
+    C24:
+      type: extensional
+      variables: c4
+      function: e7 - 1 + a1 - c7 - a7 + b3 + a8 + a2 + 1 + 1 - e7 + c4 - 11 - 11 - e5 + d3 - d0 + d2 - 1 + e1 - a8 - 0 - a0 + b8 + a7 + 25 - c0 + 0 - 1 + c4 + c9 + 1 - 45 - b1 + 0 + d1 + d9 + a3 - c0
+    C25:
+      type: extensional
+      variables: c5
+      function: c9 + e4 + a1 + e0 + 0 + 1 + a2 + c4 + a4 + 1 - a6 + 28 - 1
+    C26:
+      type: extensional
+      variables: c6
+      function: c7 + 1 + c6 - 0 - 0 + c6 + d1 - c4 + 1 + e7 + 1 - a5 + c2 - e3 - b5 + 1 - a4 - d9 - 1 - 1 - d9 + 1 + d6 - a5 - 31 - e1 + 0 - 1 + 1 + 0 - e0 - 0 - d4 - d3 - e9 - 41 - d7 - e6 + c3 + 28 + 35 - 26 + e4 + b7 - b8
+    C27:
+      type: extensional
+      variables: c7
+      function: c1 - 19 - c4 - b6 - d7 - 1 + c8 - b4 + 0 - d2 - 0 + e1 - d2 - a1 + 0 + a0 + b4 - b0 + b1 - d5 - a5 + 17 + 23 - d9 + a7 + 1 + 1 + b4 + d4 + d5 + e9 + c5 + 12 + 0 + 15 - 38 - a8 - a4 - d6 - c3 - d9 - 1 - 0 + 0 + d4
+    C28:
+      type: extensional
+      variables: c8
+      function: d7 - a3 + b7 + c9 - c5 - e1 + b1 - 0 + b0 - 35 + e9 + d3 - e9 + 0 - b4 - e3 + a7 + 10
+    C29:
+      type: extensional
+      variables: c9
+      function: b0 - 6 - a6 + e6 - 1 + a7 + d9 + a0 - e0 - d5 + 0 - a6 + c9 + 1 - e0 - 0 + 0 - a6 - b9 - 1 - b5 - 0 + 0 - 24 + 1 - e5 + e3 - e7 + 0 + e6 + a4
+    C30:
+      type: extensional
+      variables: d0
+      function: e0 + 1 - 21 + d1 - 0 + e9 + b8 + 1 - 0 - 0 + 1 + 0 - 0 - d3 - 1 + b5 - d5 - c9 + 0 - a1 + 0 - 14 + 1 + d9 - 0 - d8 + 0 - c1 + a8 + 0 + d7 + e9 + c0 + d5 + 1 - d2
+    C31:
+      type: extensional
+      variables: d1
+      function: c8 - c0 + c4 + 26 - 0 - a1 + d6 + d9 - 0 - b9 + a0 + 0 + d8 - 0 - 1 - 34 - a1
+    C32:
+      type: extensional
+      variables: d2
+      function: c8 - c1
+    C33:
+      type: extensional
+      variables: d3
+      function: e3 + b4 - 6 - 0
+    C34:
+      type: extensional
+      variables: d4
+      function: a6 + b8
+    C35:
+      type: extensional
+      variables: d5
+      function: d8 + 1 + 1 + 36 + a3 - b7 + 0 + e2 - 0 - a5 + b4 - b1 + 1 - 16 + 0 - 0 + 0 - e4 - 0 + b7 + 0 - 0 - 36 - 0 - 28 - 32 - 49 - b7 - d8 + 1 - c4 - d6 + 1
+    C36:
+      type: extensional
+      variables: d6
+      function: b2 - d4 + 1 + 14 + 1 - 0 + 7 - 1 + 0 + e2 + e5 - a9 + c8 + 0 - 0 - 0 - 46 + b6 + d8 - 1 - 33 - 0 - c1 + 0 + 0 + b8 + 0 + e7 - 6 - e5 - c1 + 38 + 0 - a2 + 0 - e6 - b0 - a5 - a2 - 0 + 34 - 0
+    C37:
+      type: extensional
+      variables: d7
+      function: e5 - 1 + 1 - a7 + 15 - c3 + 0 + 47 + e1 - b8 + 0 - b5 + 36 - e6 + 0 + 1 - 46 + 0 + 19 - e0 + 37 + a7 - c3 - c0 + d5 + e8 - 27 + 42 - c7 + c7 + b0 + 1 - 0 + b2 - c6 + 46 - 14 + e3 + 0 - 1 - b3 + d9 - a0
+    C38:
+      type: extensional
+      variables: d8
+      function: c0 - b3 + 0 + 0 + 0 - b3 - 32 + a1 + 1 - 43 + 0 - e1
+    C39:
+      type: extensional
+      variables: d9
+      function: e1 - 1 - d1 + b5 + e4 - c6 + 1 + b5 - d7 + 37 - 0 + 1 + 16 - a6 - c4 + 17 - 45 + 0 + 1 + 47 - e8 - 0 - 46 - a5 - d3 - 41 - 22 - b7 - 44
+    C40:
+      type: extensional
+      variables: e0
+      function: b4 - 1 - 39 + a7 - c8 + c7 - 1 - 0 + d7 + d9 - 0 + 1 - d4 - 10 - a0 + 5 - c5 + e2 - e6 + c5 + d8 + c5 + a5 - c0 + c2 - 1 - c8 - 1 + 47 - 0 + 23 + e0 + c7 + c1 + b0 + 33 + 0 + 1 + 0 + 31
+    C41:
+      type: extensional
+      variables: e1
+      function: e3 - c3 - e5
+    C42:
+      type: extensional
+      variables: e2
+      function: b2 - 3 + c4 - 1 + c9 + e1 + a3 + 33 + 5 + 31 + e5 - c5 + 1 + d8 + 0 - a0 - b0 + 0 + 25 + e5 - 1 - 21 - 1 - 1 + c1 + b8 + 21 + 0 + c6 + 4 - 25 + d6 - c4 - a8 - d2 + 0 - 1 + d4 - a0
+    C43:
+      type: extensional
+      variables: e3
+      function: d3 + a5 - b6 - d2 + c7 - 1 - c0 + 0 - e3 + d4 + d3 - d0 - e9 - 39 + 3 + 1 + b0 + 46 + 0
+    C44:
+      type: extensional
+      variables: e4
+      function: c9 + c2 + a3 + c2 + 24 - a1 + 1 + b5 + 0 + 1 - d4 - 0 + 1 - 42 + c5 - 1 - c9 - 0 + 0 - 0 + 43 - 41 - c2 - a1 - c0 + e6 - 0
+    C45:
+      type: extensional
+      variables: e5
+      function: b5 + 1 + c8 - 40 - e1 + 0 - d1 + 0 + c5 + d0 + a4 + a7 - e7 + b2 - 0 - b6 + 1 + b5 - d6 + b1 - c2 + 28 - 0 + e7 + c2 + d3 - 1 - c4 - 0 - a7 + a8 - d1 + e3 + d3 - 0 + e8 + 20 + 1 - d8 - a8 - d3 - 29 + 0 - d7 + 23 - b8 + c1 + b6 + 42
+    C46:
+      type: extensional
+      variables: e6
+      function: b8 - 7 + b5 + 0 - a2 + 0 + 1 - 1 - d5 - 36 - b8 - a0 + d6 + 0 - d4 + 9 - e4 + 1 - c4 - e6 - 1 - b5 + b3 - d9 + a5 - 0 - d5 - a9 + 1 - 28 + a6 + 1 + b7 + e8 - a2 - 0 - 0 + 0 - c6 - b0 + d0 + 1 + 42 + 0 + 1 + c7 - 1 + d3 + b3 + 0 - b9
+    C47:
+      type: extensional
+      variables: e7
+      function: c5 + b5 + 1 - 6 + a1 - 0 - a8 - 27
+    C48:
+      type: extensional
+      variables: e8
+      function: e2 + a1 + 28 + 0 + 14 - a1 + 15 + 0 + 1 - 0 - e3 + 1 + 4 + c6 + 44 - 0 + 34 + 14 - 1 - 0 + b5 - d8 + b1 + 1 + e7 - b8 - 1 + a4 - d6 - c0 + 9 + c9 + b6 + d6 - b0 + a7
+    C49:
+      type: extensional
+      variables: e9
+      function: c3 + c2 - 3 - 8 + b5 - 4 + b4 + a5 + d6 + a7 + a1 - 44 + b1 + 0 + 1 + b7 - 1 - 0 + d4 - 39 - c8 - c9 + 46 - c9 - a2 + 0 - d9 + 0 + 1
+
+
+
+agents: [a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28, a29, a30, a31, a32, a33, a34, a35, a36, a37, a38, a39, a40, a41, a42, a43, a44, a45, a46, a47, a48, a49]
