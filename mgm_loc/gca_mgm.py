@@ -46,6 +46,7 @@ def launch_prog(argv):
         for agent, param in agents_param.items():  # Here's the new part, that makes the difference between MGM and MCS-MGM
             if param["current_LR"] is not None:
                 new_agent, cons_to_transfer = obj.share_constraint_2(param, prev_var_value)  # line 7/8/9
+                print(cons_to_transfer)
                 agents_param[agent] = new_agent
                 for var, cons in cons_to_transfer.items():
                     formula_list = cons.split()
@@ -84,6 +85,7 @@ def launch_prog(argv):
     time_tot = end - start
     obj.show_result(agents_param, file, algo, final_result, cost_init,height_cons,time_tot)
     cost = 0
+    print(cons_dict)
 
     for val in final_result.values():
         cost += float(val)

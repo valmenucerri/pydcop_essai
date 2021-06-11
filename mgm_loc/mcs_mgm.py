@@ -17,7 +17,6 @@ def launch_prog(argv):
     objective = hf.get_objective(file)
     domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(
         file)
-    print(cons_dict)
     obj = hp.HP(domain, variables, constraints, cons_dict, cons_for_var, agents)
     height_cons = {}
     for cons, form in cons_dict.items():
@@ -41,7 +40,7 @@ def launch_prog(argv):
     termination = 0
     prev_cost = 0
     start = time.process_time()
-    while nbr_cycle < time_limit and conti:  # line 2
+    while nbr_cycle < time_limit:# and conti:  # line 2
         start_cycle = time.process_time()
         value_mess = obj.send_values(agents_param)  # line 3
         agents_param = obj.collect_values(agents_param, value_mess)  # line 4
@@ -55,7 +54,8 @@ def launch_prog(argv):
             if param["current_LR"] is not None:
                 new_agent, cons_to_transfer,cons_transferred = obj.share_constraint_1(param, prev_var_value)  # line 7/8/9
                 agents_param[agent] = new_agent
-                obj.cons_update(cons_to_transfer)
+                obj.cons_update(cons_to_transfer)# !!!!!!! regarder cette fonction !!!!!!!
+
                 if cons_transferred is not None:
                     try:
                         conditionnal_cons[cons_transferred[0]].append(cons_transferred[1])
@@ -76,7 +76,6 @@ def launch_prog(argv):
         time_cycle[nbr_cycle] = cycle_time
         final_result = obj.result_final(var_value, constraints)
         cost = 0
-        print(cons_dict)
         for val in final_result.values():
             cost += float(val)
         if prev_cost == cost:
@@ -87,12 +86,13 @@ def launch_prog(argv):
             conti = False
         nbr_cycle += 1
         prev_cost = cost
-        print(nbr_cycle)
+
 
 
     final_result = obj.result_final(var_value, constraints)
     end = time.process_time()
     time_tot = end - start
+    print(agents_param)
     obj.show_result(agents_param, file, algo, final_result, cost_init,height_cons,time_tot)  # Create the file with the results written on it
     cost = 0
     for val in final_result.values():

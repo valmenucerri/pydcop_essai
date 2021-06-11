@@ -4,48 +4,48 @@ a1 : 1
 a2 : 1
 a3 : 2
 a4 : 2
-a5 : 1
-a6 : 2
-a7 : 0
-a8 : 0
-a9 : 1
-b0 : 0
+a5 : 2
+a6 : 0
+a7 : 2
+a8 : 1
+a9 : 0
+b0 : 1
 b1 : 2
-b2 : 0
-b3 : 2
+b2 : 2
+b3 : 0
 b4 : 2
 b5 : 1
 b6 : 2
-b7 : 1
+b7 : 2
 b8 : 2
 b9 : 2
 
 Costs :
-a0 : -4
+a0 : -2
 a1 : 2
-a2 : 2
-a3 : 7
-a4 : 6
-a5 : -2
-a6 : 23
-a7 : -11
-a8 : 0
+a2 : 3
+a3 : 4
+a4 : 2
+a5 : -5
+a6 : 20
+a7 : -10
+a8 : 2
 a9 : 8
-b0 : -20
-b1 : -7
-b2 : 6
-b3 : 2
-b4 : -41
-b5 : -1
-b6 : -10
-b7 : -4
-b8 : -12
-b9 : 2
+b0 : -17
+b1 : -9
+b2 : 7
+b3 : 1
+b4 : -38
+b5 : 3
+b6 : -11
+b7 : -2
+b8 : -8
+b9 : 3
 
-Final cost : -54.0
-Initial cost : -49.0
+Final cost : -47.0
+Initial cost : -47.0
 
-Resolution time (s) : 8.640625
+Resolution time (s) : 4.75
 Constraints initial length :          Constraints new length :
 C0 :11                                    C0 :11
 C1 :11                                    C1 :11

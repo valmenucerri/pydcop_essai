@@ -524,10 +524,12 @@ class HP:
                 if delta > float(agent["neighbors_LR"][neighbor]):
 
                     for cons in agent["constraint"]:
+                        print(cons)
                         must_be_added = None
                         current_formula = self.cons_dict[cons][0]
                         # if the considered constraint is a conditional constraint
                         if len(self.cons_dict[cons]) != 1:
+                            print("gagné")
                             cons_transferred = [neighbor, cons]
                             for el in range (len(self.cons_dict[cons])):
                                 self.cons_dict[cons][el]= self.cons_dict[cons][el].replace(neighbor,"0")
@@ -631,7 +633,6 @@ class HP:
         '''
 
         if len(agent["constraint"]) != 0:
-            print(self.cons_dict)
             value = 0
             for i in range(len(agent["constraint"])):
                 constraint = agent["constraint"][i]
@@ -822,9 +823,7 @@ class HP:
             values.append(float(i[0]))
 
         minimum = min(values)
-        if minimum > 0:
-            key = None
-            return key
+
         for k, val in dictio.items():
             if minimum == float(val[0]):
                 key = k
@@ -832,8 +831,16 @@ class HP:
         return key
 
     def cons_update(self, cons_to_transfer):
+        """
+        Update the constraint formula in cons_dict, according to the information of cons_to_transfer
+        :param cons_to_transfer: the part of the constraint that must be transferred, which key is the receptor variable
+        :return: None
+        """
+
         for var, cons in cons_to_transfer.items():
-            if len(self.cons_dict[self.constraints[var][0]][0]) != 1:
+
+            if len(self.cons_dict[self.constraints[var][0]]) != 1:
+                # ajouter des lignes ici pour pouvoir rajouter "cond" (le bout de contrainte à transférer) si la variable a une contrainte de type if/else
                 continue
             formula_list = cons.split()
             if "*" in formula_list:

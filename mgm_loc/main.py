@@ -41,6 +41,8 @@ if '__main__' ==__name__:
         final_cost2 = mcs_mgm.launch_prog(argv)
         print("\a")"""
     argv = sys.argv
+    argv =" main.py mcs_mgm time 30 graph_exemple.yaml"
+    argv = argv.split()
     file = hf.file_name(argv)
     domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(
         file)
