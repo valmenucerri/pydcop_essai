@@ -443,7 +443,25 @@ class HP:
             try:
                 if delta > 0:
                     for cons in agent["constraint"]:
+                        must_be_added = None
                         current_formula = self.cons_dict[cons][0]
+                        # if there is a min or max function in the constraint formula
+                        if current_formula.find("max") != -1:
+                            s = current_formula.find("max")
+                            end = current_formula.find(")")
+                            considered_formula = current_formula[s:end + 1]
+                            if considered_formula.find(neighbor) != -1:
+                                must_be_added = "+ {}".format(neighbor)
+
+                            current_formula = current_formula[:s] + '0' + current_formula[end + 1:]
+                        if current_formula.find("min") != -1:
+                            s = current_formula.find("min")
+                            end = current_formula.find(")")
+                            considered_formula = current_formula[s:end + 1]
+                            if considered_formula.find(neighbor) != -1:
+                                must_be_added = "+ {} ".format(neighbor)
+                            current_formula = current_formula[:s] + '0' + current_formula[end + 1:]
+
                         list_formula = current_formula.split()
                         for element in range(len(list_formula)):
                             if list_formula[element] == neighbor:
@@ -466,7 +484,13 @@ class HP:
                                 if cons_to_send[neighbor] in prev_var_value.keys():
                                     cond = True
                                     cons_to_remp = cons_to_send[neighbor]
-                                    cons_to_send[neighbor] = " + " + cons_to_send[neighbor]
+                                    cons_to_send[neighbor] = "+ " + cons_to_send[neighbor]
+
+                    if must_be_added is not None:
+                        try:
+                            cons_to_send[neighbor] += ' ' + must_be_added
+                        except:
+                            cons_to_send[neighbor] = must_be_added
 
                     if cond:
                         self.cons_dict[agent["constraint"][0]][0] = self.cons_dict[agent["constraint"][0]][0].replace(
@@ -479,7 +503,6 @@ class HP:
                 pass
 
         return agent, cons_to_send
-
     def share_constraint_1(self, agent, prev_var_value):
         '''
         Update constraint value if it's necessary
