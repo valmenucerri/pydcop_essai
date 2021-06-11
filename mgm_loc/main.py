@@ -30,16 +30,28 @@ def histogram(histo,nbr_launch,file):
 
 
 if '__main__' ==__name__:
+
+    """for i in range(70, 80, 10):
+        argv = "main.py mcs_mgm  time 300 graph_exemple_{}.yaml".format(i)
+        argv = argv.split()
+        file = hf.file_name(argv)
+        domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(
+            file)
+        obj = hp.HP(domain, variables, constraints, cons_dict, cons_for_var, agents)
+        final_cost2 = mcs_mgm.launch_prog(argv)
+        print("\a")"""
     argv = sys.argv
     file = hf.file_name(argv)
     domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(
         file)
     obj = hp.HP(domain, variables, constraints, cons_dict, cons_for_var, agents)
-
     if argv[1] == "mgm":
         final_cost = mgm.launch_prog(argv)
+        print("\a")
     elif argv[1] == "mcs_mgm":
+
         final_cost2 = mcs_mgm.launch_prog(argv)
+        print("\a")
     elif argv[1] == "all":
         for element in range(len(sys.argv)):
             if sys.argv[element] == "nbr_iter":

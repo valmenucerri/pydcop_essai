@@ -1,7 +1,7 @@
 import handle_file as hf
 import sys
 import handle_problem as hp
-
+import time
 
 def launch_prog(argv):
     """
@@ -9,6 +9,7 @@ def launch_prog(argv):
     :return: None
     """
     algo = hf.get_algo(argv)
+    time_cycle = {} # Dict with the time for each cycle {cycle : time associated}
     file = hf.file_name(argv)
     objective = hf.get_objective(file)
     domain, variables, constraints, cons_dict, cons_for_var, agents = hf.get_data(
@@ -20,18 +21,22 @@ def launch_prog(argv):
 
     # Initialize the parameters of the problem
     obj.init_problem(argv)
+    conti = True
     time_limit = hf.time_limit(argv)
     agents_param = obj.config_agents()  # Initialize each agent
     agents_param = obj.init_agents(agents_param)
     var_value = obj.get_var_value(agents_param)
     obj.calculate_constraint_init(agents_param, var_value)
     cost_init = 0
+    termination = 0
     for agent in agents_param.values():
         cost_init += float(agent["cons_value"])
-    nbr_cycle = 0
+    nbr_cycle = prev_cost =  0
     prev_var_value = None
     cons_to_send = {}
-    while nbr_cycle < time_limit:
+    start = time.process_time()
+    while nbr_cycle < time_limit and conti:
+        start_cycle = time.process_time()
         value_mess = obj.send_values(agents_param)
         agents_param = obj.collect_values(agents_param, value_mess)  # collect values of the neighbors
         for agent in agents_param.values():
@@ -53,15 +58,33 @@ def launch_prog(argv):
         all_LR = obj.all_LR(agents_param,objective)  # compute the LR for each variable
         agents_param = obj.collect_LR(agents_param, all_LR)
         prev_var_value = obj.get_var_value(agents_param)
-        agents_param = obj.update_value(agents_param, all_LR,objective)  # update only one value, depending on the LRs
+        agents_param = obj.update_value(agents_param, all_LR,objective) # update only one value, depending on the LRs
         var_value = obj.get_var_value(agents_param)
         agents_param = obj.calculate_constraint(agents_param,
                                                var_value)  # Calculate the new constraints values
+        end_cycle = time.process_time()
+        cycle_time = end_cycle - start_cycle
+        time_cycle[nbr_cycle] = cycle_time
+        final_result = obj.result_final(var_value, constraints)
+        cost = 0
+        for val in final_result.values():
+            cost += float(val)
+        if prev_cost == cost:
+            termination += 1
+        else:
+            termination = 0
+        if termination == 6:
+            conti = False
         nbr_cycle += 1
+        prev_cost = cost
+        print(nbr_cycle)
 
     final_result = obj.result_final(var_value, constraints)
-    obj.show_result(agents_param, file, algo, final_result, cost_init,height_cons)
+    end = time.process_time()
+    time_tot = end - start
+    obj.show_result(agents_param, file, algo, final_result, cost_init,height_cons,time_tot)
     cost = 0
+
     for val in final_result.values():
         cost += float(val)
     return cost,cost_init

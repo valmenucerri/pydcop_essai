@@ -1,35 +1,25 @@
 mgm results :
-value 23.0 : 2     Initial costs : 23.0, 24.0
-value 28.5 : 1     Initial costs : 30.5
-value 28.0 : 2     Initial costs : 28.0, 31.0
-value 21.0 : 1     Initial costs : 21.0
-value 25.0 : 2     Initial costs : 24.0, 24.0
-value 31.0 : 1     Initial costs : 34.0
-value 20.0 : 1     Initial costs : 22.0
-value 27.5 : 1     Initial costs : 27.5
-value 18.0 : 1     Initial costs : 18.0
-value 26.0 : 3     Initial costs : 24.0, 24.0, 28.0
-value 25.5 : 1     Initial costs : 25.5
-value 23.5 : 1     Initial costs : 23.5
-value 22.0 : 1     Initial costs : 20.0
-value 24.5 : 1     Initial costs : 26.5
-value 27.0 : 1     Initial costs : 24.0
+value -11.0 : 4     Initial costs : -17.0, -5.0, -14.0, -10.0
+value -14.0 : 3     Initial costs : -14.0, -13.0, -14.0
+value -13.0 : 7     Initial costs : -13.0, -7.0, -3.0, -16.0, -9.0, -4.0, -11.0
+value -12.0 : 1     Initial costs : -8.0
+value -15.0 : 2     Initial costs : -8.0, -5.0
+value -9.0 : 1     Initial costs : -9.0
+value -17.0 : 1     Initial costs : -17.0
+value -7.0 : 1     Initial costs : -5.0
 
 mcs_mgm results :
-value 22.0 : 1     Initial costs : 30.0
-value 17.0 : 5     Initial costs : 29.5, 22.0, 26.5, 31.0, 22.5
-value 16.0 : 1     Initial costs : 28.0
-value 15.0 : 10     Initial costs : 23.5, 26.0, 25.0, 25.0, 25.0, 29.5, 32.0, 22.0, 25.5, 25.0
-value 20.0 : 1     Initial costs : 26.0
-value 21.0 : 1     Initial costs : 31.0
-value 19.0 : 1     Initial costs : 32.0
+value -27.0 : 16     Initial costs : -13.0, -6.0, -8.0, -5.0, -15.0, -17.0, -13.0, -20.0, -8.0, -10.0, -6.0, -6.0, -3.0, -13.0, -6.0, -9.0
+value -25.0 : 2     Initial costs : -16.0, -13.0
+value -21.0 : 1     Initial costs : -6.0
+value -23.0 : 1     Initial costs : -10.0
 
 gca_mgm results :
-value 17.0 : 7     Initial costs : 26.5, 30.0, 22.0, 30.5, 23.0, 27.0, 27.0
-value 15.0 : 3     Initial costs : 23.0, 28.0, 28.5
-value 18.0 : 2     Initial costs : 27.0, 25.0
-value 20.0 : 3     Initial costs : 32.0, 29.0, 21.0
-value 21.0 : 2     Initial costs : 26.5, 31.0
-value 28.0 : 1     Initial costs : 28.0
-value 16.0 : 1     Initial costs : 26.0
-value 26.0 : 1     Initial costs : 26.0
+value -25.0 : 7     Initial costs : -14.0, -8.0, -7.0, -4.0, -7.0, -19.0, -10.0
+value -21.0 : 2     Initial costs : -3.0, -12.0
+value -23.0 : 3     Initial costs : -8.0, -8.0, -7.0
+value -27.0 : 3     Initial costs : -19.0, -12.0, -6.0
+value -26.0 : 2     Initial costs : -2.0, -20.0
+value -22.0 : 1     Initial costs : -15.0
+value -17.0 : 1     Initial costs : -5.0
+value -24.0 : 1     Initial costs : -17.0

@@ -499,7 +499,25 @@ class HP:
             try:
                 if delta > float(agent["neighbors_LR"][neighbor]):
                     for cons in agent["constraint"]:
+                        must_be_added = None
                         current_formula = self.cons_dict[cons][0]
+                        # if there is a min or max function in the constraint formula
+                        if current_formula.find("max") != -1:
+                            s = current_formula.find("max")
+                            end = current_formula.find(")")
+                            considered_formula = current_formula[s:end+1]
+                            if considered_formula.find(neighbor) != -1:
+                                must_be_added = "+ {}".format(neighbor)
+
+                            current_formula = current_formula[:s] + '0' + current_formula[end+1:]
+                        if current_formula.find("min") != -1:
+                            s = current_formula.find("min")
+                            end = current_formula.find(")")
+                            considered_formula = current_formula[s:end+1]
+                            if considered_formula.find(neighbor) != -1:
+                                must_be_added = "+ {} ".format(neighbor)
+                            current_formula = current_formula[:s] + '0' + current_formula[end+1:]
+
                         list_formula = current_formula.split()
                         for element in range(len(list_formula)):
                             if list_formula[element] == neighbor:
@@ -523,6 +541,13 @@ class HP:
                                     cond = True
                                     cons_to_remp = cons_to_send[neighbor]
                                     cons_to_send[neighbor] = "+ " + cons_to_send[neighbor]
+
+                    if must_be_added is not None:
+                        try:
+                            cons_to_send[neighbor] += ' ' + must_be_added
+                        except:
+                            cons_to_send[neighbor] = must_be_added
+
 
                     if cond:
                         self.cons_dict[agent["constraint"][0]][0] = self.cons_dict[agent["constraint"][0]][0].replace(
@@ -685,12 +710,17 @@ class HP:
         :return: agents_param: all the agents with their parameters, and the value updated. type : dict
         '''
         if objective == "min":
-            key = self.max_dict(all_LR)
+            key = self.max_dict_2(all_LR)
+            if key is None:
+                return agents_param
         else:
-            key = self.min_dict(all_LR)
+            key = self.min_dict_2(all_LR)
+            if key is None:
+                return agents_param
         for agent in agents_param.values():
             if agent["variable"] == key:
                 agent["value"] = all_LR[key][1]
+
 
         return agents_param
 
@@ -705,6 +735,26 @@ class HP:
             values.append(float(i[0]))
 
         maximum = max(values)
+        for k, val in dictio.items():
+            if maximum == float(val[0]):
+                key = k
+
+        return key
+
+    def max_dict_2(self, dictio):
+        '''
+        Compute the index associated to the max value in a dictionary of iterable.
+        :param dictio: the iterable in which we want to have the index of the max value. type : dict
+        :return: key: the index of the maximum value. type : str
+        '''
+        values = []
+        for i in dictio.values():
+            values.append(float(i[0]))
+
+        maximum = max(values)
+        if maximum < 0:
+            key = None
+            return key
         for k, val in dictio.items():
             if maximum == float(val[0]):
                 key = k
@@ -728,6 +778,26 @@ class HP:
 
         return key
 
+    def min_dict_2(selfself, dictio):
+        """
+        Compute the index associated to the min value in a dictionary of iterable.
+        :param dictio: the iterable in which we want to have the index of the min value. type : dict
+        :return: key: the index of the minimum value. type : str
+        """
+        values = []
+        for i in dictio.values():
+            values.append(float(i[0]))
+
+        minimum = min(values)
+        if minimum > 0:
+            key = None
+            return key
+        for k, val in dictio.items():
+            if minimum == float(val[0]):
+                key = k
+
+        return key
+
     def cons_update(self, cons_to_transfer):
         for var, cons in cons_to_transfer.items():
             formula_list = cons.split()
@@ -736,7 +806,7 @@ class HP:
             else:
                 self.cons_dict[self.constraints[var][0]][0] += " " + cons
 
-    def show_result(self, agents_param, file, algo, final_result, cost_init, height_cons):
+    def show_result(self, agents_param, file, algo, final_result, cost_init, height_cons,time_tot):
         '''
         how the results; with the value of each variable and the constraints cost for each variable
         :param agents_param: all the agents with the final parameters. type : dict
@@ -767,6 +837,8 @@ class HP:
                 f.write(str(cost) + "\n")
                 f.write("Initial cost : " + str(cost_init) + "\n")
                 f.write("\n")
+                f.write("Resolution time (s) : "+str(time_tot))
+                f.write("\n")
                 f.write("Constraints initial length :" + "          " + "Constraints new length :" + "\n")
                 for cons in height_cons:
                     f.write("{} :{}".format(cons, height_cons[cons]) + "                                    ")
@@ -789,7 +861,7 @@ class HP:
                 if self.cons_dict[cons[0]][0].find("max") != -1:
                     constraint_formula = self.cons_dict[cons[0]][0]
                     final_cost[var] = str(self.max_function_result(constraint_formula, var_value))
-                if self.cons_dict[cons[0]][0].find("min") != -1:
+                elif self.cons_dict[cons[0]][0].find("min") != -1:
                     constraint_formula = self.cons_dict[cons[0]][0]
                     final_cost[var] = str(self.min_function_result(constraint_formula, var_value))
 
@@ -855,6 +927,7 @@ class HP:
         axe.xaxis.set_ticks(range(int(min(values)), int(max(values)) + 1))
         axe.yaxis.set_ticks(range(nbr_launch))
         plt.tick_params(axis='y', labelsize=7)
+        plt.tick_params(axis='x', labelsize=7)
         plt.bar(values, y, width, color='b', label="GCA_MGM")
 
         plt.legend(loc='upper right')

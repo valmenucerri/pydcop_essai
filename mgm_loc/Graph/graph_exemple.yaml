@@ -21,7 +21,7 @@ constraints:
     CB:
       type: extensional
       variables: vB
-      function: -2 * vC + vB
+      function: vB + min([vC, vA]) + vA
     CC:
       type: extensional
       variables: vC
