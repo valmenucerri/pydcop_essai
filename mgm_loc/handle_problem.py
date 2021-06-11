@@ -515,15 +515,24 @@ class HP:
         cond = False
         agent2 = agent.copy()
         var = prev_var_value.copy()
+        cons_transferred = None
         for neighbor in agent["neighbors"]:
             prev_var_value[neighbor] = float(agent["neighbors"][neighbor])
             actual_cons = self.calculate_constraint_agent(agent2, prev_var_value)
             delta = float(actual_cons["cons_value"]) - float(agent["prev_cons_value"])
             try:
                 if delta > float(agent["neighbors_LR"][neighbor]):
+
                     for cons in agent["constraint"]:
                         must_be_added = None
                         current_formula = self.cons_dict[cons][0]
+                        # if the considered constraint is a conditional constraint
+                        if len(self.cons_dict[cons]) != 1:
+                            cons_transferred = [neighbor, cons]
+                            for el in range (len(self.cons_dict[cons])):
+                                self.cons_dict[cons][el]= self.cons_dict[cons][el].replace(neighbor,"0")
+
+                            break
                         # if there is a min or max function in the constraint formula
                         if current_formula.find("max") != -1:
                             s = current_formula.find("max")
@@ -582,7 +591,7 @@ class HP:
             except:
                 pass
 
-        return agent, cons_to_send
+        return agent, cons_to_send,cons_transferred
 
     def update_cons(self, cons_to_send, agents_param):
         '''
@@ -596,7 +605,7 @@ class HP:
                 if var == agent["variable"]:
                     for i in range(len(cons)):
                         if cons[i] not in agent["constraint"]:
-                            agent["constraint"].append(cons[i])
+                            agent["constraint"].insert(0,cons[i])
 
         return agents_param
 
@@ -622,6 +631,7 @@ class HP:
         '''
 
         if len(agent["constraint"]) != 0:
+            print(self.cons_dict)
             value = 0
             for i in range(len(agent["constraint"])):
                 constraint = agent["constraint"][i]
@@ -823,6 +833,8 @@ class HP:
 
     def cons_update(self, cons_to_transfer):
         for var, cons in cons_to_transfer.items():
+            if len(self.cons_dict[self.constraints[var][0]][0]) != 1:
+                continue
             formula_list = cons.split()
             if "*" in formula_list:
                 self.cons_dict[self.constraints[var][0]][0] = cons + " + " + self.cons_dict[self.constraints[var][0]][0]
@@ -877,22 +889,24 @@ class HP:
         """
         final_cost = {}
         for var, cons in constraint.items():
-            if len(self.cons_dict[cons[0]]) != 1:
-                cons_details = self.cons_dict[cons[0]]
-                final_cost[var] = str(self.condition_function_result(cons_details, var_value))
-            else:
-                if self.cons_dict[cons[0]][0].find("max") != -1:
-                    constraint_formula = self.cons_dict[cons[0]][0]
-                    final_cost[var] = str(self.max_function_result(constraint_formula, var_value))
-                elif self.cons_dict[cons[0]][0].find("min") != -1:
-                    constraint_formula = self.cons_dict[cons[0]][0]
-                    final_cost[var] = str(self.min_function_result(constraint_formula, var_value))
-
+            try:
+                if len(self.cons_dict[cons[0]]) != 1:
+                    cons_details = self.cons_dict[cons[0]]
+                    final_cost[var] = str(self.condition_function_result(cons_details, var_value))
                 else:
-                    constraint_formula = self.cons_dict[cons[0]][0]
-                    formula = self.prepare_formula(constraint_formula, var_value)
-                    final_cost[var] = str(self.RVN(formula))
+                    if self.cons_dict[cons[0]][0].find("max") != -1:
+                        constraint_formula = self.cons_dict[cons[0]][0]
+                        final_cost[var] = str(self.max_function_result(constraint_formula, var_value))
+                    elif self.cons_dict[cons[0]][0].find("min") != -1:
+                        constraint_formula = self.cons_dict[cons[0]][0]
+                        final_cost[var] = str(self.min_function_result(constraint_formula, var_value))
 
+                    else:
+                        constraint_formula = self.cons_dict[cons[0]][0]
+                        formula = self.prepare_formula(constraint_formula, var_value)
+                        final_cost[var] = str(self.RVN(formula))
+            except:
+                pass
         return final_cost
 
     def draw_histo(self, histo, nbr_launch, file):

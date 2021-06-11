@@ -49,12 +49,21 @@ def launch_prog(argv):
             cons_to_send[agent[
                 "variable"]] = []  # prepare the dictionary where the program will put the constraints that must be sent
         # Here's the new part, that makes the difference between MGM and MCS-MGM
-        for agent, param in agents_param.items(): # line 5
+        conditionnal_cons = {}
+        for agent, param in agents_param.items():
+            # line 5
             if param["current_LR"] is not None:
-                new_agent, cons_to_transfer = obj.share_constraint_1(param, prev_var_value)  # line 7/8/9
+                new_agent, cons_to_transfer,cons_transferred = obj.share_constraint_1(param, prev_var_value)  # line 7/8/9
                 agents_param[agent] = new_agent
                 obj.cons_update(cons_to_transfer)
-        #agents_param = obj.update_cons(cons_to_send, agents_param)  # line 10/11
+                if cons_transferred is not None:
+                    try:
+                        conditionnal_cons[cons_transferred[0]].append(cons_transferred[1])
+                    except:
+                        conditionnal_cons[cons_transferred[0]] = [cons_transferred[1]]
+        if len(conditionnal_cons) != 0:
+            agents_param = obj.update_cons(conditionnal_cons,agents_param)# line 10/11
+
         # compute the LR for each variable
         all_LR = obj.all_LR(agents_param,objective)  # line 12/13
         agents_param = obj.collect_LR(agents_param, all_LR)  # line 14

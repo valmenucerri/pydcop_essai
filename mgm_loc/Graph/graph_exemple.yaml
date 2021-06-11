@@ -1,5 +1,5 @@
 name: graph coloring ex
-objective: max
+objective: min
 
 domains:
   cost:
@@ -17,11 +17,16 @@ constraints:
     CA:
       type: extensional
       variables: vA
-      function: vA - vB - vC
+      function: vA + vB - vC
     CB:
       type: extensional
       variables: vB
-      function: min([vC, vA]) + vC + vC + vC
+      function:
+                a = vB + 25
+                if a > 3:
+                    return 10
+                else:
+                    return 0
     CC:
       type: extensional
       variables: vC

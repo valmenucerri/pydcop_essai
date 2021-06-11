@@ -1,17 +1,17 @@
 Assignments :
-vA : 0
+vA : 2
 vB : 2
-vC : 0
+vC : 2
 
 Costs :
-vA : 10
+vA : -2
 vB : 10
-vC : 10
+vC : 4
 
-Final cost : 30.0
-Initial cost : 11.0
+Final cost : 12.0
+Initial cost : 1.0
 
-Resolution time (s) : 0.078125
+Resolution time (s) : 0.15625
 Constraints initial length :          Constraints new length :
 CA :5                                    CA :5
 CB :5                                    CB :5

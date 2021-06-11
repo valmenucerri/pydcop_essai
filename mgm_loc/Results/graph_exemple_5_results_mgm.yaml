@@ -1,0 +1,24 @@
+Assignments :
+a0 : 2
+a1 : 2
+a2 : 1
+a3 : 2
+a4 : 0
+
+Costs :
+a0 : 3
+a1 : 4.0
+a2 : 0
+a3 : 1
+a4 : 1
+
+Final cost : 9.0
+Initial cost : 5.0
+
+Resolution time (s) : 1.0
+Constraints initial length :          Constraints new length :
+C0 :11                                    C0 :11
+C1 :7                                    C1 :7
+C2 :3                                    C2 :3
+C3 :11                                    C3 :11
+C4 :9                                    C4 :9
